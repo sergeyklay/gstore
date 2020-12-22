@@ -1,31 +1,37 @@
 # ghsync
 
-A small script to synchronize organizations' repositories from GitHub.
+A dead simple script to synchronize organizations' repositories from GitHub.
 
 ## Usage
 
 ### Sync all repos from all organizations
 
 ``` sh
-$ python ghsync.py --token "$TOKEN" \
-	               --user  "$USER"  \
-	               -- ~/work
+$ python ghsync.py   \
+    --token "$TOKEN" \
+    --user  "$USER"  \
+    --               \
+    ~/work
 ```
 
 ### Sync all repos from Acme organization
 
 ``` sh
-$ python ghsync.py --token "$TOKEN" \
-	               --org  Acme      \
-	               -- ~/work
+$ python ghsync.py   \
+    --token "$TOKEN" \
+    --org   Acme     \
+    --               \
+    ~/work
 ```
 
 ### Sync all repos from Foo, Bar and Baz organizations
 
 ``` sh
-$ python ghsync.py --token "$TOKEN"   \
-	               --org  Foo Bar Baz \
-	               -- ~/work
+$ python ghsync.py      \
+    --token "$TOKEN"    \
+    --org   Foo Bar Baz \
+    --                  \
+    ~/work
 ```
 
 ## License
