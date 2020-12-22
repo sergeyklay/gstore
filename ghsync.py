@@ -1,3 +1,18 @@
+# Copyright (C) 2020 Serghei Iakovlev <egrep@protonmail.ch>
+#
+# This file is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 3
+# of the License, or (at your option) any later version.
+#
+# This file is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this file.  If not, see <https://www.gnu.org/licenses/>.
+
 import os
 import json
 import requests
@@ -11,45 +26,79 @@ API_URL = 'https://api.github.com'
 
 def argparse():
     parser = ArgumentParser(
-        description='Locally sync all GitHub repos & branches for user/org.')
+        description="Synchronize organizations' repositories from GitHub.")
 
+    parser.add_argument('--user', dest='user',
+                        help='username to get organizarions list')
     parser.add_argument('--token', dest='token', required=True,
                         help='personal auth token')
-    parser.add_argument('--org', dest='org', required=True,
-                        help='organization for access to')
-    parser.add_argument('workdir', help='Base path to sync repos')
+    parser.add_argument('--org', dest='org', nargs='*',
+                        help='organizations you have access to (deault "all")')
+    parser.add_argument('workdir',
+                        help='base path to sync repos')
 
     return parser.parse_args()
 
 
-def repos(org, token):
+def create_headers(token):
+    return {
+        'Accept': 'application/vnd.github.v3+json',
+        'Authorization': 'token {}'.format(token)
+    }
+
+
+def get_repos(org, token):
+    print('[INFO] getting repositories list')
+
     endpoint = '/orgs/{}/repos'.format(org)
     url = '{}{}'.format(API_URL, endpoint)
     params = {'per_page': 100, 'type': 'all', 'sort': 'full_name'}
-    headers = {'Accept': 'application/vnd.github.v3+json',
-               'Authorization': 'token {}'.format(token)}
+    headers = create_headers(token)
 
     retval = []
-    for i in range(1, 5000 + 1):
-        params['page'] = i
+    for page_number in range(1, 5000 + 1):
+        params['page'] = page_number
         response = requests.get(url=url, params=params, headers=headers)
         parsed_response = json.loads(response.text)
 
         if len(parsed_response) == 0:
             break
 
-        for i in parsed_response:
-            retval.append(i['name'])
+        for repo_data in parsed_response:
+            retval.append(repo_data['name'])
 
     return retval
 
 
-def sync(org, repos, workdir):
+def get_orgs(user, token):
+    print('[INFO] getting organizations list')
+
+    if user is None:
+        print('[ERR]  username is required to get organizations list')
+        exit(1)
+
+    endpoint = '/users/{}/orgs'.format(user)
+    url = '{}{}'.format(API_URL, endpoint)
+    headers = create_headers(token)
+
+    response = requests.get(url=url, headers=headers)
+    parsed_response = json.loads(response.text)
+
+    retval = []
+    for repo_data in parsed_response:
+        retval.append(repo_data['login'])
+
+    return retval
+
+
+def do_sync(org, repos, workdir):
+    print('[INFO] sync repos for "{}"'.format(org))
+
     full_path = os.path.join(workdir, org)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
 
-    print('total repos:', len(repos))
+    print('[INFO] total repos for "{}": {}'.format(org, len(repos)))
     for repo in repos:
         repo_path = os.path.join(full_path, repo)
         if not os.path.exists(os.path.join(repo_path, '.git')):
@@ -62,16 +111,17 @@ def sync(org, repos, workdir):
         else:
             print('[SYNC]', repo, 'already exist. Sync ...')
 
-    # print(workdir)
-    # print(repos)
-
 
 def main():
     ns = argparse()
-    print('arguments:', ns)
+    orgs = ns.org
 
-    all_repos = repos(ns.org, ns.token)
-    sync(ns.org, all_repos, ns.workdir)
+    if ns.org is None:
+        orgs = get_orgs(ns.user, ns.token)
+
+    for org in orgs:
+        repos = get_repos(org, ns.token)
+        do_sync(org, repos, ns.workdir)
 
 
 if __name__ == '__main__':
