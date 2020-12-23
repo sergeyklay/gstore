@@ -17,12 +17,22 @@ import os
 import json
 import requests
 
-from git import Repo
+from git import Repo, RemoteProgress
 from argparse import ArgumentParser
 
 
 API_URL = 'https://api.github.com'
 MAX_PAGES = 5000
+
+
+class RepoProgressPrinter(RemoteProgress):
+    """
+    Extended progress printer
+    """
+
+    def update(self, op_code, cur_count, max_count=None, message=''):
+        print(op_code, cur_count, max_count, cur_count /
+              (max_count or 100.0), message or "NO MESSAGE")
 
 
 def argparse():
@@ -35,8 +45,8 @@ def argparse():
                         help='personal auth token')
     parser.add_argument('--org', dest='org', nargs='*',
                         help='organizations you have access to (deault "all")')
-    parser.add_argument('workdir',
-                        help='base path to sync repos')
+    parser.add_argument('target',
+                        help='base target to sync repos (e.g. folder on disk)')
 
     return parser.parse_args()
 
@@ -91,10 +101,10 @@ def get_orgs(user, token):
     return collect_data(url=url, params=params, headers=headers, key='login')
 
 
-def do_sync(org, repos, workdir):
+def do_sync(org, repos, target):
     print('[INFO] sync repos for "{}"'.format(org))
 
-    full_path = os.path.join(workdir, org)
+    full_path = os.path.join(target, org)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
 
@@ -107,7 +117,7 @@ def do_sync(org, repos, workdir):
 
             print('[NEW] ', repo, "doesn't exist. Clone ...")
             git_url = 'git@github.com:{}/{}.git'.format(org, repo)
-            Repo.clone_from(git_url, repo_path)
+            Repo.clone_from(git_url, repo_path, progress=RepoProgressPrinter())
         else:
             print('[SYNC]', repo, 'already exist. Sync ...')
 
@@ -121,7 +131,7 @@ def main():
 
     for org in orgs:
         repos = get_repos(org, ns.token)
-        do_sync(org, repos, ns.workdir)
+        do_sync(org, repos, ns.target)
 
 
 if __name__ == '__main__':
