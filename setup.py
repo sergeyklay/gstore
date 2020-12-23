@@ -34,7 +34,7 @@ setup(
 
         'Environment :: Console',
 
-        'Intended Audience :: nDevelopers',
+        'Intended Audience :: Developers',
         'Natural Language :: English',
 
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
