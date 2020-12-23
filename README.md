@@ -1,6 +1,6 @@
 # ghsync
 
-A dead simple script to synchronize organizations' repositories from GitHub.
+A dead simple tool to synchronize organizations' repositories from GitHub.
 
 ## Usage
 
