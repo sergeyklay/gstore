@@ -11,17 +11,25 @@ Examples
 
 **Sync all repos from all organizations**
 
+To get a list of all organizations for a user, ghsync will need a GitHub
+username:
+
 .. code-block:: bash
 
-   ghsync --token "$TOKEN" --user "$USER" -- ~/backup
+   ghsync --token "$TOKEN" --user "$GH_USER" -- ~/backup
 
 **Sync all repos from Acme organization**
+
+To get all repositories of a specific organization, just specify it:
 
 .. code-block:: bash
 
    ghsync --token "$TOKEN" --org Acme -- ~/backup
 
 **Sync all repos from Foo, Bar and Baz organizations**
+
+To get all repositories of the listed organizations, specify them separated by a
+space:
 
 .. code-block:: bash
 
