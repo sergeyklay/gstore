@@ -26,6 +26,7 @@ setup(
     description="A simple cli tool to synchronize organizations'"
                 'repositories from GitHub.',
     long_description=open('README.rst').read() + '\n\n',
+    long_description_content_type='text/x-rst',
     keywords='git, github, backup, repo, sync',
     platforms='any',
     python_requires='>=3.6, <4',
