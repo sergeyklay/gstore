@@ -22,6 +22,7 @@ from argparse import ArgumentParser
 
 
 API_URL = 'https://api.github.com'
+MAX_PAGES = 5000
 
 
 def argparse():
@@ -47,6 +48,23 @@ def create_headers(token):
     }
 
 
+def collect_data(url, params, headers, key):
+    retval = []
+
+    for i in range(MAX_PAGES):
+        params['page'] = i + 1
+        response = requests.get(url=url, params=params, headers=headers)
+        parsed_response = json.loads(response.text)
+
+        if len(parsed_response) == 0:
+            break
+
+        for data in parsed_response:
+            retval.append(data[key])
+
+    return retval
+
+
 def get_repos(org, token):
     print('[INFO] getting repositories list')
 
@@ -55,19 +73,7 @@ def get_repos(org, token):
     params = {'per_page': 100, 'type': 'all', 'sort': 'full_name'}
     headers = create_headers(token)
 
-    retval = []
-    for page_number in range(1, 5000 + 1):
-        params['page'] = page_number
-        response = requests.get(url=url, params=params, headers=headers)
-        parsed_response = json.loads(response.text)
-
-        if len(parsed_response) == 0:
-            break
-
-        for repo_data in parsed_response:
-            retval.append(repo_data['name'])
-
-    return retval
+    return collect_data(url=url, params=params, headers=headers, key='name')
 
 
 def get_orgs(user, token):
@@ -79,16 +85,10 @@ def get_orgs(user, token):
 
     endpoint = '/users/{}/orgs'.format(user)
     url = '{}{}'.format(API_URL, endpoint)
+    params = {'per_page': 100}
     headers = create_headers(token)
 
-    response = requests.get(url=url, headers=headers)
-    parsed_response = json.loads(response.text)
-
-    retval = []
-    for repo_data in parsed_response:
-        retval.append(repo_data['login'])
-
-    return retval
+    return collect_data(url=url, params=params, headers=headers, key='login')
 
 
 def do_sync(org, repos, workdir):
