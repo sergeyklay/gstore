@@ -11,18 +11,18 @@ Examples
 
 **Sync all repos from all organizations**
 
-.. code-block:: sh
-   $ ghsync --token "$TOKEN" --user "$USER" -- ~/backup
+.. code-block:: bash
+   ghsync --token "$TOKEN" --user "$USER" -- ~/backup
 
 **Sync all repos from Acme organization**
 
-.. code-block:: sh
-   $ ghsync --token "$TOKEN" --org Acme -- ~/backup
+.. code-block:: bash
+   ghsync --token "$TOKEN" --org Acme -- ~/backup
 
 **Sync all repos from Foo, Bar and Baz organizations**
 
-.. code-block:: sh
-   $ ghsync --token "$TOKEN" --org Foo Bar Baz -- ~/backup
+.. code-block:: bash
+   ghsync --token "$TOKEN" --org Foo Bar Baz -- ~/backup
 
 License
 ------
