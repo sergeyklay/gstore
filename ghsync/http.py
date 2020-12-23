@@ -13,42 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-import os
 import json
 import requests
-
-from git import Repo, RemoteProgress
-from argparse import ArgumentParser
 
 
 API_URL = 'https://api.github.com'
 MAX_PAGES = 5000
-
-
-class RepoProgressPrinter(RemoteProgress):
-    """
-    Extended progress printer
-    """
-
-    def update(self, op_code, cur_count, max_count=None, message=''):
-        print(op_code, cur_count, max_count, cur_count /
-              (max_count or 100.0), message or "NO MESSAGE")
-
-
-def argparse():
-    parser = ArgumentParser(
-        description="Synchronize organizations' repositories from GitHub.")
-
-    parser.add_argument('--user', dest='user',
-                        help='username to get organizarions list')
-    parser.add_argument('--token', dest='token', required=True,
-                        help='personal auth token')
-    parser.add_argument('--org', dest='org', nargs='*',
-                        help='organizations you have access to (deault "all")')
-    parser.add_argument('target',
-                        help='base target to sync repos (e.g. folder on disk)')
-
-    return parser.parse_args()
 
 
 def create_headers(token):
@@ -99,40 +69,3 @@ def get_orgs(user, token):
     headers = create_headers(token)
 
     return collect_data(url=url, params=params, headers=headers, key='login')
-
-
-def do_sync(org, repos, target):
-    print('[INFO] sync repos for "{}"'.format(org))
-
-    full_path = os.path.join(target, org)
-    if not os.path.exists(full_path):
-        os.makedirs(full_path)
-
-    print('[INFO] total repos for "{}": {}'.format(org, len(repos)))
-    for repo in repos:
-        repo_path = os.path.join(full_path, repo)
-        if not os.path.exists(os.path.join(repo_path, '.git')):
-            if os.path.exists(repo_path):
-                os.removedirs(repo_path)
-
-            print('[NEW] ', repo, "doesn't exist. Clone ...")
-            git_url = 'git@github.com:{}/{}.git'.format(org, repo)
-            Repo.clone_from(git_url, repo_path, progress=RepoProgressPrinter())
-        else:
-            print('[SYNC]', repo, 'already exist. Sync ...')
-
-
-def main():
-    ns = argparse()
-    orgs = ns.org
-
-    if ns.org is None:
-        orgs = get_orgs(ns.user, ns.token)
-
-    for org in orgs:
-        repos = get_repos(org, ns.token)
-        do_sync(org, repos, ns.target)
-
-
-if __name__ == '__main__':
-    main()
