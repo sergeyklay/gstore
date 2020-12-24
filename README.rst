@@ -19,7 +19,7 @@ It will organize your repos into the following directory structure:
    │   ├── repo_1
    │   ├── repo_2
    │   ├── ...
-   │   └── repo_3
+   │   └── repo_n
    ├── oranization_2
    │   ├── repo_1
    │   ├── repo_2
@@ -40,20 +40,48 @@ To install ghsync, simply run:
 
    $ pip install ghs
 
+The command ``ghs`` will be available to you from the comman line.
+
 Usage
 -----
+
+.. code-block:: bash
+   $ ghs [-h] [--user USER] --token TOKEN [--org [ORG ...]] [target]
+
+   Synchronize organizations' repositories from GitHub.
+
+   positional arguments:
+     target           base target to sync repos (e.g. folder on disk)
+
+   optional arguments:
+     -h, --help       show this help message and exit
+     --user USER      username to use to get organizarions list
+     --token TOKEN    personal auth token
+     --org [ORG ...]  organizations you have access to (by deault all)
 
 Examples
 ~~~~~~~~
 
 **Sync all repos from all organizations**
 
-To get a list of all organizations for a user, ghs will need a GitHub
-username:
+To be able get organizations list for a user, ghs will need a GitHub
+username. Thus we pass it bellow (``--user``).:
 
 .. code-block:: bash
 
-   $ ghs --token "$TOKEN" --user "$GH_USER" -- ~/backup
+   $ ghs --token "$TOKEN" --user "$GH_USER" ~/backup
+
+Unless you set the ``GHS_DIR`` environment variable and don't provide
+``target``, ghs will sync all the repositories to current working directory.:
+
+.. code-block:: bash
+
+   # Will sync all the repositories to current working directory
+   $ ghs --token "$TOKEN" --user "$GH_USER"
+
+   # Will sync all the repositories to ~/work directory
+   $ export GHS_DIR=~/work
+   $ ghs --token "$TOKEN" --user "$GH_USER"
 
 **Sync all repos from Acme organization**
 

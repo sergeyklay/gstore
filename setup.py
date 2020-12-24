@@ -15,9 +15,16 @@
 
 from setuptools import setup, find_packages
 
+
+with open('README.rst', 'r') as fh:
+    readme = fh.read() + '\n\n'
+
+with open('VERSION', 'r') as fh:
+    version = fh.read()
+
 setup(
     name='ghs',
-    version='0.0.2',
+    version=f'{version}',
     author='Serghei Iakovlev',
     author_email='egrep@protonmail.ch',
     url='https://github.com/sergeyklay/ghs',
@@ -26,13 +33,21 @@ setup(
 
     description="A simple cli tool to synchronize organizations'"
                 'repositories from GitHub.',
-    long_description=open('README.rst').read() + '\n\n',
+    long_description=readme,
     long_description_content_type='text/x-rst',
 
-    keywords='git, github, backup, repo, sync',
+    keywords='git github backup repo sync',
+    project_urls={
+        'Tracker': 'https://github.com/sergeyklay/ghs/issues',
+        'Source': 'https://github.com/sergeyklay/ghs',
+    },
 
     platforms='any',
     python_requires='>=3.6, <4',
+    install_requires=[
+        'requests>=2.23.0',
+        'gitpython>=3.0.0',
+    ],
 
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -61,10 +76,5 @@ setup(
         'console_scripts': [
             'ghs=ghs.cli:main'
         ]
-    },
-
-    project_urls={
-        'Bug Reports': 'https://github.com/sergeyklay/ghs/issues',
-        'Source': 'https://github.com/sergeyklay/ghs',
     },
 )

@@ -13,20 +13,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+import os
+
 from argparse import ArgumentParser
 
 
 def argparse():
-    parser = ArgumentParser(
+    p = ArgumentParser(
         description="Synchronize organizations' repositories from GitHub.")
 
-    parser.add_argument('--user', dest='user',
-                        help='username to get organizarions list')
-    parser.add_argument('--token', dest='token', required=True,
-                        help='personal auth token')
-    parser.add_argument('--org', dest='org', nargs='*',
-                        help='organizations you have access to (deault "all")')
-    parser.add_argument('target',
-                        help='base target to sync repos (e.g. folder on disk)')
+    p.add_argument('--user', dest='user',
+                   help='username to use to get organizarions list')
+    p.add_argument('--token', dest='token', required=True,
+                   help='personal auth token')
+    p.add_argument('--org', dest='org', nargs='*',
+                   help='organizations you have access to (by deault all)')
+    p.add_argument('target', nargs='?',
+                   default=os.environ.get('GHS_DIR', os.getcwd()),
+                   help='base target to sync repos (e.g. folder on disk)')
 
-    return parser.parse_args()
+    return p.parse_args()
