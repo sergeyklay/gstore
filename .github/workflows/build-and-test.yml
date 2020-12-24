@@ -67,7 +67,7 @@ jobs:
       - name: Lint with flake8
         # TODO: run: make lint
         # See: https://github.com/sergeyklay/gstore/runs/1606748624
-        run:
+        run: |
           flake8 . --count --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
