@@ -16,7 +16,10 @@
 from setuptools import setup, find_packages
 
 
-with open("version", "r") as fh:
+with open('README.rs', 'r') as fh:
+    readme = fh.read() + '\n\n'
+
+with open('VERSION', 'r') as fh:
     version = fh.read()
 
 setup(
@@ -30,7 +33,7 @@ setup(
 
     description="A simple cli tool to synchronize organizations'"
                 'repositories from GitHub.',
-    long_description=open('README.rst').read() + '\n\n',
+    long_description=readme,
     long_description_content_type='text/x-rst',
 
     keywords='git github backup repo sync',
