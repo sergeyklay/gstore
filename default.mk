@@ -18,18 +18,24 @@ TOP := $(dir $(lastword $(MAKEFILE_LIST)))
 # Run “make package” by default
 .DEFAULT_GOAL = package
 
-TWINE  ?= twine
 PYTHON ?= python
+TWINE  ?= twine
+FLAKE8 ?= flake8
 
 # Program availability
+HAVE_PYTHON := $(shell sh -c "command -v $(PYTHON)")
+ifndef HAVE_PYTHON
+$(warning "$(PYTHON) is not available.")
+endif
+
 HAVE_TWINE := $(shell sh -c "command -v $(TWINE)")
 ifndef HAVE_TWINE
 $(warning "$(TWINE) is not available.")
 endif
 
-HAVE_PYTHON := $(shell sh -c "command -v $(PYTHON)")
-ifndef HAVE_PYTHON
-$(warning "$(PYTHON) is not available.")
+HAVE_FLAKE8 := $(shell sh -c "command -v $(FLAKE8)")
+ifndef HAVE_FLAKE8
+$(warning "$(FLAKE8) is not available.")
 endif
 
 VERSION = $(file < VERSION)

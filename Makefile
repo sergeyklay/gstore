@@ -35,10 +35,17 @@ clean:
 .PHONY: check
 check: package
 	$(TWINE) check dist/*
+	$(info Done.)
+
+.PHONY: lint
+lint:
+	@$(FLAKE8) $(PACKAGE)
+	$(info Done.)
 
 .PHONY: upload
 upload: package
 	$(TWINE) upload --repository testpypi dist/*
+	$(info Done.)
 
 .PHONY: package
 package: dist/$(ARCHIVE_NAME).tar.gz dist/$(WHL_NAME).whl
@@ -51,10 +58,13 @@ help: .title
 	@echo '  package:    Build gstore package'
 	@echo '  upload:     Upload gstore distribution to the repository'
 	@echo '  clean:      Remove all build artefacts and directories'
+	@echo '  check:      Check distribution files'
+	@echo '  lint:       Lint code'
 	@echo ''
 	@echo 'Available programs:'
 	@echo '  $(PYTHON): $(if $(HAVE_PYTHON),yes,no)'
 	@echo '  $(TWINE): $(if $(HAVE_TWINE),yes,no)'
+	@echo '  $(FLAKE8): $(if $(HAVE_FLAKE8),yes,no)'
 	@echo ''
 	@echo 'You need $(TWINE) to develop gstore.'
 	@echo 'See https://twine.readthedocs.io/en/latest for more'
