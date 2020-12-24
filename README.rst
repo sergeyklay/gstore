@@ -1,5 +1,5 @@
 gstore
-===
+======
 
 Gstore is a simple tool to synchronize GitHub repositories of your organizations.
 
@@ -34,31 +34,54 @@ It will organize your repos into the following directory structure:
 Install
 -------
 
-To install gstore, simply run:
+pip
+~~~
+
+*Python v3.6.7 and above.*
+
+To install stable gstore version, simply run:
 
 .. code-block:: bash
 
    $ pip install gstore
 
+Or to install development version:
+
+.. code-block:: bash
+
+   $ pip install -e git://github.com/sergeyklay/gstore.git#egg=gstore
+
 The command ``gstore`` will be available to you from the command line.
+
+From source
+~~~~~~~~~~~
+
+*Python v3.6.7 and above.*
+
+1. Clone `gstore repository`_
+2. Run the gstore module (directory) as follows:
+
+.. code-block:: bash
+
+   $ python -m gstore --help
 
 Usage
 -----
 
-.. code-block:: bash
+.. code-block::
 
-   $ gstore [-h] [--user USER] --token TOKEN [--org [ORG ...]] [target]
+   gstore [-h] [--user USER] --token TOKEN [--org [ORG ...]] [target]
 
-   Synchronize organizations' repositories from GitHub.
+Positional arguments:
 
-   positional arguments:
-     target           base target to sync repos (e.g. folder on disk)
+* ``target`` base target to sync repos (e.g. folder on disk)
 
-   optional arguments:
-     -h, --help       show this help message and exit
-     --user USER      username to use to get organizations list
-     --token TOKEN    personal auth token
-     --org [ORG ...]  organizations you have access to (by default all)
+Optional arguments:
+
+* ``-h``, ``--help`` — Show help message and exit
+* ``--user USER`` — Username to use to get organizations list
+* ``--token TOKEN`` — Personal access token
+* ``--org [ORG ...]``  — Organizations you have access to (by default all)
 
 Examples
 ~~~~~~~~
@@ -114,7 +137,7 @@ space:
 Similar projects
 ----------------
 
-There are some projects similar to gstore you may interested for:
+There are some projects similar to gstore you may be interested in:
 
 * https://github.com/kennethreitz42/ghsync
 * https://github.com/adw0rd/github-sync
@@ -135,6 +158,7 @@ License
 This project is open source software licensed under the
 `GNU General Public Licence version 3`_.  © 2020 `Serghei Iakovlev`_
 
+.. _gstore repository: https://github.com/sergeyklay/gstore
 .. _CHANGELOG.rst: https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst
 .. _issue tracker: https://github.com/sergeyklay/gstore/issues
 .. _`Serghei Iakovlev`: https://github.com/sergeyklay
