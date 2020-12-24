@@ -38,7 +38,7 @@ ifndef HAVE_FLAKE8
 $(warning "$(FLAKE8) is not available.")
 endif
 
-VERSION = $(file < VERSION)
+VERSION = $(shell head -n 1 VERSION)
 
 PACKAGE = gstore
 ARCHIVE_NAME = $(PACKAGE)-$(VERSION)
