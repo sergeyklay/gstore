@@ -46,7 +46,7 @@ setup(
     python_requires='>=3.6, <4',
     install_requires=[
         'requests>=2.23.0',
-        'gitpython>=3.0.0',
+        'gitpython>=3.0.6',
     ],
 
     classifiers=[
