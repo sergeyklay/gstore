@@ -50,7 +50,7 @@ setup(
     ],
 
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
 
         'Environment :: Console',
 
@@ -69,6 +69,7 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
 
         'Topic :: System :: Archiving :: Backup',
+        'Topic :: Software Development :: Build Tools',
         'Topic :: Software Development :: Version Control :: Git',
     ],
 
