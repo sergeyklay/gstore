@@ -9,6 +9,7 @@ v0.0.3
 
 * Add ability to use ``GHS_DIR`` as a sync base directory.
 * Add ability to omit target directory and use current working directory.
+* Add ability to fetch objects and refs from an existent repository.
 
 v0.0.2
 ------

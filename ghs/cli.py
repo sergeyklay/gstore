@@ -13,34 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-import os
-
-
-from git import Repo
-from .repo import RepoProgressPrinter
 from .args import argparse
 from .http import get_orgs, get_repos
-
-
-def do_sync(org, repos, target):
-    print('[INFO] sync repos for "{}"'.format(org))
-
-    full_path = os.path.join(target, org)
-    if not os.path.exists(full_path):
-        os.makedirs(full_path)
-
-    print('[INFO] total repos for "{}": {}'.format(org, len(repos)))
-    for repo in repos:
-        repo_path = os.path.join(full_path, repo)
-        if not os.path.exists(os.path.join(repo_path, '.git')):
-            if os.path.exists(repo_path):
-                os.removedirs(repo_path)
-
-            print('[NEW] ', repo, "doesn't exist. Clone ...")
-            git_url = 'git@github.com:{}/{}.git'.format(org, repo)
-            Repo.clone_from(git_url, repo_path, progress=RepoProgressPrinter())
-        else:
-            print('[SYNC]', repo, 'already exist. Sync ...')
+from .repo import sync
 
 
 def main():
@@ -52,7 +27,7 @@ def main():
 
     for org in orgs:
         repos = get_repos(org, ns.token)
-        do_sync(org, repos, ns.target)
+        sync(org, repos, ns.target)
 
 
 if __name__ == '__main__':
