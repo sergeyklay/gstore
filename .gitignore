@@ -8,7 +8,7 @@
 # Directories to ignore (do not add trailing '/'s, they skip symlinks).
 /build
 /dist
-/ghsync.egg-info
+/ghs.egg-info
 
 # Python cache.
 __pycache__

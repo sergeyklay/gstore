@@ -14,8 +14,6 @@ It will organize your repos into the following directory structure:
 
 .. code-block:: bash
 
-   $ pip install ghs
-
    + sync-dir
    ├── oranization_1
    │   ├── repo_1
