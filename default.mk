@@ -32,7 +32,7 @@ ifndef HAVE_PYTHON
 $(warning "$(PYTHON) is not available.")
 endif
 
-VERSION="$(shell cat VERSION)"
+VERSION = $(file < VERSION)
 
 PACKAGE = ghs
 ARCHIVE_NAME = $(PACKAGE)-$(VERSION)
@@ -43,8 +43,9 @@ ARCHIVE_CONTENTS = CHANGELOG.rst \
 	MANIFEST.in \
 	README.rst \
 	$(PACKAGE)/__init__.py \
+	$(PACKAGE)/__main__.py \
 	$(PACKAGE)/args.py \
-	$(PACKAGE)/cli.py \
+	$(PACKAGE)/ghs.py \
 	$(PACKAGE)/http.py \
 	$(PACKAGE)/repo.py \
 	setup.cfg \
