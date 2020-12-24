@@ -65,6 +65,15 @@ From source
 
    $ python -m gstore --help
 
+Getting Started
+---------------
+
+1. Generate a `GitHub Personal-Access-Token`_ with the following permissions:
+
+- **repo**: Full control of private repositories
+
+2. Save the token in a safe place; you'll need it when use gstore
+
 Usage
 -----
 
@@ -158,6 +167,7 @@ License
 This project is open source software licensed under the
 `GNU General Public Licence version 3`_.  © 2020 `Serghei Iakovlev`_
 
+.. _GitHub Personal-Access-Token: https://github.com/settings/tokens
 .. _gstore repository: https://github.com/sergeyklay/gstore
 .. _CHANGELOG.rst: https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst
 .. _issue tracker: https://github.com/sergeyklay/gstore/issues
