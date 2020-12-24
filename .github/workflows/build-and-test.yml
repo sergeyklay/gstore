@@ -65,7 +65,11 @@ jobs:
           pip install -r requirements.txt
 
       - name: Lint with flake8
-        run: make lint
+        # TODO: run: make lint
+        # See: https://github.com/sergeyklay/gstore/runs/1606748624
+        run:
+          flake8 . --count --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
       - name: Minimal load test
         run: python -m gstore --help
