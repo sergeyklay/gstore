@@ -16,7 +16,7 @@
 from setuptools import setup, find_packages
 
 
-with open('README.rs', 'r') as fh:
+with open('README.rst', 'r') as fh:
     readme = fh.read() + '\n\n'
 
 with open('VERSION', 'r') as fh:
