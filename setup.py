@@ -57,7 +57,7 @@ setup(
         'Intended Audience :: Developers',
         'Natural Language :: English',
 
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',  # noqa: E501
         'Operating System :: OS Independent',
 
         'Programming Language :: Python',
