@@ -39,7 +39,8 @@ check: package
 
 .PHONY: lint
 lint:
-	@$(FLAKE8) $(PACKAGE)
+	@$(FLAKE8) . --count --show-source --statistics
+	@$(FLAKE8) . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 	$(info Done.)
 
 .PHONY: upload
