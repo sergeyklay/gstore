@@ -4,6 +4,17 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
+v0.0.4
+------
+
+* Rename ``GHS_DIR`` environment variable to ``GSTORE_DIR``.
+
+Packaging changes
+~~~~~~~~~~~~~~~~~
+
+* Rename package name from ``ghs`` to ``gstore`` to avoid collision with the
+  existing package with the same name.
+
 v0.0.3
 ------
 

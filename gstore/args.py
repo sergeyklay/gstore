@@ -29,7 +29,7 @@ def argparse():
     p.add_argument('--org', dest='org', nargs='*',
                    help='organizations you have access to (by default all)')
     p.add_argument('target', nargs='?',
-                   default=os.environ.get('GHS_DIR', os.getcwd()),
+                   default=os.environ.get('GSTORE_DIR', os.getcwd()),
                    help='base target to sync repos (e.g. folder on disk)')
 
     return p.parse_args()

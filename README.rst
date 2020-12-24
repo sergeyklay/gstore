@@ -1,7 +1,7 @@
-ghs
+gstore
 ===
 
-Ghs is a simple tool to synchronize GitHub repositories of your organizations.
+Gstore is a simple tool to synchronize GitHub repositories of your organizations.
 
 Overview
 --------
@@ -34,20 +34,20 @@ It will organize your repos into the following directory structure:
 Install
 -------
 
-To install ghsync, simply run:
+To install gstore, simply run:
 
 .. code-block:: bash
 
-   $ pip install ghs
+   $ pip install gstore
 
-The command ``ghs`` will be available to you from the command line.
+The command ``gstore`` will be available to you from the command line.
 
 Usage
 -----
 
 .. code-block:: bash
 
-   $ ghs [-h] [--user USER] --token TOKEN [--org [ORG ...]] [target]
+   $ gstore [-h] [--user USER] --token TOKEN [--org [ORG ...]] [target]
 
    Synchronize organizations' repositories from GitHub.
 
@@ -65,27 +65,27 @@ Examples
 
 **Sync all repos from all organizations**
 
-To be able get organizations list for a user, ghs will need a GitHub
+To be able get organizations list for a user, gstore will need a GitHub
 username. Thus we pass it bellow (``--user``).:
 
 .. code-block:: bash
 
-   $ ghs --token "$TOKEN" --user "$GH_USER" ~/backup
+   $ gstore --token "$TOKEN" --user "$GH_USER" ~/backup
 
-Unless you set the ``GHS_DIR`` environment variable and don't provide
-*target*, ghs will sync all the repositories to current working directory.:
+Unless you set the ``GSTORE_DIR`` environment variable and don't provide
+*target*, gstore will sync all the repositories to current working directory.:
 
 .. code-block:: bash
 
    # Will sync all the repositories to current working directory
-   $ ghs --token "$TOKEN" --user "$GH_USER"
+   $ gstore --token "$TOKEN" --user "$GH_USER"
 
    # Will sync all the repositories to ~/work directory
-   $ export GHS_DIR=~/work
-   $ ghs --token "$TOKEN" --user "$GH_USER"
+   $ export GSTORE_DIR=~/work
+   $ gstore --token "$TOKEN" --user "$GH_USER"
 
    # Will sync all the repositories to ~/backup directory
-   $ ghs --token "$TOKEN" --user "$GH_USER" ~/backup
+   $ gstore --token "$TOKEN" --user "$GH_USER" ~/backup
 
 **Sync all repos from Acme organization**
 
@@ -93,14 +93,14 @@ To get all repositories of a specific organization, just specify it as follows:
 
 .. code-block:: bash
 
-   $ ghs --org Acme --token "$TOKEN" ~/backup
+   $ gstore --org Acme --token "$TOKEN" ~/backup
 
 To specify a *target* directory right after organization list use double dash
 to signify the end of org option.:
 
 .. code-block:: bash
 
-   $ ghs --token "$TOKEN" --org Acme -- ~/backup
+   $ gstore --token "$TOKEN" --org Acme -- ~/backup
 
 **Sync all repos from Foo, Bar and Baz organizations**
 
@@ -109,7 +109,15 @@ space:
 
 .. code-block:: bash
 
-   $ ghs --token "$TOKEN" --org Foo Bar Baz -- ~/backup
+   $ gstore --token "$TOKEN" --org Foo Bar Baz -- ~/backup
+
+Similar projects
+----------------
+
+There are some projects similar to gstore you may interested for:
+
+* https://github.com/kennethreitz42/ghsync
+* https://github.com/adw0rd/github-sync
 
 Support
 -------
@@ -119,7 +127,7 @@ Feel free to ask question or make suggestions in our `issue tracker`_.
 Changes
 -------
 
-To see what has changed in recent versions of ghs see `CHANGELOG.rst`_.
+To see what has changed in recent versions of gstore see `CHANGELOG.rst`_.
 
 License
 -------
@@ -127,7 +135,7 @@ License
 This project is open source software licensed under the
 `GNU General Public Licence version 3`_.  © 2020 `Serghei Iakovlev`_
 
-.. _CHANGELOG.rst: https://github.com/sergeyklay/ghs/blob/master/CHANGELOG.rst
-.. _issue tracker: https://github.com/sergeyklay/ghs/issues
+.. _CHANGELOG.rst: https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst
+.. _issue tracker: https://github.com/sergeyklay/gstore/issues
 .. _`Serghei Iakovlev`: https://github.com/sergeyklay
-.. _GNU General Public Licence version 3: https://github.com/sergeyklay/ghs/blob/master/LICENSE
+.. _GNU General Public Licence version 3: https://github.com/sergeyklay/gstore/blob/master/LICENSE

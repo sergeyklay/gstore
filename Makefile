@@ -23,7 +23,7 @@ dist/$(ARCHIVE_NAME).tar.gz: $(ARCHIVE_CONTENTS)
 
 .PHONY: .title
 .title:
-	@echo "ghs $(VERSION)"
+	@echo "gstore $(VERSION)"
 
 ## Public targets
 
@@ -48,14 +48,14 @@ help: .title
 	@echo ''
 	@echo 'Available targets:'
 	@echo '  help:       Show this help and exit'
-	@echo '  package:    Build ghs package'
-	@echo '  upload:     Upload ghs distribution to the repository'
+	@echo '  package:    Build gstore package'
+	@echo '  upload:     Upload gstore distribution to the repository'
 	@echo '  clean:      Remove all build artefacts and directories'
 	@echo ''
 	@echo 'Available programs:'
 	@echo '  $(PYTHON): $(if $(HAVE_PYTHON),yes,no)'
 	@echo '  $(TWINE): $(if $(HAVE_TWINE),yes,no)'
 	@echo ''
-	@echo 'You need $(TWINE) to develop ghs.'
+	@echo 'You need $(TWINE) to develop gstore.'
 	@echo 'See https://twine.readthedocs.io/en/latest for more'
 	@echo ''

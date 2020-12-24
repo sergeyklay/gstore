@@ -34,7 +34,7 @@ endif
 
 VERSION = $(file < VERSION)
 
-PACKAGE = ghs
+PACKAGE = gstore
 ARCHIVE_NAME = $(PACKAGE)-$(VERSION)
 WHL_NAME = $(PACKAGE)-$(VERSION)-py3-none-any
 
@@ -45,7 +45,7 @@ ARCHIVE_CONTENTS = CHANGELOG.rst \
 	$(PACKAGE)/__init__.py \
 	$(PACKAGE)/__main__.py \
 	$(PACKAGE)/args.py \
-	$(PACKAGE)/ghs.py \
+	$(PACKAGE)/cli.py \
 	$(PACKAGE)/http.py \
 	$(PACKAGE)/repo.py \
 	setup.cfg \

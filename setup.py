@@ -23,23 +23,23 @@ with open('VERSION', 'r') as fh:
     version = fh.read()
 
 setup(
-    name='ghs',
+    name='gstore',
     version=f'{version}',
     author='Serghei Iakovlev',
     author_email='egrep@protonmail.ch',
-    url='https://github.com/sergeyklay/ghs',
+    url='https://github.com/sergeyklay/gstore',
     license='GPLv3+',
     packages=find_packages(),
 
-    description='Ghs is a simple tool to synchronize GitHub '
+    description='Gstore is a simple tool to synchronize GitHub '
                 'repositories of your organizations.',
     long_description=readme,
     long_description_content_type='text/x-rst',
 
     keywords='git github backup repo sync',
     project_urls={
-        'Tracker': 'https://github.com/sergeyklay/ghs/issues',
-        'Source': 'https://github.com/sergeyklay/ghs',
+        'Tracker': 'https://github.com/sergeyklay/gstore/issues',
+        'Source': 'https://github.com/sergeyklay/gstore',
     },
 
     platforms='any',
@@ -75,7 +75,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'ghs=ghs.ghs:main'
+            'gstore=gstore.cli:main'
         ]
     },
 )
