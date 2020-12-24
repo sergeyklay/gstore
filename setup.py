@@ -74,7 +74,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'ghs=ghs.cli:main'
+            'ghs=ghs.ghs:main'
         ]
     },
 )

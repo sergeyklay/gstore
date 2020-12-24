@@ -13,22 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-from .args import argparse
-from .http import get_orgs, get_repos
-from .repo import sync
-
-
-def main():
-    ns = argparse()
-    orgs = ns.org
-
-    if ns.org is None:
-        orgs = get_orgs(ns.user, ns.token)
-
-    for org in orgs:
-        repos = get_repos(org, ns.token)
-        sync(org, repos, ns.target)
-
+from .ghs import main
 
 if __name__ == '__main__':
     main()
