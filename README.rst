@@ -55,7 +55,7 @@ Usage
 
    optional arguments:
      -h, --help       show this help message and exit
-     --user USER      username to get organizarions list
+     --user USER      username to use to get organizarions list
      --token TOKEN    personal auth token
      --org [ORG ...]  organizations you have access to (by deault all)
 
@@ -64,15 +64,15 @@ Examples
 
 **Sync all repos from all organizations**
 
-To get a list of all organizations for a user, ghs will need a GitHub
-username:
+To be able get organizations list for a user, ghs will need a GitHub
+username. Thus we pass it bellow (``--user``).:
 
 .. code-block:: bash
 
    $ ghs --token "$TOKEN" --user "$GH_USER" ~/backup
 
-Unless you set the ``GHS_DIR`` environment variable and don't provide target
-directory, it will sync all the repositories to current working directory.:
+Unless you set the ``GHS_DIR`` environment variable and don't provide
+``target``, ghs will sync all the repositories to current working directory.:
 
 .. code-block:: bash
 

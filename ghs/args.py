@@ -23,7 +23,7 @@ def argparse():
         description="Synchronize organizations' repositories from GitHub.")
 
     p.add_argument('--user', dest='user',
-                   help='username to get organizarions list')
+                   help='username to use to get organizarions list')
     p.add_argument('--token', dest='token', required=True,
                    help='personal auth token')
     p.add_argument('--org', dest='org', nargs='*',
