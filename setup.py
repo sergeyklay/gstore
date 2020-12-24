@@ -31,8 +31,8 @@ setup(
     license='GPLv3+',
     packages=find_packages(),
 
-    description="A simple cli tool to synchronize organizations'"
-                'repositories from GitHub.',
+    description='Ghs is a simple tool to synchronize GitHub '
+                'repositories of your organizations.',
     long_description=readme,
     long_description_content_type='text/x-rst',
 

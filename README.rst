@@ -1,14 +1,14 @@
 ghs
 ===
 
-Ghs is a simple cli tool to synchronize organizations' repositories from GitHub.
+Ghs is a simple tool to synchronize GitHub repositories of your organizations.
 
 Overview
 --------
 
 This tool uses the GitHub API to get a list of all forked, mirrored, public, and
-private repos owned by you organizations. If the repo already exists locally, it
-will update it via git-pull. Otherwise, it will properly clone the repo.
+private repos owned by your organizations. If the repo already exists locally,
+it will update it via git-pull. Otherwise, it will properly clone the repo.
 
 It will organize your repos into the following directory structure:
 
@@ -73,7 +73,7 @@ username. Thus we pass it bellow (``--user``).:
    $ ghs --token "$TOKEN" --user "$GH_USER" ~/backup
 
 Unless you set the ``GHS_DIR`` environment variable and don't provide
-``target``, ghs will sync all the repositories to current working directory.:
+*target*, ghs will sync all the repositories to current working directory.:
 
 .. code-block:: bash
 
@@ -84,9 +84,19 @@ Unless you set the ``GHS_DIR`` environment variable and don't provide
    $ export GHS_DIR=~/work
    $ ghs --token "$TOKEN" --user "$GH_USER"
 
+   # Will sync all the repositories to ~/backup directory
+   $ ghs --token "$TOKEN" --user "$GH_USER" ~/backup
+
 **Sync all repos from Acme organization**
 
-To get all repositories of a specific organization, just specify it:
+To get all repositories of a specific organization, just specify it as follows:
+
+.. code-block:: bash
+
+   $ ghs --org Acme --token "$TOKEN" ~/backup
+
+To specify a *target* directory right after organization list use double dash
+to signify the end of org option.:
 
 .. code-block:: bash
 
@@ -101,8 +111,23 @@ space:
 
    $ ghs --token "$TOKEN" --org Foo Bar Baz -- ~/backup
 
+Support
+-------
+
+Feel free to ask question or make suggestions in our `issue tracker`_.
+
+Changes
+-------
+
+To see what has changed in recent versions of ghs see `CHANGELOG.rst`_.
+
 License
 -------
 
-This project is open source software licensed under the GNU General Public
-Licence version 3.  © 2020 Serghei Iakovlev
+This project is open source software licensed under the
+`GNU General Public Licence version 3`_.  © 2020 `Serghei Iakovlev`_
+
+.. _CHANGELOG.rst: https://github.com/sergeyklay/ghs/blob/master/CHANGELOG.rst
+.. _issue tracker: https://github.com/sergeyklay/ghs/issues
+.. _`Serghei Iakovlev`: https://github.com/sergeyklay
+.. _GNU General Public Licence version 3: https://github.com/sergeyklay/ghs/blob/master/LICENSE
