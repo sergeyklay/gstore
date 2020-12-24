@@ -23,11 +23,11 @@ def argparse():
         description="Synchronize organizations' repositories from GitHub.")
 
     p.add_argument('--user', dest='user',
-                   help='username to use to get organizarions list')
+                   help='username to use to get organizations list')
     p.add_argument('--token', dest='token', required=True,
                    help='personal auth token')
     p.add_argument('--org', dest='org', nargs='*',
-                   help='organizations you have access to (by deault all)')
+                   help='organizations you have access to (by default all)')
     p.add_argument('target', nargs='?',
                    default=os.environ.get('GHS_DIR', os.getcwd()),
                    help='base target to sync repos (e.g. folder on disk)')

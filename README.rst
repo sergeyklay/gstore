@@ -15,17 +15,17 @@ It will organize your repos into the following directory structure:
 .. code-block:: bash
 
    + sync-dir
-   ├── oranization_1
+   ├── organization_1
    │   ├── repo_1
    │   ├── repo_2
    │   ├── ...
    │   └── repo_n
-   ├── oranization_2
+   ├── organization_2
    │   ├── repo_1
    │   ├── repo_2
    │   ├── ...
    │   └── repo_n
-   └── oranization_n
+   └── organization_n
        ├── repo_1
        ├── repo_2
        ├── ...
@@ -40,7 +40,7 @@ To install ghsync, simply run:
 
    $ pip install ghs
 
-The command ``ghs`` will be available to you from the comman line.
+The command ``ghs`` will be available to you from the command line.
 
 Usage
 -----
@@ -55,9 +55,9 @@ Usage
 
    optional arguments:
      -h, --help       show this help message and exit
-     --user USER      username to use to get organizarions list
+     --user USER      username to use to get organizations list
      --token TOKEN    personal auth token
-     --org [ORG ...]  organizations you have access to (by deault all)
+     --org [ORG ...]  organizations you have access to (by default all)
 
 Examples
 ~~~~~~~~

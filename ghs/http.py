@@ -16,7 +16,6 @@
 import json
 import requests
 
-
 API_URL = 'https://api.github.com'
 MAX_PAGES = 5000
 
