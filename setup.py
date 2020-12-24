@@ -16,20 +16,24 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='ghsync',
-    version='0.0.1',
+    name='ghs',
+    version='0.0.2',
     author='Serghei Iakovlev',
     author_email='egrep@protonmail.ch',
-    url='https://github.com/sergeyklay/ghsync',
+    url='https://github.com/sergeyklay/ghs',
     license='GPLv3+',
     packages=find_packages(),
+
     description="A simple cli tool to synchronize organizations'"
                 'repositories from GitHub.',
     long_description=open('README.rst').read() + '\n\n',
     long_description_content_type='text/x-rst',
+
     keywords='git, github, backup, repo, sync',
+
     platforms='any',
     python_requires='>=3.6, <4',
+
     classifiers=[
         'Development Status :: 3 - Alpha',
 
@@ -52,13 +56,15 @@ setup(
         'Topic :: System :: Archiving :: Backup',
         'Topic :: Software Development :: Version Control :: Git',
     ],
+
     entry_points={
         'console_scripts': [
-            'ghsync=ghsync.cli:main'
+            'ghs=ghs.cli:main'
         ]
     },
+
     project_urls={
-        'Bug Reports': 'https://github.com/sergeyklay/ghsync/issues',
-        'Source': 'https://github.com/sergeyklay/ghsync',
+        'Bug Reports': 'https://github.com/sergeyklay/ghs/issues',
+        'Source': 'https://github.com/sergeyklay/ghs',
     },
 )

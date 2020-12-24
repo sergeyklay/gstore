@@ -1,7 +1,7 @@
-ghsync
-======
+ghs
+===
 
-Ghsync is a simple cli tool to synchronize organizations' repositories from GitHub.
+Ghs is a simple cli tool to synchronize organizations' repositories from GitHub.
 
 Usage
 -----
@@ -11,12 +11,12 @@ Examples
 
 **Sync all repos from all organizations**
 
-To get a list of all organizations for a user, ghsync will need a GitHub
+To get a list of all organizations for a user, ghs will need a GitHub
 username:
 
 .. code-block:: bash
 
-   ghsync --token "$TOKEN" --user "$GH_USER" -- ~/backup
+   ghs --token "$TOKEN" --user "$GH_USER" -- ~/backup
 
 **Sync all repos from Acme organization**
 
@@ -24,7 +24,7 @@ To get all repositories of a specific organization, just specify it:
 
 .. code-block:: bash
 
-   ghsync --token "$TOKEN" --org Acme -- ~/backup
+   ghs --token "$TOKEN" --org Acme -- ~/backup
 
 **Sync all repos from Foo, Bar and Baz organizations**
 
@@ -33,7 +33,7 @@ space:
 
 .. code-block:: bash
 
-   ghsync --token "$TOKEN" --org Foo Bar Baz -- ~/backup
+   ghs --token "$TOKEN" --org Foo Bar Baz -- ~/backup
 
 License
 -------
