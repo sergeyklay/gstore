@@ -46,6 +46,7 @@ Usage
 -----
 
 .. code-block:: bash
+
    $ ghs [-h] [--user USER] --token TOKEN [--org [ORG ...]] [target]
 
    Synchronize organizations' repositories from GitHub.
