@@ -23,7 +23,7 @@ dist/$(ARCHIVE_NAME).tar.gz: $(ARCHIVE_CONTENTS)
 
 .PHONY: .title
 .title:
-	@echo "gstore $(VERSION)"
+	@echo "$(PACKAGE) $(VERSION)"
 
 ## Public targets
 
@@ -55,8 +55,8 @@ help: .title
 	@echo ''
 	@echo 'Available targets:'
 	@echo '  help:       Show this help and exit'
-	@echo '  package:    Build gstore package'
-	@echo '  upload:     Upload gstore distribution to the repository'
+	@echo '  package:    Build $(PACKAGE) package'
+	@echo '  upload:     Upload $(PACKAGE) distribution to the repository'
 	@echo '  clean:      Remove all build artefacts and directories'
 	@echo '  check:      Check distribution files'
 	@echo '  lint:       Lint code'
@@ -66,6 +66,6 @@ help: .title
 	@echo '  $(TWINE): $(if $(HAVE_TWINE),yes,no)'
 	@echo '  $(FLAKE8): $(if $(HAVE_FLAKE8),yes,no)'
 	@echo ''
-	@echo 'You need $(TWINE) to develop gstore.'
+	@echo 'You need $(TWINE) to develop $(PACKAGE).'
 	@echo 'See https://twine.readthedocs.io/en/latest for more'
 	@echo ''

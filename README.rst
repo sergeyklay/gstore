@@ -67,7 +67,7 @@ More information about ``pip`` and pypi can be found here:
 
 Alternatively, you can install from the source as follows:
 
-1. Clone `gstore repository`_
+1. Clone `Gstore repository`_
 2. Run ``pip install -r requirements.txt``
 3. Run the ``gstore`` module (directory) as follows:
 
@@ -82,7 +82,7 @@ Getting Started
 
 - **repo**: Full control of private repositories
 
-2. Save the token in a safe place; you'll need it when use gstore
+2. Save the token in a safe place; you'll need it when use Gstore
 
 Usage
 -----
@@ -107,7 +107,7 @@ Examples
 
 **Sync all repos from all organizations**
 
-To be able get organizations list for a user, gstore will need a GitHub
+To be able get organizations list for a user, Gstore will need a GitHub
 username. Thus we pass it bellow (``--user``).:
 
 .. code-block:: bash
@@ -115,7 +115,7 @@ username. Thus we pass it bellow (``--user``).:
    $ gstore --token "$TOKEN" --user "$GH_USER" ~/backup
 
 Unless you set the ``GSTORE_DIR`` environment variable and don't provide
-*target*, gstore will sync all the repositories to current working directory.:
+*target*, Gstore will sync all the repositories to current working directory.:
 
 .. code-block:: bash
 
@@ -156,7 +156,7 @@ space:
 Similar projects
 ----------------
 
-There are some projects similar to gstore you may be interested in:
+There are some projects similar to Gstore you may be interested in:
 
 * https://github.com/kennethreitz42/ghsync
 * https://github.com/adw0rd/github-sync
@@ -169,7 +169,7 @@ Feel free to ask question or make suggestions in our `issue tracker`_.
 Changes
 -------
 
-To see what has changed in recent versions of gstore see `CHANGELOG.rst`_.
+To see what has changed in recent versions of Gstore see `CHANGELOG.rst`_.
 
 License
 -------
