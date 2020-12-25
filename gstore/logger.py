@@ -17,6 +17,40 @@ import sys
 import logging
 
 
+class DebugFilter(logging.Filter):
+    """
+    Extended standard logging Filter to filer only DEBUG messages.
+    """
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        """
+        Only messages with record level DEBUG can pass
+        for messages with another level an extra handler is used.
+
+        :param tuple record: logging message record
+        :return: True|False
+        :rtype: bool
+        """
+        return record.levelno == logging.DEBUG
+
+
+class InfoFilter(logging.Filter):
+    """
+    Extended standard logging Filter to filer only INFO messages.
+    """
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        """
+        Only messages with record level INFO can pass
+        for messages with another level an extra handler is used.
+
+        :param tuple record: logging message record
+        :return: True|False
+        :rtype: bool
+        """
+        return record.levelno == logging.INFO
+
+
 def setup_logger(*args, **kwargs):
     """
     Setup and return the root logger object for the application.
@@ -25,13 +59,25 @@ def setup_logger(*args, **kwargs):
     root = logging.getLogger('gstore')
     root.setLevel(logging.DEBUG)
 
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.DEBUG)
-
     f = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-
     formatter = logging.Formatter(f)
-    handler.setFormatter(formatter)
-    root.addHandler(handler)
+
+    debug_handler = logging.StreamHandler(sys.stdout)
+    debug_handler.setLevel(logging.DEBUG)
+    debug_handler.addFilter(DebugFilter())
+    debug_handler.setFormatter(formatter)
+
+    info_handler = logging.StreamHandler(sys.stdout)
+    info_handler.setLevel(logging.INFO)
+    info_handler.addFilter(InfoFilter())
+    info_handler.setFormatter(formatter)
+
+    error_handler = logging.StreamHandler(sys.stderr)
+    error_handler.setLevel(logging.WARNING)
+    error_handler.setFormatter(formatter)
+
+    root.addHandler(debug_handler)
+    root.addHandler(info_handler)
+    root.addHandler(error_handler)
 
     return root
