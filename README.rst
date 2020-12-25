@@ -1,4 +1,4 @@
-gstore
+Gstore
 ======
 
 Gstore is a simple tool to synchronize GitHub repositories of your organizations.
@@ -34,12 +34,17 @@ It will organize your repos into the following directory structure:
 Install
 -------
 
-pip
-~~~
+Requirements
+~~~~~~~~~~~~
 
-*Python v3.6.7 and above.*
+* Python_ >= 3.6.7
+* Git_ >= 1.7.0
 
-To install stable gstore version, simply run:
+Installing Gstore
+~~~~~~~~~~~~~~~~~
+
+Installing Gstore is easily done using pip_. Assuming it is installed, just run
+the following from the command-line:
 
 .. code-block:: bash
 
@@ -51,15 +56,20 @@ Or to install development version:
 
    $ pip install -e git://github.com/sergeyklay/gstore.git#egg=gstore
 
-The command ``gstore`` will be available to you from the command line.
+This command will download the latest version of Gstore from the
+`Python Package Index`_ and install it to your system. The command ``gstore``
+will be available to you from the command line.
 
-From source
-~~~~~~~~~~~
+More information about ``pip`` and pypi can be found here:
 
-*Python v3.6.7 and above.*
+* `Install pip`_
+* `Gstore on PyPI`_
+
+Alternatively, you can install from the source as follows:
 
 1. Clone `gstore repository`_
-2. Run the gstore module (directory) as follows:
+2. Run ``pip install -r requirements.txt``
+3. Run the ``gstore`` module (directory) as follows:
 
 .. code-block:: bash
 
@@ -167,6 +177,12 @@ License
 This project is open source software licensed under the
 `GNU General Public Licence version 3`_.  © 2020 `Serghei Iakovlev`_
 
+.. _Python: https://www.python.org/
+.. _Git: https://git-scm.com/
+.. _pip: https://pip.pypa.io/en/latest/installing.html
+.. _Python Package Index: http://pypi.python.org/pypi/GitPython
+.. _Install pip: https://pip.pypa.io/en/latest/installing/
+.. _Gstore on PyPI: https://pypi.org/project/gstore/
 .. _GitHub Personal-Access-Token: https://github.com/settings/tokens
 .. _gstore repository: https://github.com/sergeyklay/gstore
 .. _CHANGELOG.rst: https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst
