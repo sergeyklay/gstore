@@ -14,9 +14,11 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 import requests
+import logging
 
 API_URL = 'https://api.github.com'
 MAX_PAGES = 5000
+LOG = logging.getLogger('gstore.client')
 
 
 class ClientApiException(Exception):
@@ -55,7 +57,7 @@ def collect_data(endpoint, params, headers, key):
 
 
 def get_repos(org, token):
-    print('[INFO] getting repositories list')
+    LOG.info('Getting repositories list')
 
     endpoint = '/orgs/{}/repos'.format(org)
     params = {'per_page': 100, 'type': 'all', 'sort': 'full_name'}
@@ -69,10 +71,10 @@ def get_repos(org, token):
 
 
 def get_orgs(user, token):
-    print('[INFO] getting organizations list')
+    LOG.info('Getting organizations list')
 
     if user is None:
-        print('[ERR]  username is required to get organizations list')
+        LOG.error('The username is required to get organizations list')
         exit(1)
 
     endpoint = '/users/{}/orgs'.format(user)

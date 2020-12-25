@@ -7,6 +7,11 @@ releases, in reverse chronological order.
 v0.0.5
 ------
 
+New features
+~~~~~~~~~~~~
+
+* Add better logging subsystem
+
 Packaging changes
 ~~~~~~~~~~~~~~~~~
 

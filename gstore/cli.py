@@ -16,14 +16,17 @@
 from .args import argparse
 from .client import get_orgs, get_repos
 from .repo import sync
+from .logger import setup_logger
 
 
 def main():
+    setup_logger()
     ns = argparse()
-    orgs = ns.org
 
     if ns.org is None:
         orgs = get_orgs(ns.user, ns.token)
+    else:
+        orgs = ns.org
 
     for org in orgs:
         repos = get_repos(org, ns.token)

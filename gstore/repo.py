@@ -14,8 +14,11 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
+import logging
 
 from git import GitCommandError, Repo, RemoteProgress
+
+LOG = logging.getLogger('gstore.repo')
 
 
 class RepoProgressPrinter(RemoteProgress):
@@ -29,23 +32,24 @@ class RepoProgressPrinter(RemoteProgress):
 
 
 def clone(repo_name, org, target):
+    LOG.info("Repository %s/%s doesn't exist. Clone ..." % (org, repo_name))
+
     if os.path.exists(target):
         os.removedirs(target)
 
-    print('[NEW] ', repo_name, "doesn't exist. Clone ...")
     git_url = 'git@github.com:{}/{}.git'.format(org, repo_name)
 
     try:
         Repo.clone_from(git_url, target, progress=RepoProgressPrinter())
     except GitCommandError as e:
         if e.stdout:
-            print(e.stdout)
+            LOG.critical(e.stdout)
         if e.stderr:
-            print(e.stderr)
+            LOG.critical(e.stderr)
 
 
-def fetch(repo_name, target):
-    print('[SYNC]', repo_name, 'already exist. Sync ...')
+def fetch(repo_name, org, target):
+    LOG.info('Repository %s/%s already exist. Sync ...' % (org, repo_name))
 
     repo = Repo(target)
 
@@ -54,13 +58,13 @@ def fetch(repo_name, target):
         repo.git.pull(['--all', '--quiet'])
     except GitCommandError as e:
         if e.stdout:
-            print(e.stdout)
+            LOG.critical(e.stdout)
         if e.stderr:
-            print(e.stderr)
+            LOG.critical(e.stderr)
 
 
 def do_sync(org, repos, target):
-    print('[INFO] sync repos for "{}"'.format(org))
+    LOG.info('Sync repos for %s' % org)
 
     org_path = os.path.join(target, org)
 
@@ -68,14 +72,14 @@ def do_sync(org, repos, target):
     if not os.path.exists(org_path):
         os.makedirs(org_path)
 
-    print('[INFO] total repos for "{}": {}'.format(org, len(repos)))
+    LOG.info('Total repos for %s: %d' % (org, len(repos)))
     for repo_name in repos:
         repo_path = os.path.join(org_path, repo_name)
 
         if not os.path.exists(os.path.join(repo_path, '.git')):
             clone(repo_name, org, repo_path)
         else:
-            fetch(repo_name, repo_path)
+            fetch(repo_name, org, repo_path)
 
 
 def sync(org, repos, target):
