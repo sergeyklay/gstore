@@ -13,42 +13,117 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+import re
+
+from os import path
 from setuptools import setup, find_packages
 
 
-with open('README.rst', 'r') as fh:
-    readme = fh.read() + '\n\n'
+def locate_package_directory():
+    """
+    Identify directory of the package and its associated files.
+    """
 
-with open('VERSION', 'r') as fh:
-    version = fh.read()
+    try:
+        return path.abspath(path.dirname(__file__))
+    except Exception:
+        message = ('The directory in which the package and its '
+                   'associated files are stored could not be located.')
+        raise ValueError(message)
+
+
+def read_file(filepath):
+    """
+    Read content from an UTF-8 encoded text file.
+    """
+
+    with open(filepath, 'r', encoding='utf-8') as file_handle:
+        text = file_handle.read()
+    return text
+
+
+def load_long_description(pkg_dir):
+    """
+    Load long description from file README.rst.
+    """
+
+    try:
+        filepath_readme = path.join(pkg_dir, 'README.rst')
+        return read_file(filepath_readme)
+    except Exception:
+        message = 'Long description could not be read from README.rst'
+        raise ValueError(message)
+
+
+# Source: https://www.python.org/dev/peps/pep-0440
+def is_canonical_version(version):
+    """
+    Check if a version string is in canonical format of PEP 440.
+    """
+
+    pattern = (
+        r'^([1-9][0-9]*!)?(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*))'
+        r'*((a|b|rc)(0|[1-9][0-9]*))?(\.post(0|[1-9][0-9]*))'
+        r'?(\.dev(0|[1-9][0-9]*))?$')
+    return re.match(pattern, version) is not None
+
+
+def get_version_string(pkg_dir, pkg_name):
+    """
+    Read __version__ string for an init file.
+    """
+
+    try:
+        # Read init file contents
+        init_file = path.join(pkg_dir, pkg_name, '__init__.py')
+        init_contents = read_file(init_file)
+
+        # Parse version string
+        re_version = re.compile(r'''__version__\s+=\s+['"](.*)['"]''')
+        match = re_version.search(init_contents)
+        if not match:
+            message = ("Version couldn't be parsed from variable "
+                       '__version__ in file __init__.py')
+            raise ValueError(message)
+        version_string = match.group(1)
+    except Exception:
+        message = ("Version couldn't be read from variable "
+                   '__version__ in file __init__.py')
+        raise ValueError(message)
+
+    # Check validity
+    if not is_canonical_version(version_string):
+        message = (
+            'The detected version string "{}" is not in canonical '
+            'format as defined in PEP 440.'.format(version_string))
+        raise ValueError(message)
+
+    return version_string
+
+
+PKG_NAME = 'gstore'
+PKG_DIR = locate_package_directory()
+
 
 setup(
-    name='gstore',
-    version=f'{version}',
+    # Basic package information
+    name=PKG_NAME,
+    version=get_version_string(PKG_DIR, PKG_NAME),
     author='Serghei Iakovlev',
     author_email='egrep@protonmail.ch',
     url='https://github.com/sergeyklay/gstore',
     license='GPLv3+',
-    packages=find_packages(),
-
     description='Gstore is a simple tool to synchronize GitHub '
                 'repositories of your organizations.',
-    long_description=readme,
+    long_description=load_long_description(PKG_DIR),
     long_description_content_type='text/x-rst',
-
     keywords='git github backup repo sync',
     project_urls={
         'Tracker': 'https://github.com/sergeyklay/gstore/issues',
         'Source': 'https://github.com/sergeyklay/gstore',
     },
 
-    platforms='any',
-    python_requires='>=3.6, <4',
-    install_requires=[
-        'requests>=2.23.0',
-        'gitpython>=3.0.6',
-    ],
-
+    # Classifiers: available ones listed at https://pypi.org/classifiers
     classifiers=[
         'Development Status :: 4 - Beta',
 
@@ -73,9 +148,29 @@ setup(
         'Topic :: Software Development :: Version Control :: Git',
     ],
 
+    # Included files
+    # a) auto-detected Python packages
+    packages=find_packages(),
+    # b) data files that are specified in the MANIFEST.in file
+    include_package_data=True,
+
+    # Dependencies that need to be fulfilled
+    platforms='any',
+    python_requires='>=3.6, <4',
+
+    # Dependencies that are downloaded by pip on installation and why
+    install_requires=[
+        'requests>=2.23.0',  # Web requests for GitHub API
+        'gitpython>=3.0.6',  # Interact with Git repositories
+    ],
+
+    # Entry points
     entry_points={
         'console_scripts': [
-            'gstore=gstore.cli:main'
+            '{pkg}={pkg}.cli:main'.format(pkg=PKG_NAME)
         ]
     },
+
+    # Capability of running in compressed form: yes
+    zip_safe=True,
 )

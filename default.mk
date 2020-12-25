@@ -38,9 +38,9 @@ ifndef HAVE_FLAKE8
 $(warning "$(FLAKE8) is not available.")
 endif
 
-VERSION = $(shell head -n 1 VERSION)
+PACKAGE = $(shell sed -nre "s/PKG_NAME[[:space:]]*=[[:space:]]*'(.*)'/\1/p" $(TOP)/setup.py)
+VERSION = $(shell sed -nre "s/^__version__[[:space:]]*=[[:space:]]*['\"](.*)['\"]/\1/p" $(TOP)/$(PACKAGE)/__init__.py)
 
-PACKAGE = gstore
 ARCHIVE_NAME = $(PACKAGE)-$(VERSION)
 WHL_NAME = $(PACKAGE)-$(VERSION)-py3-none-any
 
