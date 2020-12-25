@@ -14,9 +14,25 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 import re
+import sys
 
 from os import path
 from setuptools import setup, find_packages
+
+
+def check_python_version():
+    """
+    Check Python's version.
+    """
+
+    if sys.version_info >= (4, 0):
+        sys.stderr.write(
+            'ERROR: This module is not supported with Python >= 4.0\n')
+        sys.exit(1)
+
+    if sys.version_info < (3, 6):
+        sys.stderr.write('ERROR: This module requires at least Python 3.6\n')
+        sys.exit(1)
 
 
 def locate_package_directory():
@@ -105,12 +121,16 @@ PKG_NAME = 'gstore'
 PKG_DIR = locate_package_directory()
 
 
+check_python_version()
+
 setup(
     # Basic package information
     name=PKG_NAME,
     version=get_version_string(PKG_DIR, PKG_NAME),
     author='Serghei Iakovlev',
     author_email='egrep@protonmail.ch',
+    maintainer='Serghei Iakovlev',
+    maintainer_email='egrep@protonmail.ch',
     url='https://github.com/sergeyklay/gstore',
     license='GPLv3+',
     description='Gstore is a simple tool to synchronize GitHub '
@@ -130,6 +150,9 @@ setup(
         'Environment :: Console',
 
         'Intended Audience :: Developers',
+        'Intended Audience :: System Administrators',
+        'Intended Audience :: Information Technology',
+
         'Natural Language :: English',
 
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',  # noqa: E501
@@ -144,7 +167,9 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
 
         'Topic :: System :: Archiving :: Backup',
+        'Topic :: System :: Software Distribution',
         'Topic :: Software Development :: Build Tools',
+        'Topic :: Software Development :: Version Control',
         'Topic :: Software Development :: Version Control :: Git',
     ],
 
