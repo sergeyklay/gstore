@@ -14,7 +14,7 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 from .args import argparse
-from .http import get_orgs, get_repos
+from .client import get_orgs, get_repos
 from .repo import sync
 
 

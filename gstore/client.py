@@ -13,11 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-import json
 import requests
 
 API_URL = 'https://api.github.com'
 MAX_PAGES = 5000
+
+
+class ClientApiException(Exception):
+    pass
 
 
 def create_headers(token):
@@ -27,19 +30,26 @@ def create_headers(token):
     }
 
 
-def collect_data(url, params, headers, key):
+def collect_data(endpoint, params, headers, key):
     retval = []
+    url = '{}{}'.format(API_URL, endpoint)
 
     for i in range(MAX_PAGES):
         params['page'] = i + 1
-        response = requests.get(url=url, params=params, headers=headers)
-        parsed_response = json.loads(response.text)
+        try:
+            response = requests.get(url=url, params=params, headers=headers)
+            response.raise_for_status()
 
-        if len(parsed_response) == 0:
-            break
+            parsed_response = response.json()
 
-        for data in parsed_response:
-            retval.append(data[key])
+            if len(parsed_response) == 0:
+                break
+
+            for data in parsed_response:
+                retval.append(data[key])
+        except Exception as e:
+            msg = 'Failed to perform API request, ' + str(e)
+            raise ClientApiException(msg)
 
     return retval
 
@@ -48,11 +58,14 @@ def get_repos(org, token):
     print('[INFO] getting repositories list')
 
     endpoint = '/orgs/{}/repos'.format(org)
-    url = '{}{}'.format(API_URL, endpoint)
     params = {'per_page': 100, 'type': 'all', 'sort': 'full_name'}
     headers = create_headers(token)
 
-    return collect_data(url=url, params=params, headers=headers, key='name')
+    return collect_data(
+        endpoint=endpoint,
+        params=params,
+        headers=headers,
+        key='name')
 
 
 def get_orgs(user, token):
@@ -63,8 +76,11 @@ def get_orgs(user, token):
         exit(1)
 
     endpoint = '/users/{}/orgs'.format(user)
-    url = '{}{}'.format(API_URL, endpoint)
     params = {'per_page': 100}
     headers = create_headers(token)
 
-    return collect_data(url=url, params=params, headers=headers, key='login')
+    return collect_data(
+        endpoint=endpoint,
+        params=params,
+        headers=headers,
+        key='login')
