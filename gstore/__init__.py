@@ -13,4 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+__copyright__ = 'Copyright (C) 2020 Serghei Iakovlev'
 __version__ = '0.0.5'
+__license__ = 'GPLv3+'
+__author__ = 'Serghei Iakovlev'
+__author_email__ = 'egrep@protonmail.ch'
+__url__ = 'https://github.com/sergeyklay/gstore'
