@@ -78,10 +78,8 @@ Alternatively, you can install from the source as follows:
 Getting Started
 ---------------
 
-1. Generate a `GitHub Personal-Access-Token`_ with the following permissions:
-
-- **repo**: Full control of private repositories
-
+1. Generate a GitHub `Personal Access Token`_ with with at minimum ``repo``
+   scope (Full control of private repositories)
 2. Save the token in a safe place; you'll need it when use Gstore
 
 Usage
@@ -183,7 +181,7 @@ This project is open source software licensed under the
 .. _Python Package Index: http://pypi.python.org/pypi/GitPython
 .. _Install pip: https://pip.pypa.io/en/latest/installing/
 .. _Gstore on PyPI: https://pypi.org/project/gstore/
-.. _GitHub Personal-Access-Token: https://github.com/settings/tokens
+.. _Personal Access Token: https://github.com/settings/tokens
 .. _gstore repository: https://github.com/sergeyklay/gstore
 .. _CHANGELOG.rst: https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst
 .. _issue tracker: https://github.com/sergeyklay/gstore/issues
