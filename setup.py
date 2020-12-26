@@ -37,7 +37,7 @@ def check_python_version():
 
 def locate_package_directory():
     """
-    Identify directory of the package and its associated files.
+    Identify a directory of the package and its associated files.
     """
 
     try:
@@ -50,7 +50,7 @@ def locate_package_directory():
 
 def read_file(filepath):
     """
-    Read content from an UTF-8 encoded text file.
+    Read content from a UTF-8 encoded text file.
     """
 
     with open(filepath, 'r', encoding='utf-8') as file_handle:
@@ -74,7 +74,7 @@ def load_long_description(pkg_dir):
 # Source: https://www.python.org/dev/peps/pep-0440
 def is_canonical_version(version):
     """
-    Check if a version string is in canonical format of PEP 440.
+    Check if a version string is in the canonical format of PEP 440.
     """
 
     pattern = (

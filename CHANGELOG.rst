@@ -4,6 +4,17 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
+v0.1.1
+------
+
+* Handling situations when the target for sync is a regular file or readonly.
+
+New features
+~~~~~~~~~~~~
+* Added ``-V``, ``--version`` arguments to print program's version information.
+* Added ``-dumpversion`` argument to print the version of the program and don't
+  do anything else.
+
 v0.1.0
 ------
 
@@ -18,7 +29,7 @@ New features
 Packaging changes
 ~~~~~~~~~~~~~~~~~
 
-* Change the way to communicate with GitHub API. ```requests`` library no
+* Changed the way to communicate with GitHub API. ``requests`` library no
   longer used thanks to ``PyGithub``.
 
 v0.0.5

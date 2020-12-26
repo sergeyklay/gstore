@@ -102,16 +102,9 @@ Usage
 
 ::
 
-   gstore [-h] [--token TOKEN] [--org [ORG ...]] [-v] [target]
+   gstore [<options>] [[--] target]
 
-**Positional arguments:**
-
-``target``
-  Base target to sync repos (e.g. folder on disk). If not provided via argument
-  environment variable ``GSTORE_DIR`` will be used. If there is not environment
-  variable current working directory will be used.
-
-**Optional arguments:**
+**Options:**
 
 ``-h``, ``--help``
   Show help message and exit.
@@ -134,13 +127,25 @@ Usage
   Enable verbose mode. Causes Gstore to print debugging messages about its
   progress in some cases.
 
+``-V``, ``--version``
+  Print program's version information and quit.
+
+``-dumpversion``
+  Print the version of the program and don't do anything else.
+
+``[--] target``
+  Base target to sync repos (e.g. folder on disk). If not provided via argument
+  environment variable ``GSTORE_DIR`` will be used. If there is not environment
+  variable current working directory will be used.
+
 Examples
 ~~~~~~~~
 
 **Sync all repos from all organizations**
 
 The example below will perform 2 API requests. The first is to obtain GitHub
-username, and the second one to get a list of user's organizations.
+username, and the second one to get a list of user's organizations. At the end
+Gstore will sync repositories of organizations via Git.
 
 .. code-block:: bash
 
@@ -172,7 +177,7 @@ To get all repositories of a specific organization, just specify it as follows:
    $ gstore --org Acme --token "$TOKEN" ~/backup
 
 To specify a *target directory* right after organization list use double dash
-to signify the end of org option.:
+to signify the end of ``--org`` option.:
 
 .. code-block:: bash
 
