@@ -7,6 +7,8 @@ releases, in reverse chronological order.
 v0.1.0
 ------
 
+* Handling situations when the target for sync is a regular file or readonly.
+
 New features
 ~~~~~~~~~~~~
 * Added ``-V``, ``--version`` arguments to print program's version information.

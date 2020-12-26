@@ -104,6 +104,24 @@ def do_sync(org, repos, target):
     for repo_name in repos:
         repo_path = os.path.join(org_path, repo_name)
 
+        if os.path.isfile(repo_path):
+            LOG.error(
+                'Unable to sync {}. The path {} is a regular file'.format(
+                    repo_name,
+                    org_path,
+                )
+            )
+            continue
+
+        if not os.access(repo_path, os.W_OK | os.X_OK):
+            LOG.error(
+                'Unable to sync {}. The path {} is not writeable'.format(
+                    repo_name,
+                    org_path,
+                )
+            )
+            continue
+
         if not os.path.exists(os.path.join(repo_path, '.git')):
             clone(repo_name, org, repo_path)
         else:
