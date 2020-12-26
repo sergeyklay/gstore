@@ -14,22 +14,22 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 from .args import argparse
-from .client import get_orgs, get_repos, ensure_token_is_present
+from .client import Client
 from .repo import sync
 from .logger import setup_logger
 
 
 def main():
     ns = argparse()
-
     setup_logger()
-    ensure_token_is_present(ns.token)
+
+    client = Client(ns.token)
 
     if ns.org is None:
-        orgs = get_orgs(ns.token)
+        orgs = client.get_orgs()
     else:
         orgs = ns.org
 
     for org in orgs:
-        repos = get_repos(org, ns.token)
+        repos = client.get_repos(org)
         sync(org, repos, ns.target)
