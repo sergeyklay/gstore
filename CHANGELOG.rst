@@ -4,6 +4,11 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
+v0.0.6
+------
+
+* The is no longer required upon obtaining organizations list
+
 v0.0.5
 ------
 
@@ -15,8 +20,9 @@ New features
 Packaging changes
 ~~~~~~~~~~~~~~~~~
 
-* Bump GitPython version to fix a crash for users with ``gitpython>=3.0.0, <3.0.6``.
-  For more see: https://github.com/gitpython-developers/GitPython/issues/983
+* Bump GitPython version to fix a crash for users with
+  ``gitpython>=3.0.0, <3.0.6``. For more see:
+  https://github.com/gitpython-developers/GitPython/issues/983
 
 v0.0.4
 ------

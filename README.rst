@@ -71,9 +71,9 @@ More information about ``pip`` and pypi can be found here:
 
 Alternatively, you can install from the source as follows:
 
-1. Clone `Gstore repository`_
-2. Run ``pip install -r requirements.txt``
-3. Run the ``gstore`` module (directory) as follows:
+#. Clone `Gstore repository`_
+#. Run ``pip install -r requirements.txt``
+#. Run the ``gstore`` module (directory) as follows:
 
 .. code-block:: bash
 
@@ -82,25 +82,28 @@ Alternatively, you can install from the source as follows:
 Getting Started
 ---------------
 
-1. Generate a GitHub `Personal Access Token`_ with with at minimum ``repo``
-   scope (Full control of private repositories)
-2. Save the token in a safe place; you'll need it when use Gstore
+#. Generate a GitHub `Personal Access Token`_ with the following permissions:
+
+   * ``repo``: Full control of private repositories
+
+   * ``user:read``: Read all user profile data
+
+#. Save the token in a safe place; you'll need it when use Gstore
 
 Usage
 -----
 
-.. code-block::
+::
 
-   gstore [-h] [--user USER] --token TOKEN [--org [ORG ...]] [target]
+   gstore [-h] --token TOKEN [--org [ORG ...]] [target]
 
-Positional arguments:
+**Positional arguments:**
 
-* ``target`` base target to sync repos (e.g. folder on disk)
+* ``target`` — Base target to sync repos (e.g. folder on disk)
 
-Optional arguments:
+**Optional arguments:**
 
 * ``-h``, ``--help`` — Show help message and exit
-* ``--user USER`` — Username to use to get organizations list
 * ``--token TOKEN`` — Personal access token
 * ``--org [ORG ...]``  — Organizations you have access to (by default all)
 
@@ -109,12 +112,12 @@ Examples
 
 **Sync all repos from all organizations**
 
-To be able get organizations list for a user, Gstore will need a GitHub
-username. Thus we pass it bellow (``--user``).:
+The example below will perform 2 API requests. The first is to obtain GitHub
+username, and the second one to get a list of user's organizations.
 
 .. code-block:: bash
 
-   $ gstore --token "$TOKEN" --user "$GH_USER" ~/backup
+   $ gstore --token "$TOKEN" ~/backup
 
 Unless you set the ``GSTORE_DIR`` environment variable and don't provide
 *target*, Gstore will sync all the repositories to current working directory.:
@@ -122,14 +125,14 @@ Unless you set the ``GSTORE_DIR`` environment variable and don't provide
 .. code-block:: bash
 
    # Will sync all the repositories to current working directory
-   $ gstore --token "$TOKEN" --user "$GH_USER"
+   $ gstore --token "$TOKEN"
 
    # Will sync all the repositories to ~/work directory
    $ export GSTORE_DIR=~/work
-   $ gstore --token "$TOKEN" --user "$GH_USER"
+   $ gstore --token "$TOKEN"
 
    # Will sync all the repositories to ~/backup directory
-   $ gstore --token "$TOKEN" --user "$GH_USER" ~/backup
+   $ gstore --token "$TOKEN" ~/backup
 
 **Sync all repos from Acme organization**
 
@@ -180,19 +183,19 @@ Let's look at a few examples to demonstrate the above:
 .. code-block:: bash
 
    # All messages are visible
-   $ gstore --token "$TOKEN" --user "$USER" ~/work
+   $ gstore --token "$TOKEN" ~/work
 
    # Only informational message are visible
-   $ gstore --token "$TOKEN" --user "$USER" ~/work 2>/dev/null
+   $ gstore --token "$TOKEN" ~/work 2>/dev/null
 
    # Only error messages and warnings are visible
-   $ gstore --token "$TOKEN" --user "$USER" ~/work 1>/dev/null
+   $ gstore --token "$TOKEN" ~/work 1>/dev/null
 
    # Store logs separately
-   $ gstore --token "$TOKEN" --user "$USER" ~/work > info.log 2> err.log
+   $ gstore --token "$TOKEN" ~/work > info.log 2> err.log
 
    # Store all the logs in the same file
-   $ gstore --token "$TOKEN" --user "$USER" ~/work > gstore.log 2>&1
+   $ gstore --token "$TOKEN" ~/work > gstore.log 2>&1
 
 Similar projects
 ----------------

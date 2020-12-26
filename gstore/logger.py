@@ -28,7 +28,7 @@ class DebugFilter(logging.Filter):
         for messages with another level an extra handler is used.
 
         :param tuple record: logging message record
-        :return: True|False
+        :returns: True|False
         :rtype: bool
         """
         return record.levelno == logging.DEBUG
@@ -45,7 +45,7 @@ class InfoFilter(logging.Filter):
         for messages with another level an extra handler is used.
 
         :param tuple record: logging message record
-        :return: True|False
+        :returns: True|False
         :rtype: bool
         """
         return record.levelno == logging.INFO

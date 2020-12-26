@@ -14,7 +14,7 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 __copyright__ = 'Copyright (C) 2020 Serghei Iakovlev'
-__version__ = '0.0.5'
+__version__ = '0.0.6'
 __license__ = 'GPLv3+'
 __author__ = 'Serghei Iakovlev'
 __author_email__ = 'egrep@protonmail.ch'

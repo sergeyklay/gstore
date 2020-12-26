@@ -24,7 +24,7 @@ def main():
     ns = argparse()
 
     if ns.org is None:
-        orgs = get_orgs(ns.user, ns.token)
+        orgs = get_orgs(ns.token)
     else:
         orgs = ns.org
 

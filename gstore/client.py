@@ -57,7 +57,15 @@ def collect_data(endpoint, params, headers, key):
 
 
 def get_repos(org, token):
-    LOG.info('Getting repositories list')
+    """
+    Getting organization repositories.
+
+    :param str org: User's organization
+    :param str token: GitHub Personal Access Token
+    :return: A collection with repositories
+    :rtype: list
+    """
+    LOG.info('Getting organization repositories')
 
     endpoint = '/orgs/{}/repos'.format(org)
     params = {'per_page': 100, 'type': 'all', 'sort': 'full_name'}
@@ -70,12 +78,41 @@ def get_repos(org, token):
         key='name')
 
 
-def get_orgs(user, token):
-    LOG.info('Getting organizations list')
+def get_user(token):
+    """
+    Getting the authenticated user.
 
-    if user is None:
-        LOG.error('The username is required to get organizations list')
-        exit(1)
+    :param str token: GitHub Personal Access Token
+    :returns: A GitHUb username
+    :rtype: str
+    """
+    LOG.info('Getting the authenticated user')
+
+    url = '{}/user'.format(API_URL)
+    headers = create_headers(token)
+
+    try:
+        response = requests.get(url=url, headers=headers)
+        response.raise_for_status()
+
+        parsed_response = response.json()
+        return parsed_response['login']
+    except Exception as e:
+        msg = 'Failed to perform API request to get GitHub user, ' + str(e)
+        raise ClientApiException(msg)
+
+
+def get_orgs(token):
+    """
+    Getting organizations for a user.
+
+    :param str token: GitHub Personal Access Token
+    :returns: A collection with organizations
+    :rtype: list
+    """
+    LOG.info('Getting organizations for a user')
+
+    user = get_user(token)
 
     endpoint = '/users/{}/orgs'.format(user)
     params = {'per_page': 100}
