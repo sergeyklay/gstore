@@ -13,23 +13,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+import logging
+
 from .args import argparse
-from .client import get_orgs, get_repos, ensure_token_is_present
+from .client import Client
 from .repo import sync
 from .logger import setup_logger
 
 
 def main():
     ns = argparse()
+    setup_logger(verbose=ns.verbose)
 
-    setup_logger()
-    ensure_token_is_present(ns.token)
+    logger = logging.getLogger('gstore.cli')
 
-    if ns.org is None:
-        orgs = get_orgs(ns.token)
-    else:
-        orgs = ns.org
+    try:
+        client = Client(ns.token)
 
-    for org in orgs:
-        repos = get_repos(org, ns.token)
-        sync(org, repos, ns.target)
+        if ns.org is None:
+            orgs = client.get_orgs()
+        else:
+            orgs = ns.org
+
+        for org in orgs:
+            repos = client.get_repos(org)
+            sync(org, repos, ns.target)
+    except Exception as e:
+        logger.critical(e)

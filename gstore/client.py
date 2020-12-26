@@ -13,124 +13,86 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-import requests
 import logging
 
-API_URL = 'https://api.github.com'
-MAX_PAGES = 5000
-LOG = logging.getLogger('gstore.client')
+from github import Github
+from gstore import __version__
 
 
-class ClientApiException(Exception):
-    pass
+USER_AGENT = 'Gstore/{}'.format(__version__)
+
+DEFAULT_BASE_URL = 'https://api.github.com'
+DEFAULT_TIMEOUT = 15
 
 
-def create_headers(token):
-    return {
-        'Accept': 'application/vnd.github.v3+json',
-        'Authorization': 'token {}'.format(token)
-    }
+class Client:
+    def __init__(
+            self,
+            token: str,
+            api_url=DEFAULT_BASE_URL,
+            timeout=DEFAULT_TIMEOUT,
+    ):
+        """
+        :param str token: Authentication token for github.com API requests
+        :param str api_url: Default base URL for github.com API requests
+        :param int timeout: Timeout for HTTP requests
+        :param str user_agent: Default user agent to make HTTP requests
+        """
 
+        if not token:
+            raise ValueError(
+                'GitHub token was not provided but it is mandatory')
 
-def collect_data(endpoint, params, headers, key):
-    retval = []
-    url = '{}{}'.format(API_URL, endpoint)
+        self.github = Github(
+            login_or_token=token,
+            base_url=api_url,
+            timeout=timeout,
+            user_agent=USER_AGENT
+        )
 
-    for i in range(MAX_PAGES):
-        params['page'] = i + 1
-        try:
-            response = requests.get(url=url, params=params, headers=headers)
-            response.raise_for_status()
+        self.logger = logging.getLogger('gstore.client')
 
-            parsed_response = response.json()
+    def get_repos(self, org):
+        """
+        Getting organization repositories.
 
-            if len(parsed_response) == 0:
-                break
+        :param str org: User's organization
+        :return: A collection with repositories
+        :rtype: list
+        """
+        self.logger.info('Getting repositories for %s organization' % org)
 
-            for data in parsed_response:
-                retval.append(data[key])
-        except Exception as e:
-            msg = 'Failed to perform API request, ' + str(e)
-            raise ClientApiException(msg)
+        repos = self.github.get_organization(org).get_repos(
+            type='all',
+            sort='full_name'
+        )
 
-    return retval
+        self.logger.info('Total number of repositories for %s: %d' %
+                         (org, repos.totalCount))
 
+        retval = []
+        for repo in repos:
+            retval.append(repo.name)
 
-def ensure_token_is_present(token):
-    """
-    Check GitHub Personal Access Token.
+        return retval
 
-    :param str token: GitHub Personal Access Token
-    """
-    if not token:
-        LOG.error('GitHub token was not provided but it is mandatory')
-        exit(1)
+    def get_orgs(self):
+        """
+        Getting organizations for a user.
 
+        :returns: A collection with organizations
+        :rtype: list
+        """
+        self.logger.info('Getting organizations for a user')
 
-def get_repos(org, token):
-    """
-    Getting organization repositories.
+        user = self.github.get_user()
+        orgs = user.get_orgs()
 
-    :param str org: User's organization
-    :param str token: GitHub Personal Access Token
-    :return: A collection with repositories
-    :rtype: list
-    """
-    LOG.info('Getting organization repositories')
+        self.logger.info('Total number of organizations for %s: %d' %
+                         (user.login, orgs.totalCount))
 
-    endpoint = '/orgs/{}/repos'.format(org)
-    params = {'per_page': 100, 'type': 'all', 'sort': 'full_name'}
-    headers = create_headers(token)
+        retval = []
+        for org in orgs:
+            retval.append(org.login)
 
-    return collect_data(
-        endpoint=endpoint,
-        params=params,
-        headers=headers,
-        key='name')
-
-
-def get_user(token):
-    """
-    Getting the authenticated user.
-
-    :param str token: GitHub Personal Access Token
-    :returns: A GitHUb username
-    :rtype: str
-    """
-    LOG.info('Getting the authenticated user')
-
-    url = '{}/user'.format(API_URL)
-    headers = create_headers(token)
-
-    try:
-        response = requests.get(url=url, headers=headers)
-        response.raise_for_status()
-
-        parsed_response = response.json()
-        return parsed_response['login']
-    except Exception as e:
-        msg = 'Failed to perform API request to get GitHub user, ' + str(e)
-        raise ClientApiException(msg)
-
-
-def get_orgs(token):
-    """
-    Getting organizations for a user.
-
-    :param str token: GitHub Personal Access Token
-    :returns: A collection with organizations
-    :rtype: list
-    """
-    LOG.info('Getting organizations for a user')
-
-    user = get_user(token)
-
-    endpoint = '/users/{}/orgs'.format(user)
-    params = {'per_page': 100}
-    headers = create_headers(token)
-
-    return collect_data(
-        endpoint=endpoint,
-        params=params,
-        headers=headers,
-        key='login')
+        return retval

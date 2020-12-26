@@ -101,7 +101,6 @@ def do_sync(org, repos, target):
     if not os.path.exists(org_path):
         os.makedirs(org_path)
 
-    LOG.info('Total repos for %s: %d' % (org, len(repos)))
     for repo_name in repos:
         repo_path = os.path.join(org_path, repo_name)
 

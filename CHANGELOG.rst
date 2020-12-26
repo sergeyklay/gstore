@@ -4,7 +4,7 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
-v0.0.6
+v0.1.0
 ------
 
 New features
@@ -13,6 +13,13 @@ New features
 * The GitHub username is no longer required upon obtaining organizations list.
 * Provided ability to pass authentication token for github.com API requests via
   environment variables.
+* Added ``-v`` argument support to enable verbose mode.
+
+Packaging changes
+~~~~~~~~~~~~~~~~~
+
+* Change the way to communicate with GitHub API. ```requests`` library no
+  longer used thanks to ``PyGithub``.
 
 v0.0.5
 ------
