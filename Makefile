@@ -44,7 +44,7 @@ lint:
 
 .PHONY: upload
 upload: package
-	$(TWINE) upload --repository testpypi dist/*
+	$(TWINE) upload dist/*
 	$(info Done.)
 
 .PHONY: package
