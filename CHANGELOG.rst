@@ -13,6 +13,7 @@ New features
 * The GitHub username is no longer required upon obtaining organizations list.
 * Provided ability to pass authentication token for github.com API requests via
   environment variables.
+* Added ``-v`` argument support to enable verbose mode.
 
 Packaging changes
 ~~~~~~~~~~~~~~~~~

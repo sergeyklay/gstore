@@ -185,8 +185,8 @@ setup(
 
     # Dependencies that are downloaded by pip on installation and why
     install_requires=[
-        'gitpython>=3.0.6',  # Interact with Git repositories
         'PyGithub>=1.54.1',  # Interact with GitHub objects
+        'gitpython>=3.0.6',  # Interact with Git repositories
     ],
 
     # Entry points

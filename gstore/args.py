@@ -50,12 +50,15 @@ def argparse():
     p = ArgumentParser(
         description="Synchronize organizations' repositories from GitHub.")
 
+    p.add_argument('target', nargs='?',
+                   default=env.get('GSTORE_DIR', os.getcwd()),
+                   help='base target to sync repos (e.g. folder on disk)')
+
     p.add_argument('--token', dest='token', default=get_token_from_env(),
                    help='an authentication token for github.com API requests')
     p.add_argument('--org', dest='org', nargs='*',
                    help='organizations you have access to (by default all)')
-    p.add_argument('target', nargs='?',
-                   default=env.get('GSTORE_DIR', os.getcwd()),
-                   help='base target to sync repos (e.g. folder on disk)')
+    p.add_argument('-v', '--verbose', dest='verbose', action='store_true',
+                   help='enable verbose mode')
 
     return p.parse_args()

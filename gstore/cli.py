@@ -23,7 +23,7 @@ from .logger import setup_logger
 
 def main():
     ns = argparse()
-    setup_logger()
+    setup_logger(verbose=ns.verbose)
 
     logger = logging.getLogger('gstore.cli')
 

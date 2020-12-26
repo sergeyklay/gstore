@@ -102,7 +102,7 @@ Usage
 
 ::
 
-   gstore [-h] [--token TOKEN] [--org [ORG ...]] [target]
+   gstore [-h] [--token TOKEN] [--org [ORG ...]] [-v] [target]
 
 **Positional arguments:**
 
@@ -121,14 +121,18 @@ Usage
   CLI argument, then environment variable will be used. The order of searching
   for a token in environment variables as follows (in order of precedence):
 
-  * ``GH_TOKEN``, ``GITHUB_TOKEN``
-  * ``GH_ENTERPRISE_TOKEN``, ``GITHUB_ENTERPRISE_TOKEN``
+  #. ``GH_TOKEN``, ``GITHUB_TOKEN``
+  #. ``GH_ENTERPRISE_TOKEN``, ``GITHUB_ENTERPRISE_TOKEN``
 
   Setting these variables allows you not to not pass token directly via CLI
   argument and avoids storing it in the Shell history.
 
 ``--org [ORG ...]``
   Organizations you have access to (by default all).
+
+``-v``, ``--verbose``
+  Enable verbose mode. Causes Gstore to print debugging messages about its
+  progress in some cases.
 
 Examples
 ~~~~~~~~
@@ -143,7 +147,8 @@ username, and the second one to get a list of user's organizations.
    $ gstore --token "$TOKEN" ~/backup
 
 Unless you set the ``GSTORE_DIR`` environment variable and don't provide
-*target*, Gstore will sync all the repositories to current working directory.:
+*target directory*, Gstore will sync all the repositories to current working
+directory.:
 
 .. code-block:: bash
 
@@ -166,7 +171,7 @@ To get all repositories of a specific organization, just specify it as follows:
 
    $ gstore --org Acme --token "$TOKEN" ~/backup
 
-To specify a *target* directory right after organization list use double dash
+To specify a *target directory* right after organization list use double dash
 to signify the end of org option.:
 
 .. code-block:: bash
