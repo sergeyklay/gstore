@@ -25,19 +25,6 @@ USER_AGENT = 'Gstore/{}'.format(__version__)
 DEFAULT_BASE_URL = 'https://api.github.com'
 DEFAULT_TIMEOUT = 15
 
-LOG = logging.getLogger('gstore.client')
-
-
-def assert_token_is_present(token):
-    """
-    Check GitHub Personal Access Token.
-
-    :param str token: Authentication token for github.com API requests
-    """
-    if not token:
-        LOG.error('GitHub token was not provided but it is mandatory')
-        exit(1)
-
 
 class Client:
     def __init__(
@@ -53,7 +40,9 @@ class Client:
         :param str user_agent: Default user agent to make HTTP requests
         """
 
-        assert_token_is_present(token)
+        if not token:
+            raise ValueError(
+                'GitHub token was not provided but it is mandatory')
 
         self.github = Github(
             login_or_token=token,
@@ -61,6 +50,8 @@ class Client:
             timeout=timeout,
             user_agent=USER_AGENT
         )
+
+        self.logger = logging.getLogger('gstore.client')
 
     def get_repos(self, org):
         """
@@ -70,15 +61,15 @@ class Client:
         :return: A collection with repositories
         :rtype: list
         """
-        LOG.info('Getting repositories for %s organization' % org)
+        self.logger.info('Getting repositories for %s organization' % org)
 
         repos = self.github.get_organization(org).get_repos(
             type='all',
             sort='full_name'
         )
 
-        LOG.info('Total number of repositories for %s: %d' %
-                 (org, repos.totalCount))
+        self.logger.info('Total number of repositories for %s: %d' %
+                         (org, repos.totalCount))
 
         retval = []
         for repo in repos:
@@ -93,13 +84,13 @@ class Client:
         :returns: A collection with organizations
         :rtype: list
         """
-        LOG.info('Getting organizations for a user')
+        self.logger.info('Getting organizations for a user')
 
         user = self.github.get_user()
         orgs = user.get_orgs()
 
-        LOG.info('Total number of organizations for %s: %d' %
-                 (user.login, orgs.totalCount))
+        self.logger.info('Total number of organizations for %s: %d' %
+                         (user.login, orgs.totalCount))
 
         retval = []
         for org in orgs:
