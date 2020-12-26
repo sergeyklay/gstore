@@ -54,7 +54,9 @@ the following from the command-line:
 
    $ pip install gstore
 
-Or to install development version:
+The master of all the material is the Git repository at
+https://github.com/sergeyklay/gstore . So, you can install development version
+from the repo as follows:
 
 .. code-block:: bash
 
@@ -63,6 +65,11 @@ Or to install development version:
 This command will download the latest version of Gstore from the
 `Python Package Index`_ and install it to your system. The command ``gstore``
 will be available to you from the command line.
+
+.. note::
+   The master branch will always contain the latest unstable version. If you
+   wish to check older versions or formal, tagged release, please switch to the
+   relevant tag_.
 
 More information about ``pip`` and pypi can be found here:
 
@@ -221,6 +228,7 @@ License
 This project is open source software licensed under the
 `GNU General Public Licence version 3`_.  © 2020 `Serghei Iakovlev`_
 
+.. _tag: https://github.com/sergeyklay/gstore/tags
 .. _Python: https://www.python.org/
 .. _Git: https://git-scm.com/
 .. _pip: https://pip.pypa.io/en/latest/installing.html
