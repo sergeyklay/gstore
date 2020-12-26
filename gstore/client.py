@@ -19,7 +19,6 @@ from github import Github
 from gstore import __version__
 
 
-MAX_PAGES = 5000
 USER_AGENT = 'Gstore/{}'.format(__version__)
 
 DEFAULT_BASE_URL = 'https://api.github.com'
