@@ -17,8 +17,8 @@ New features
 Packaging changes
 ~~~~~~~~~~~~~~~~~
 
-* Change GitHub API library from ``requests`` with ``gitpython`` to
-  ``PyGithub``
+* Change the way to communicate with GitHub API. ```requests`` library no
+  longer used thanks to ``PyGithub``.
 
 v0.0.5
 ------
