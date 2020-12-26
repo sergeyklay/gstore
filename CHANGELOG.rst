@@ -4,7 +4,7 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
-v0.1.0
+v0.1.1
 ------
 
 * Handling situations when the target for sync is a regular file or readonly.
