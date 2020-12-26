@@ -7,7 +7,12 @@ releases, in reverse chronological order.
 v0.0.6
 ------
 
-* The is no longer required upon obtaining organizations list
+New features
+~~~~~~~~~~~~
+
+* The GitHub username is no longer required upon obtaining organizations list.
+* Provided ability to pass authentication token for github.com API requests via
+  environment variables.
 
 v0.0.5
 ------
@@ -15,24 +20,24 @@ v0.0.5
 New features
 ~~~~~~~~~~~~
 
-* Add better logging subsystem
+* Added better logging subsystem
 
 Packaging changes
 ~~~~~~~~~~~~~~~~~
 
 * Bump GitPython version to fix a crash for users with
   ``gitpython>=3.0.0, <3.0.6``. For more see:
-  https://github.com/gitpython-developers/GitPython/issues/983
+  https://github.com/gitpython-developers/GitPython/issues/983 .
 
 v0.0.4
 ------
 
-* Rename ``GHS_DIR`` environment variable to ``GSTORE_DIR``.
+* Renamed ``GHS_DIR`` environment variable to ``GSTORE_DIR``.
 
 Packaging changes
 ~~~~~~~~~~~~~~~~~
 
-* Rename package name from ``ghs`` to ``gstore`` to avoid collision with the
+* Renamed package name from ``ghs`` to ``gstore`` to avoid collision with the
   existing package with the same name.
 
 v0.0.3
@@ -41,9 +46,9 @@ v0.0.3
 New features
 ~~~~~~~~~~~~
 
-* Add ability to use ``GHS_DIR`` as a sync base directory.
-* Add ability to omit target directory and use current working directory.
-* Add ability to fetch objects and refs from an existent repository.
+* Added ability to use ``GHS_DIR`` as a sync base directory.
+* Added ability to omit target directory and use current working directory.
+* Added ability to fetch objects and refs from an existent repository.
 
 v0.0.2
 ------
@@ -51,10 +56,10 @@ v0.0.2
 Packaging changes
 ~~~~~~~~~~~~~~~~~
 
-* Rename package name from ``ghsync`` to ``ghs`` to avoid collision with the
+* Renamed package name from ``ghsync`` to ``ghs`` to avoid collision with the
   existing package with the same name.
 
 v0.0.1
 ------
 
-* Initial release
+* Initial release.

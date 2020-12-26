@@ -15,6 +15,7 @@
 
 import os
 
+from os import environ as env
 from argparse import ArgumentParser
 
 
@@ -22,12 +23,13 @@ def argparse():
     p = ArgumentParser(
         description="Synchronize organizations' repositories from GitHub.")
 
-    p.add_argument('--token', dest='token', required=True,
-                   help='personal auth token')
+    p.add_argument('--token', dest='token',
+                   default=env.get('GH_TOKEN', env.get('GITHUB_TOKEN')),
+                   help='an authentication token for github.com API requests')
     p.add_argument('--org', dest='org', nargs='*',
                    help='organizations you have access to (by default all)')
     p.add_argument('target', nargs='?',
-                   default=os.environ.get('GSTORE_DIR', os.getcwd()),
+                   default=env.get('GSTORE_DIR', os.getcwd()),
                    help='base target to sync repos (e.g. folder on disk)')
 
     return p.parse_args()

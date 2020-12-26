@@ -56,6 +56,17 @@ def collect_data(endpoint, params, headers, key):
     return retval
 
 
+def ensure_token_is_present(token):
+    """
+    Check GitHub Personal Access Token.
+
+    :param str token: GitHub Personal Access Token
+    """
+    if not token:
+        LOG.error('GitHub token was not provided but it is mandatory')
+        exit(1)
+
+
 def get_repos(org, token):
     """
     Getting organization repositories.

@@ -102,17 +102,28 @@ Usage
 
 ::
 
-   gstore [-h] --token TOKEN [--org [ORG ...]] [target]
+   gstore [-h] [--token TOKEN] [--org [ORG ...]] [target]
 
 **Positional arguments:**
 
-* ``target`` — Base target to sync repos (e.g. folder on disk)
+``target``
+  Base target to sync repos (e.g. folder on disk). If not provided via argument
+  environment variable ``GSTORE_DIR`` will be used. If there is not environment
+  variable current working directory will be used.
 
 **Optional arguments:**
 
-* ``-h``, ``--help`` — Show help message and exit
-* ``--token TOKEN`` — Personal access token
-* ``--org [ORG ...]``  — Organizations you have access to (by default all)
+``-h``, ``--help``
+  Show help message and exit.
+
+``--token TOKEN``
+  An authentication token for github.com API requests. If not provided via
+  argument environment variable ``GH_TOKEN`` or ``GITHUB_TOKEN`` will be used
+  (in order of precedence). Setting these variables allows you not to not pass
+  token directly via CLI argument and avoids storing it in the SHELL history.
+
+``--org [ORG ...]``
+  Organizations you have access to (by default all).
 
 Examples
 ~~~~~~~~
@@ -136,7 +147,8 @@ Unless you set the ``GSTORE_DIR`` environment variable and don't provide
 
    # Will sync all the repositories to ~/work directory
    $ export GSTORE_DIR=~/work
-   $ gstore --token "$TOKEN"
+   $ export GH_TOKEN="secret"
+   $ gstore
 
    # Will sync all the repositories to ~/backup directory
    $ gstore --token "$TOKEN" ~/backup
@@ -189,20 +201,22 @@ Let's look at a few examples to demonstrate the above:
 
 .. code-block:: bash
 
+   export GH_TOKEN="secret"
+
    # All messages are visible
-   $ gstore --token "$TOKEN" ~/work
+   $ gstore ~/work
 
    # Only informational message are visible
-   $ gstore --token "$TOKEN" ~/work 2>/dev/null
+   $ gstore ~/work 2>/dev/null
 
    # Only error messages and warnings are visible
-   $ gstore --token "$TOKEN" ~/work 1>/dev/null
+   $ gstore ~/work 1>/dev/null
 
    # Store logs separately
-   $ gstore --token "$TOKEN" ~/work > info.log 2> err.log
+   $ gstore ~/work > info.log 2> err.log
 
    # Store all the logs in the same file
-   $ gstore --token "$TOKEN" ~/work > gstore.log 2>&1
+   $ gstore ~/work > gstore.log 2>&1
 
 Similar projects
 ----------------
