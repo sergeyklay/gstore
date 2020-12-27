@@ -96,7 +96,7 @@ def get_token_from_env():
 
 def argparse():
     p = ArgumentParser(
-        description="Synchronize organizations' repositories from GitHub.",
+        description='Synchronize GitHub repositories of your organizations.',
         formatter_class=LineBreaksFormatter)
 
     dumpversion_help = ("print the version of the program and don't " +
