@@ -111,46 +111,45 @@ Usage
    gstore [<options>] [[--] target]
 
 **Options:**
+  ``-h``, ``--help``
+    Show help message and exit.
 
-``-h``, ``--help``
-  Show help message and exit.
+  ``--token TOKEN``
+    An authentication token for GitHub API requests. If not provided via CLI
+    argument, then environment variable will be used. The order of searching
+    for a token in environment variables as follows (in order of precedence):
 
-``--token TOKEN``
-  An authentication token for GitHub API requests. If not provided via CLI
-  argument, then environment variable will be used. The order of searching for
-  a token in environment variables as follows (in order of precedence):
+    #. ``GH_TOKEN``, ``GITHUB_TOKEN``
+    #. ``GH_ENTERPRISE_TOKEN``, ``GITHUB_ENTERPRISE_TOKEN``
 
-  #. ``GH_TOKEN``, ``GITHUB_TOKEN``
-  #. ``GH_ENTERPRISE_TOKEN``, ``GITHUB_ENTERPRISE_TOKEN``
+    Setting these variables allows you not to not pass token directly via CLI
+    argument and avoids storing it in the Shell history.
 
-  Setting these variables allows you not to not pass token directly via CLI
-  argument and avoids storing it in the Shell history.
+  ``--host HOST``
+    The GitHub API hostname. If not provided via CLI argument, then ``GH_HOST``
+    environment variable will be used. If environment variable is not set,
+    ``api.github.com`` will be used.
 
-``--host HOST``
-  The GitHub API hostname. If not provided via CLI argument, then ``GH_HOST``
-  environment variable will be used. If environment variable is not set,
-  ``api.github.com`` will be used.
+  ``--org ORG [ORG ...]``
+    Organizations you have access to (by default all).
 
-``--org ORG [ORG ...]``
-  Organizations you have access to (by default all).
+  ``-v``, ``--verbose``
+    Enable verbose mode. Causes Gstore to print debugging messages about its
+    progress in some cases.
 
-``-v``, ``--verbose``
-  Enable verbose mode. Causes Gstore to print debugging messages about its
-  progress in some cases.
+  ``-q``, ``--quiet``
+    Silence any informational messages, but not error ones.
 
-``-q``, ``--quiet``
-  Silence any informational messages, but not error ones.
+  ``-V``, ``--version``
+    Print program's version information and quit.
 
-``-V``, ``--version``
-  Print program's version information and quit.
+  ``-dumpversion``
+    Print the version of the program and don't do anything else.
 
-``-dumpversion``
-  Print the version of the program and don't do anything else.
-
-``[--] target``
-  Base target to sync repos (e.g. folder on disk). If not provided via argument
-  environment variable ``GSTORE_DIR`` will be used. If there is not environment
-  variable current working directory will be used.
+  ``[--] target``
+    Base target to sync repos (e.g. folder on disk). If not provided via
+    argument environment variable ``GSTORE_DIR`` will be used. If there is not
+    environment variable current working directory will be used.
 
 Examples
 ~~~~~~~~
@@ -275,6 +274,22 @@ You can control the logging level using the following arguments:
 
 ``-q``, ``--quiet``
   Silence any informational messages except error ones.
+
+Using Github Enterprise
+~~~~~~~~~~~~~~~~~~~~~~~
+
+There is nothing special when working with the Github Enterprise, except for
+the host and possible environment variables.:
+
+.. code-block:: bash
+
+   # Using CLI arguments to configure Gstore
+   $ gstore --token "secret" --host "github.example.com" ~/backup
+
+   # Using environment variables to configure Gstore
+   $ export GH_ENTERPRISE_TOKEN="secret"
+   $ export GH_HOST="github.example.com"
+   $ gstore ~/backup
 
 Similar projects
 ----------------
