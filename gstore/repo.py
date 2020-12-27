@@ -13,15 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-import os
 import logging
+import os
 
-from git import GitCommandError, Repo, RemoteProgress
+import git
 
 LOG = logging.getLogger('gstore.repo')
 
 
-class RepoProgressPrinter(RemoteProgress):
+class RepoProgressPrinter(git.RemoteProgress):
     """
     Extended progress printer.
     """
@@ -69,8 +69,8 @@ def clone(repo_name, org, target):
     git_url = 'git@github.com:{}/{}.git'.format(org, repo_name)
 
     try:
-        Repo.clone_from(git_url, target, progress=RepoProgressPrinter())
-    except GitCommandError as e:
+        git.Repo.clone_from(git_url, target, progress=RepoProgressPrinter())
+    except git.GitCommandError as e:
         if e.stdout:
             LOG.critical(e.stdout)
         if e.stderr:
@@ -80,12 +80,12 @@ def clone(repo_name, org, target):
 def fetch(repo_name, org, target):
     LOG.info('Repository %s/%s already exist. Sync ...' % (org, repo_name))
 
-    repo = Repo(target)
+    repo = git.Repo(target)
 
     try:
         repo.git.fetch(['--prune', '--quiet'])
         repo.git.pull(['--all', '--quiet'])
-    except GitCommandError as e:
+    except git.GitCommandError as e:
         if e.stdout:
             LOG.critical(e.stdout)
         if e.stderr:

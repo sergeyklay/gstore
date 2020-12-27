@@ -17,8 +17,8 @@ import logging
 
 from .args import argparse
 from .client import Client
-from .repo import sync
 from .logger import setup_logger
+from .repo import sync
 
 
 def main():

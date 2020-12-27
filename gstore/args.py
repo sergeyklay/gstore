@@ -15,11 +15,10 @@
 
 import os
 import sys
-
 import textwrap as _textwrap
-
 from argparse import ArgumentParser, HelpFormatter
 from os import environ as env
+
 from gstore import __copyright__, __version__
 from .client import DEFAULT_HOST, TOKEN_NAMES
 

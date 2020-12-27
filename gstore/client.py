@@ -16,8 +16,8 @@
 import logging
 
 from github import Github
-from gstore import __version__
 
+from gstore import __version__
 
 USER_AGENT = 'Gstore/{}'.format(__version__)
 
