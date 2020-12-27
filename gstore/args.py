@@ -96,11 +96,13 @@ def get_token_from_env():
 
 def argparse():
     p = ArgumentParser(
-        description="Synchronize organizations' repositories from GitHub.",
+        description='Synchronize GitHub repositories of your organizations.',
         formatter_class=LineBreaksFormatter)
 
-    dumpversion = ("print the version of the program and don't " +
-                   'do anything else')
+    dumpversion_help = ("print the version of the program and don't " +
+                        'do anything else')
+
+    quiet_help = ('silence any informational messages, but not error ones')
 
     p.add_argument('target', nargs='?', type=str,
                    default=env.get('GSTORE_DIR', os.getcwd()),
@@ -113,10 +115,12 @@ def argparse():
                    help='organizations you have access to (by default all)')
     p.add_argument('-v', '--verbose', dest='verbose', action='store_true',
                    help='enable verbose mode')
+    p.add_argument('-q', '--quiet', dest='quiet', action='store_true',
+                   help=quiet_help)
     p.add_argument('-V', '--version', action='version',
                    help="print program's version information and quit",
                    version=get_version_str())
-    p.add_argument('-dumpversion', action='version', help=dumpversion,
+    p.add_argument('-dumpversion', action='version', help=dumpversion_help,
                    version=__version__)
 
     return p.parse_args()

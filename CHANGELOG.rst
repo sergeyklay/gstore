@@ -11,9 +11,12 @@ v0.1.1
 
 New features
 ~~~~~~~~~~~~
+
 * Added ``-V``, ``--version`` arguments to print program's version information.
 * Added ``-dumpversion`` argument to print the version of the program and don't
   do anything else.
+* Added ``-q``, ``--quiet`` arguments to silence any informational messages
+  except error ones
 
 v0.1.0
 ------
