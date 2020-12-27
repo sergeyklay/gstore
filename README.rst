@@ -182,6 +182,12 @@ directory.:
    # Will sync all the repositories to ~/backup directory
    $ gstore --token "$TOKEN" ~/backup
 
+.. note::
+
+   Gstore will show help message and exit when it is called without any
+   argument and there are not enough environment variables for normal
+   operation.
+
 **Sync all repos from Acme organization**
 
 To get all repositories of a specific organization, just specify it as follows:
@@ -210,7 +216,7 @@ Using Github Enterprise
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 There is nothing special when working with the Github Enterprise, except for
-the host and possible the environment variable.:
+the host and possible environment variables.:
 
 .. code-block:: bash
 

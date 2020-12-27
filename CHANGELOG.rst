@@ -7,6 +7,9 @@ releases, in reverse chronological order.
 v0.2.0
 ------
 
+* Show help message and exit when Gstore is called without any argument and
+  there are not enough environment variables for normal operation.
+
 New features
 ~~~~~~~~~~~~
 

@@ -14,6 +14,7 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
+import sys
 
 import textwrap as _textwrap
 
@@ -98,13 +99,13 @@ def argparse():
                         'do anything else')
 
     quiet_help = 'silence any informational messages, but not error ones'
+    token = get_token_from_env()
 
     p.add_argument('target', nargs='?', type=str,
                    default=env.get('GSTORE_DIR', os.getcwd()),
                    help='base target to sync repos (e.g. folder on disk)')
 
-    p.add_argument('--token', dest='token', default=get_token_from_env(),
-                   type=str,
+    p.add_argument('--token', dest='token', default=token, type=str,
                    help='an authentication token for GitHub API requests')
     p.add_argument('--host', dest='host',
                    default=env.get('GH_HOST', DEFAULT_HOST), type=str,
@@ -120,5 +121,9 @@ def argparse():
                    version=get_version_str())
     p.add_argument('-dumpversion', action='version', help=dumpversion_help,
                    version=__version__)
+
+    if len(sys.argv) == 1 and token is None:
+        p.print_help(sys.stderr)
+        sys.exit(1)
 
     return p.parse_args()
