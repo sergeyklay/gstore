@@ -51,16 +51,25 @@ class InfoFilter(logging.Filter):
         return record.levelno == logging.INFO
 
 
-def setup_logger(verbose=False):
+def setup_logger(verbose=False, quiet=False):
     """
     Setup and return the root logger object for the application.
+
+    :param bool verbose: Enable debug logging
+    :param bool quiet: Disable info logging
     """
 
     root = logging.getLogger('gstore')
-    root.setLevel(logging.DEBUG)
+    log_level = logging.DEBUG
 
-    f = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    formatter = logging.Formatter(f)
+    if quiet:
+        log_level = logging.WARNING
+
+    root.setLevel(log_level)
+
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
 
     if verbose:
         debug_handler = logging.StreamHandler(sys.stdout)
@@ -69,11 +78,12 @@ def setup_logger(verbose=False):
         debug_handler.setFormatter(formatter)
         root.addHandler(debug_handler)
 
-    info_handler = logging.StreamHandler(sys.stdout)
-    info_handler.setLevel(logging.INFO)
-    info_handler.addFilter(InfoFilter())
-    info_handler.setFormatter(formatter)
-    root.addHandler(info_handler)
+    if not quiet:
+        info_handler = logging.StreamHandler(sys.stdout)
+        info_handler.setLevel(logging.INFO)
+        info_handler.addFilter(InfoFilter())
+        info_handler.setFormatter(formatter)
+        root.addHandler(info_handler)
 
     error_handler = logging.StreamHandler(sys.stderr)
     error_handler.setLevel(logging.WARNING)

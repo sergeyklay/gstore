@@ -71,10 +71,10 @@ will be available to you from the command line.
    wish to check older versions or formal, tagged release, please switch to the
    relevant tag_.
 
-More information about ``pip`` and pypi can be found here:
+More information about ``pip`` and PyPI can be found here:
 
 * `Install pip`_
-* `Gstore on PyPI`_
+* `Python Packaging User Guide`_
 
 Alternatively, you can install from the source as follows:
 
@@ -126,6 +126,9 @@ Usage
 ``-v``, ``--verbose``
   Enable verbose mode. Causes Gstore to print debugging messages about its
   progress in some cases.
+
+``-q``, ``--quiet``
+  Silence any informational messages, but not error ones.
 
 ``-V``, ``--version``
   Print program's version information and quit.
@@ -263,7 +266,7 @@ This project is open source software licensed under the
 .. _pip: https://pip.pypa.io/en/latest/installing.html
 .. _Python Package Index: http://pypi.python.org/pypi/GitPython
 .. _Install pip: https://pip.pypa.io/en/latest/installing/
-.. _Gstore on PyPI: https://pypi.org/project/gstore/
+.. _Python Packaging User Guide: https://packaging.python.org/
 .. _Personal Access Token: https://github.com/settings/tokens
 .. _gstore repository: https://github.com/sergeyklay/gstore
 .. _CHANGELOG.rst: https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst
