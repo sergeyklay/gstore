@@ -211,22 +211,6 @@ a space:
 
    $ gstore --token "$TOKEN" --org Foo Bar Baz -- ~/backup
 
-Using Github Enterprise
-~~~~~~~~~~~~~~~~~~~~~~~
-
-There is nothing special when working with the Github Enterprise, except for
-the host and possible environment variables.:
-
-.. code-block:: bash
-
-   # Using CLI arguments to configure Gstore
-   $ gstore --token "secret" --host "example.com/api/v3" ~/backup
-
-   # Using environment variables to configure Gstore
-   $ export GH_ENTERPRISE_TOKEN="secret"
-   $ export GH_HOST="example.com/api/v3"
-   $ gstore ~/backup
-
 Logging
 -------
 
