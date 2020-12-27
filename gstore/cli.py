@@ -28,7 +28,7 @@ def main():
     logger = logging.getLogger('gstore.cli')
 
     try:
-        client = Client(token=ns.token, api_url=ns.host)
+        client = Client(token=ns.token, api_host=ns.host)
 
         if ns.org is None:
             orgs = client.get_orgs()

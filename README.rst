@@ -252,8 +252,6 @@ Let's look at a few examples to demonstrate the above:
 
 .. code-block:: bash
 
-   export GH_TOKEN="secret"
-
    # All messages are visible
    $ gstore ~/work
 

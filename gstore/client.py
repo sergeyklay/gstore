@@ -22,7 +22,6 @@ from gstore import __version__
 USER_AGENT = 'Gstore/{}'.format(__version__)
 
 DEFAULT_HOST = 'api.github.com'
-DEFAULT_BASE_URL = 'https://{}'.format(DEFAULT_HOST)
 DEFAULT_TIMEOUT = 15
 
 TOKEN_NAMES = (
@@ -37,19 +36,20 @@ class Client:
     def __init__(
             self,
             token: str,
-            api_url=DEFAULT_BASE_URL,
+            api_host=DEFAULT_HOST,
             timeout=DEFAULT_TIMEOUT,
     ):
         """
         :param str token: Authentication token for github.com API requests
-        :param str api_url: Default base URL for github.com API requests
+        :param str api_host: Default base URL for github.com API requests
         :param int timeout: Timeout for HTTP requests
-        :param str user_agent: Default user agent to make HTTP requests
         """
 
         if not token:
             raise ValueError(
                 'GitHub token was not provided but it is mandatory')
+
+        api_url = 'https://{}'.format(api_host)
 
         self.github = Github(
             login_or_token=token,
