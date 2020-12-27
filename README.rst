@@ -236,6 +236,15 @@ Let's look at a few examples to demonstrate the above:
    # Store all the logs in the same file
    $ gstore ~/work > gstore.log 2>&1
 
+You can control the logging level using the following arguments:
+
+``-v``, ``--verbose``
+  Enable verbose mode. Causes Gstore to print debugging messages about its
+  progress in some cases.
+
+``-q``, ``--quiet``
+  Silence any informational messages except error ones.
+
 Similar projects
 ----------------
 
