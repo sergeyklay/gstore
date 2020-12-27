@@ -86,7 +86,7 @@ Alternatively, you can install from the source as follows:
 
    $ python -m gstore --help
 
-Getting Started
+Quick Start
 ---------------
 
 #. Generate a GitHub `Personal Access Token`_ with the following permissions:
@@ -96,6 +96,12 @@ Getting Started
    * ``user:read``: Read all user profile data
 
 #. Save the token in a safe place; you'll need it when use Gstore
+
+#. Sync your repos:
+
+.. code-block:: bash
+
+   $ gstore --token "$TOKEN" ~/backup
 
 Usage
 -----
@@ -110,9 +116,9 @@ Usage
   Show help message and exit.
 
 ``--token TOKEN``
-  An authentication token for github.com API requests. If not provided via
-  CLI argument, then environment variable will be used. The order of searching
-  for a token in environment variables as follows (in order of precedence):
+  An authentication token for GitHub API requests. If not provided via CLI
+  argument, then environment variable will be used. The order of searching for
+  a token in environment variables as follows (in order of precedence):
 
   #. ``GH_TOKEN``, ``GITHUB_TOKEN``
   #. ``GH_ENTERPRISE_TOKEN``, ``GITHUB_ENTERPRISE_TOKEN``
@@ -120,7 +126,12 @@ Usage
   Setting these variables allows you not to not pass token directly via CLI
   argument and avoids storing it in the Shell history.
 
-``--org [ORG ...]``
+``--host HOST``
+  The GitHub API hostname. If not provided via CLI argument, then ``GH_HOST``
+  environment variable will be used. If environment variable is not set,
+  ``api.github.com`` will be used.
+
+``--org ORG [ORG ...]``
   Organizations you have access to (by default all).
 
 ``-v``, ``--verbose``
@@ -195,6 +206,22 @@ a space:
 
    $ gstore --token "$TOKEN" --org Foo Bar Baz -- ~/backup
 
+Using Github Enterprise
+~~~~~~~~~~~~~~~~~~~~~~~
+
+There is nothing special when working with the Github Enterprise, except for
+the host and possible the environment variable.:
+
+.. code-block:: bash
+
+   # Using CLI arguments to configure Gstore
+   $ gstore --token "secret" --host "example.com/api/v3" ~/backup
+
+   # Using environment variables to configure Gstore
+   $ export GH_ENTERPRISE_TOKEN="secret"
+   $ export GH_HOST="example.com/api/v3"
+   $ gstore ~/backup
+
 Logging
 -------
 
@@ -256,7 +283,8 @@ There are some projects similar to Gstore you may be interested in:
 Support
 -------
 
-Feel free to ask question or make suggestions in our `issue tracker`_.
+Should you have any question, any remark, or if you find a bug, or if there is
+something you can't do with the Gstore, please `open an issue`_.
 
 Changes
 -------
@@ -279,6 +307,6 @@ This project is open source software licensed under the
 .. _Personal Access Token: https://github.com/settings/tokens
 .. _gstore repository: https://github.com/sergeyklay/gstore
 .. _CHANGELOG.rst: https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst
-.. _issue tracker: https://github.com/sergeyklay/gstore/issues
+.. _open an issue: https://github.com/sergeyklay/gstore/issues
 .. _`Serghei Iakovlev`: https://github.com/sergeyklay
 .. _GNU General Public Licence version 3: https://github.com/sergeyklay/gstore/blob/master/LICENSE

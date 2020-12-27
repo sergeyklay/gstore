@@ -4,6 +4,14 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
+v0.2.0
+------
+
+New features
+~~~~~~~~~~~~
+
+* Added ability to specify host for Github Enterprise.
+
 v0.1.1
 ------
 

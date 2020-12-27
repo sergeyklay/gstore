@@ -20,6 +20,7 @@ import textwrap as _textwrap
 from argparse import ArgumentParser, HelpFormatter
 from os import environ as env
 from gstore import __copyright__, __version__
+from .client import DEFAULT_HOST, TOKEN_NAMES
 
 
 class LineBreaksFormatter(HelpFormatter):
@@ -69,7 +70,7 @@ def get_version_str():
 
 def get_token_from_env():
     """
-    Get authentication token for github.com from environment variables.
+    Get authentication token for GitHub API from environment variables.
 
     The order of searching for a token in environment variables:
     * GH_TOKEN, GITHUB_TOKEN (in order of precedence)
@@ -79,14 +80,8 @@ def get_token_from_env():
     :rtype: str|None
     """
     token = None
-    toke_names = (
-        'GH_TOKEN',
-        'GITHUB_TOKEN',
-        'GH_ENTERPRISE_TOKEN',
-        'GITHUB_ENTERPRISE_TOKEN',
-    )
 
-    for name in toke_names:
+    for name in TOKEN_NAMES:
         token = env.get(name)
         if token:
             break
@@ -102,7 +97,7 @@ def argparse():
     dumpversion_help = ("print the version of the program and don't " +
                         'do anything else')
 
-    quiet_help = ('silence any informational messages, but not error ones')
+    quiet_help = 'silence any informational messages, but not error ones'
 
     p.add_argument('target', nargs='?', type=str,
                    default=env.get('GSTORE_DIR', os.getcwd()),
@@ -110,7 +105,10 @@ def argparse():
 
     p.add_argument('--token', dest='token', default=get_token_from_env(),
                    type=str,
-                   help='an authentication token for github.com API requests')
+                   help='an authentication token for GitHub API requests')
+    p.add_argument('--host', dest='host',
+                   default=env.get('GH_HOST', DEFAULT_HOST), type=str,
+                   help='the GitHub API hostname (by default api.github.com)')
     p.add_argument('--org', dest='org', nargs='*', type=str,
                    help='organizations you have access to (by default all)')
     p.add_argument('-v', '--verbose', dest='verbose', action='store_true',

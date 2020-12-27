@@ -21,8 +21,16 @@ from gstore import __version__
 
 USER_AGENT = 'Gstore/{}'.format(__version__)
 
-DEFAULT_BASE_URL = 'https://api.github.com'
+DEFAULT_HOST = 'api.github.com'
+DEFAULT_BASE_URL = 'https://{}'.format(DEFAULT_HOST)
 DEFAULT_TIMEOUT = 15
+
+TOKEN_NAMES = (
+    'GH_TOKEN',
+    'GITHUB_TOKEN',
+    'GH_ENTERPRISE_TOKEN',
+    'GITHUB_ENTERPRISE_TOKEN',
+)
 
 
 class Client:
