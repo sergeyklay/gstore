@@ -20,7 +20,7 @@ import git
 from github.Organization import Organization
 from github.Repository import Repository
 
-LOG = logging.getLogger('gstore.repo')
+from .exceptions import get_error
 
 
 class RepoProgressPrinter(git.RemoteProgress):
@@ -53,7 +53,7 @@ class RepoProgressPrinter(git.RemoteProgress):
             In case of the 'WRITING' operation, it contains the amount of bytes
             transferred. It may, possibly be used for other purposes as well.
         """
-        LOG.debug('{} {} {} {} {}'.format(
+        logging.getLogger('gstore.repo').debug('{} {} {} {} {}'.format(
             op_code,
             cur_count,
             max_count,
@@ -68,15 +68,13 @@ class RepoManager:
         self.logger = logging.getLogger('gstore.repo_manager')
 
     def clone(self, org: Organization, repo: Repository, target: str):
-        self.logger.info("Clone repository to {}/{} ...".format(
-            org.login,
-            repo.name
-        ))
+        self.logger.info('Clone repository to %s/%s', org.login, repo.name)
 
         if os.path.exists(target):
             os.removedirs(target)
 
-        git_url = 'git@github.com:{}/{}.git'.format(org.login, repo.name)
+        # TODO(serghei): Provide a way to configure git protocol
+        git_url = 'git@github.com:%s/%s.git' % (org.login, repo.name)
 
         try:
             git.Repo.clone_from(
@@ -85,30 +83,25 @@ class RepoManager:
                 progress=RepoProgressPrinter()
             )
         except git.GitCommandError as e:
-            if e.stdout:
-                self.logger.critical(e.stdout)
-            if e.stderr:
-                self.logger.critical(e.stderr)
+            self.logger.error('Failed to clone %s/%s', org.login, repo.name)
+            for msg in get_error(e):
+                self.logger.error(msg)
 
     def fetch(self, org: Organization, repo: Repository, target: str):
-        self.logger.info('Update repository in {}/{} ...'.format(
-            org.login,
-            repo.name
-        ))
+        self.logger.info('Update repository in %s/%s', org.login, repo.name)
 
-        repo = git.Repo(target)
+        local_repo = git.Repo(target)
 
         try:
-            repo.git.fetch(['--prune', '--quiet'])
-            repo.git.pull(['--all', '--quiet'])
+            local_repo.git.fetch(['--prune', '--quiet'])
+            local_repo.git.pull(['--all', '--quiet'])
         except git.GitCommandError as e:
-            if e.stdout:
-                LOG.critical(e.stdout)
-            if e.stderr:
-                LOG.critical(e.stderr)
+            self.logger.error('Failed to update %s/%s', org.login, repo.name)
+            for msg in get_error(e):
+                self.logger.error(msg)
 
     def sync(self, org: Organization, repos):
-        self.logger.info('Sync repos for {}'.format(org.login))
+        self.logger.info('Sync repos for %s', org.login)
 
         org_path = os.path.join(self.base_path, org.login)
 
@@ -121,19 +114,17 @@ class RepoManager:
 
             if os.path.isfile(repo_path):
                 self.logger.error(
-                    'Unable to sync {}. The path {} is a regular file'.format(
-                        repo.name,
-                        org_path,
-                    )
+                    'Unable to sync %s. The path %s is a regular file',
+                    repo.name,
+                    org_path,
                 )
                 continue
 
             if not os.access(repo_path, os.W_OK | os.X_OK):
                 self.logger.error(
-                    'Unable to sync {}. The path {} is not writeable'.format(
-                        repo.name,
-                        org_path,
-                    )
+                    'Unable to sync %s. The path %s is not writeable',
+                    repo.name,
+                    org_path,
                 )
                 continue
 
