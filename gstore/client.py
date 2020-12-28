@@ -106,7 +106,7 @@ class Client:
 
         return orgs
 
-    def resolve_orgs(self, orgs: list[str]):
+    def resolve_orgs(self, orgs: list):
         self.logger.info('Resolve organizations from user input')
 
         retval = []
