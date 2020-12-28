@@ -69,15 +69,14 @@ def get_version_str():
 
 
 def get_token_from_env():
-    """
-    Get authentication token for GitHub API from environment variables.
+    """ Get authentication token for GitHub API from environment variables.
 
     The order of searching for a token in environment variables:
     * GH_TOKEN, GITHUB_TOKEN (in order of precedence)
     * GH_ENTERPRISE_TOKEN, GITHUB_ENTERPRISE_TOKEN (in order of precedence)
 
     :returns: An authentication token for github.com API requests
-    :rtype: str|None
+    :rtype: str or None
     """
     token = None
 

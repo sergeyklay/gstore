@@ -34,18 +34,20 @@ TOKEN_NAMES = (
 
 
 class Client:
+    """This is a wrapper class around :class:`github.Github` to interact with
+    GitHub API.
+
+    :param str token: Authentication token for github.com API requests
+    :param str api_host: Default base URL for github.com API requests
+    :param int timeout: Timeout for HTTP requests
+    """
+
     def __init__(
             self,
             token: str,
             api_host=DEFAULT_HOST,
             timeout=DEFAULT_TIMEOUT,
     ):
-        """
-        :param str token: Authentication token for github.com API requests
-        :param str api_host: Default base URL for github.com API requests
-        :param int timeout: Timeout for HTTP requests
-        """
-
         if not token:
             raise ValueError(
                 'GitHub token was not provided but it is mandatory')
@@ -62,13 +64,13 @@ class Client:
         self.logger = logging.getLogger('gstore.client')
 
     def get_repos(self, org: Organization):
-        """
-        Getting organization repositories.
+        """Getting organization repositories.
 
         :param Organization org: User's organization
         :return: A collection with repositories
-        :rtype: :class:`github.PaginatedList.PaginatedList` of :class:`github.Repository.Repository`
-        """  # noqa E501
+        :rtype: :class:`github.PaginatedList.PaginatedList`
+            of :class:`github.Repository.Repository`
+        """
         self.logger.info('Getting repositories for {} organization'.format(
             org.login
         ))
@@ -86,12 +88,12 @@ class Client:
         return repos
 
     def get_orgs(self):
-        """
-        Getting organizations for a user.
+        """Getting organizations for a user.
 
         :returns: A collection with organizations
-        :rtype: :class:`github.PaginatedList.PaginatedList` of :class:`github.Organization.Organization`
-        """  # noqa E501
+        :rtype: :class:`github.PaginatedList.PaginatedList`
+            of :class:`github.Organization.Organization`
+        """
         self.logger.info('Getting organizations for a user')
 
         user = self.github.get_user()

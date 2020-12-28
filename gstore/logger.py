@@ -23,8 +23,7 @@ class DebugFilter(logging.Filter):
     """
 
     def filter(self, record: logging.LogRecord) -> bool:
-        """
-        Only messages with record level DEBUG can pass
+        """Only messages with record level DEBUG can pass
         for messages with another level an extra handler is used.
 
         :param tuple record: logging message record
@@ -40,8 +39,7 @@ class InfoFilter(logging.Filter):
     """
 
     def filter(self, record: logging.LogRecord) -> bool:
-        """
-        Only messages with record level INFO can pass
+        """ Only messages with record level INFO can pass
         for messages with another level an extra handler is used.
 
         :param tuple record: logging message record
@@ -51,12 +49,12 @@ class InfoFilter(logging.Filter):
         return record.levelno == logging.INFO
 
 
-def setup_logger(verbose=False, quiet=False):
-    """
-    Setup and return the root logger object for the application.
+def setup_logger(verbose=False, quiet=False) -> logging.Logger:
+    """Setup and return the root logger object for the application.
 
     :param bool verbose: Enable debug logging
     :param bool quiet: Disable info logging
+    :rtype: :class:`logging.Logger`
     """
 
     root = logging.getLogger('gstore')
