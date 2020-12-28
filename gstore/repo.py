@@ -108,7 +108,7 @@ class RepoManager:
             if e.stderr:
                 LOG.critical(e.stderr)
 
-    def sync(self, org: Organization, repos: PaginatedList[Repository]):
+    def sync(self, org: Organization, repos):
         self.logger.info('Sync repos for {}'.format(org.login))
 
         org_path = os.path.join(self.base_path, org.login)
