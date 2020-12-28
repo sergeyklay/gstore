@@ -19,7 +19,6 @@ import os
 import git
 from github.Organization import Organization
 from github.Repository import Repository
-from github.PaginatedList import PaginatedList
 
 LOG = logging.getLogger('gstore.repo')
 
