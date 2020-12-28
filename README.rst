@@ -281,7 +281,7 @@ Similar projects
 There are some projects similar to Gstore you may be interested in:
 
 * https://github.com/kennethreitz42/ghsync
-* https://github.com/adw0rd/github-sync
+* https://github.com/lgg/simple-git-mirror-sync
 
 Support
 -------
