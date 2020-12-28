@@ -18,7 +18,7 @@ import logging
 from .args import argparse
 from .client import Client
 from .logger import setup_logger
-from .repo import sync
+from .repo import RepoManager
 
 
 def main():
@@ -33,10 +33,12 @@ def main():
         if ns.org is None:
             orgs = client.get_orgs()
         else:
-            orgs = ns.org
+            orgs = client.resolve_orgs(ns.org)
+
+        manager = RepoManager(ns.target)
 
         for org in orgs:
             repos = client.get_repos(org)
-            sync(org, repos, ns.target)
+            manager.sync(org, repos)
     except Exception as e:
         logger.critical(e)

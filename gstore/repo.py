@@ -17,6 +17,9 @@ import logging
 import os
 
 import git
+from github.Organization import Organization
+from github.Repository import Repository
+from github.PaginatedList import PaginatedList
 
 LOG = logging.getLogger('gstore.repo')
 
@@ -60,73 +63,82 @@ class RepoProgressPrinter(git.RemoteProgress):
         ))
 
 
-def clone(repo_name, org, target):
-    LOG.info("Repository %s/%s doesn't exist. Clone ..." % (org, repo_name))
+class RepoManager:
+    def __init__(self, base_path: str):
+        self.base_path = base_path
+        self.logger = logging.getLogger('gstore.repo_manager')
 
-    if os.path.exists(target):
-        os.removedirs(target)
+    def clone(self, org: Organization, repo: Repository, target: str):
+        self.logger.info("Clone repository to {}/{} ...".format(
+            org.login,
+            repo.name
+        ))
 
-    git_url = 'git@github.com:{}/{}.git'.format(org, repo_name)
+        if os.path.exists(target):
+            os.removedirs(target)
 
-    try:
-        git.Repo.clone_from(git_url, target, progress=RepoProgressPrinter())
-    except git.GitCommandError as e:
-        if e.stdout:
-            LOG.critical(e.stdout)
-        if e.stderr:
-            LOG.critical(e.stderr)
+        git_url = 'git@github.com:{}/{}.git'.format(org.login, repo.name)
 
-
-def fetch(repo_name, org, target):
-    LOG.info('Repository %s/%s already exist. Sync ...' % (org, repo_name))
-
-    repo = git.Repo(target)
-
-    try:
-        repo.git.fetch(['--prune', '--quiet'])
-        repo.git.pull(['--all', '--quiet'])
-    except git.GitCommandError as e:
-        if e.stdout:
-            LOG.critical(e.stdout)
-        if e.stderr:
-            LOG.critical(e.stderr)
-
-
-def do_sync(org, repos, target):
-    LOG.info('Sync repos for %s' % org)
-
-    org_path = os.path.join(target, org)
-
-    # Just in case create directories recursively
-    if not os.path.exists(org_path):
-        os.makedirs(org_path)
-
-    for repo_name in repos:
-        repo_path = os.path.join(org_path, repo_name)
-
-        if os.path.isfile(repo_path):
-            LOG.error(
-                'Unable to sync {}. The path {} is a regular file'.format(
-                    repo_name,
-                    org_path,
-                )
+        try:
+            git.Repo.clone_from(
+                git_url,
+                target,
+                progress=RepoProgressPrinter()
             )
-            continue
+        except git.GitCommandError as e:
+            if e.stdout:
+                self.logger.critical(e.stdout)
+            if e.stderr:
+                self.logger.critical(e.stderr)
 
-        if not os.access(repo_path, os.W_OK | os.X_OK):
-            LOG.error(
-                'Unable to sync {}. The path {} is not writeable'.format(
-                    repo_name,
-                    org_path,
+    def fetch(self, org: Organization, repo: Repository, target: str):
+        self.logger.info('Update repository in {}/{} ...'.format(
+            org.login,
+            repo.name
+        ))
+
+        repo = git.Repo(target)
+
+        try:
+            repo.git.fetch(['--prune', '--quiet'])
+            repo.git.pull(['--all', '--quiet'])
+        except git.GitCommandError as e:
+            if e.stdout:
+                LOG.critical(e.stdout)
+            if e.stderr:
+                LOG.critical(e.stderr)
+
+    def sync(self, org: Organization, repos: PaginatedList[Repository]):
+        self.logger.info('Sync repos for {}'.format(org.login))
+
+        org_path = os.path.join(self.base_path, org.login)
+
+        # Just in case create directories recursively
+        if not os.path.exists(org_path):
+            os.makedirs(org_path)
+
+        for repo in repos:
+            repo_path = os.path.join(org_path, repo.name)
+
+            if os.path.isfile(repo_path):
+                self.logger.error(
+                    'Unable to sync {}. The path {} is a regular file'.format(
+                        repo.name,
+                        org_path,
+                    )
                 )
-            )
-            continue
+                continue
 
-        if not os.path.exists(os.path.join(repo_path, '.git')):
-            clone(repo_name, org, repo_path)
-        else:
-            fetch(repo_name, org, repo_path)
+            if not os.access(repo_path, os.W_OK | os.X_OK):
+                self.logger.error(
+                    'Unable to sync {}. The path {} is not writeable'.format(
+                        repo.name,
+                        org_path,
+                    )
+                )
+                continue
 
-
-def sync(org, repos, target):
-    do_sync(org, repos, target)
+            if os.path.exists(os.path.join(repo_path, '.git')):
+                self.fetch(org, repo, repo_path)
+            else:
+                self.clone(org, repo, repo_path)

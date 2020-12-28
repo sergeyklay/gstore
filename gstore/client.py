@@ -16,6 +16,7 @@
 import logging
 
 from github import Github
+from github.Organization import Organization
 
 from gstore import __version__
 
@@ -60,47 +61,55 @@ class Client:
 
         self.logger = logging.getLogger('gstore.client')
 
-    def get_repos(self, org):
+    def get_repos(self, org: Organization):
         """
         Getting organization repositories.
 
-        :param str org: User's organization
+        :param Organization org: User's organization
         :return: A collection with repositories
-        :rtype: list
-        """
-        self.logger.info('Getting repositories for %s organization' % org)
+        :rtype: :class:`github.PaginatedList.PaginatedList` of :class:`github.Repository.Repository`
+        """  # noqa E501
+        self.logger.info('Getting repositories for {} organization'.format(
+            org.login
+        ))
 
-        repos = self.github.get_organization(org).get_repos(
+        repos = org.get_repos(
             type='all',
             sort='full_name'
         )
 
-        self.logger.info('Total number of repositories for %s: %d' %
-                         (org, repos.totalCount))
+        self.logger.info('Total number of repositories for {}: {}'.format(
+            org.login,
+            repos.totalCount
+        ))
 
-        retval = []
-        for repo in repos:
-            retval.append(repo.name)
-
-        return retval
+        return repos
 
     def get_orgs(self):
         """
         Getting organizations for a user.
 
         :returns: A collection with organizations
-        :rtype: list
-        """
+        :rtype: :class:`github.PaginatedList.PaginatedList` of :class:`github.Organization.Organization`
+        """  # noqa E501
         self.logger.info('Getting organizations for a user')
 
         user = self.github.get_user()
         orgs = user.get_orgs()
 
-        self.logger.info('Total number of organizations for %s: %d' %
-                         (user.login, orgs.totalCount))
+        self.logger.info('Total number of organizations for {}: {}'.format(
+            user.login,
+            orgs.totalCount
+        ))
+
+        return orgs
+
+    def resolve_orgs(self, orgs: list[str]):
+        self.logger.info('Resolve organizations from user input')
 
         retval = []
-        for org in orgs:
-            retval.append(org.login)
+
+        for name in orgs:
+            retval.append(self.github.get_organization(name))
 
         return retval
