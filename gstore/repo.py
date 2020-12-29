@@ -64,7 +64,7 @@ class RepoProgressPrinter(git.RemoteProgress):
 
 class RepoManager:
     def __init__(self, base_path: str):
-        self.base_path = base_path
+        self.base_path = os.path.expanduser(base_path).rstrip('/\\')
         self.logger = logging.getLogger('gstore.repo_manager')
 
     def clone(self, org: Organization, repo: Repository, target: str):
@@ -112,23 +112,25 @@ class RepoManager:
         for repo in repos:
             repo_path = os.path.join(org_path, repo.name)
 
-            if os.path.isfile(repo_path):
-                self.logger.error(
-                    'Unable to sync %s. The path %s is a regular file',
-                    repo.name,
-                    org_path,
-                )
-                continue
+            if os.path.exists(repo_path):
+                if os.path.isfile(repo_path):
+                    self.logger.error(
+                        'Unable to sync %s. The path %s is a regular file',
+                        repo.name,
+                        repo_path,
+                    )
+                    continue
 
-            if not os.access(repo_path, os.W_OK | os.X_OK):
-                self.logger.error(
-                    'Unable to sync %s. The path %s is not writeable',
-                    repo.name,
-                    org_path,
-                )
-                continue
+                if not os.access(repo_path, os.W_OK | os.X_OK):
+                    self.logger.error(
+                        'Unable to sync %s. The path %s is not writeable',
+                        repo.name,
+                        repo_path,
+                    )
+                    continue
 
             if os.path.exists(os.path.join(repo_path, '.git')):
                 self.fetch(org, repo, repo_path)
             else:
+                os.removedirs(repo_path)  # remove garbage
                 self.clone(org, repo, repo_path)
