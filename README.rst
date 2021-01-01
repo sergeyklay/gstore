@@ -315,8 +315,8 @@ This project is open source software licensed under the
 .. _open an issue: https://github.com/sergeyklay/gstore/issues
 .. _Serghei Iakovlev: https://github.com/sergeyklay
 .. _GNU General Public Licence version 3: https://github.com/sergeyklay/gstore/blob/master/LICENSE
-.. |build| image:: https://action-badges.now.sh/sergeyklay/gstore
-   :target: https://codecov.io/gh/sergeyklay/gstore
+.. |build| image:: https://action-badges.now.sh/sergeyklay/gstore?workflow=build
+   :target: https://github.com/sergeyklay/gstore/actions?query=workflow%3Abuild
    :alt: CI status
 .. |codecov| image:: https://codecov.io/gh/sergeyklay/gstore/branch/master/graph/badge.svg?token=41NCMH94LQ
    :target: https://codecov.io/gh/sergeyklay/gstore
