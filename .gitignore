@@ -16,3 +16,4 @@ __pycache__
 
 # Ignore codecoverage stuff.
 .coverage
+coverage.xml
