@@ -6,6 +6,7 @@
 # https://help.github.com/articles/ignoring-files/#create-a-global-gitignore
 
 # Directories to ignore (do not add trailing '/'s, they skip symlinks).
+/.pytest_cache
 /build
 /dist
 /gstore.egg-info
@@ -13,5 +14,5 @@
 # Python cache.
 __pycache__
 
-# Ignore codecoverage stuff
+# Ignore codecoverage stuff.
 .coverage
