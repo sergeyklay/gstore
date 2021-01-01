@@ -71,4 +71,4 @@ jobs:
         run: python -m gstore --help
 
       - name: Test with pytest
-        run: pytest
+        run: pytest -v
