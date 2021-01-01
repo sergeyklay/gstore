@@ -64,6 +64,9 @@ jobs:
           pip install -r requirements-tests.txt
           pip install -r requirements.txt
 
+      - name: Makefile selftest
+        run: make help
+
       - name: Lint with flake8
         run: make lint
 
@@ -71,7 +74,7 @@ jobs:
         run: python -m gstore --help
 
       - name: Test with pytest
-        run: pytest -v --color=yes --cov=./ --cov-report=xml
+        run: make test
 
       - name: Upload code coverage report
         uses: codecov/codecov-action@v1

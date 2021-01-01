@@ -9,7 +9,8 @@
 /.pytest_cache
 /build
 /dist
-/gstore.egg-info
+/*.egg-info
+/htmlcov
 
 # Python cache.
 __pycache__
