@@ -1,6 +1,8 @@
 Gstore
 ======
 
+|build| |nbsp| |codecov|
+
 Gstore is a simple tool to synchronize GitHub repositories of your organizations.
 
 Overview
@@ -311,5 +313,13 @@ This project is open source software licensed under the
 .. _gstore repository: https://github.com/sergeyklay/gstore
 .. _CHANGELOG.rst: https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst
 .. _open an issue: https://github.com/sergeyklay/gstore/issues
-.. _`Serghei Iakovlev`: https://github.com/sergeyklay
+.. _Serghei Iakovlev: https://github.com/sergeyklay
 .. _GNU General Public Licence version 3: https://github.com/sergeyklay/gstore/blob/master/LICENSE
+.. |build| image:: https://action-badges.now.sh/sergeyklay/gstore
+   :target: https://codecov.io/gh/sergeyklay/gstore
+   :alt: CI status
+.. |codecov| image:: https://codecov.io/gh/sergeyklay/gstore/branch/master/graph/badge.svg?token=41NCMH94LQ
+   :target: https://codecov.io/gh/sergeyklay/gstore
+   :alt: Codecov coverage report
+.. |nbsp| unicode:: 0xA0
+   :trim:
