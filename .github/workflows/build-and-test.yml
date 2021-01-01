@@ -80,7 +80,6 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
-          yml: ./.codecov.yml
           env_vars: OS,PYTHON
           name: codecov-umbrella
           flags: unittests
