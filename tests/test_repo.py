@@ -21,20 +21,21 @@ from gstore.repo import RepoManager
 
 HOME_DIR = environ.get('HOME', environ.get('USERPROFILE'))
 
-paths_data = [
+target_paths = [
     ('~/work', '%s/work' % HOME_DIR),
     ('~/backup/~/work', '%s/backup/~/work' % HOME_DIR),
     ('/mnt/backup\\', '/mnt/backup'),
     ('/mnt/backup////', '/mnt/backup'),
     ('/mnt/backup\\//', '/mnt/backup'),
     ('./backup/', './backup'),
+    ('.\\here', '.\\here'),
     ('c:\\projects\\', 'c:\\projects'),
     ('', ''),
     ('data', 'data'),
 ]
 
 
-@pytest.mark.parametrize('actual,expected', paths_data)
+@pytest.mark.parametrize('actual,expected', target_paths)
 def test_repo_manager_init(actual, expected):
     rm = RepoManager(actual)
     assert rm.base_path == expected
