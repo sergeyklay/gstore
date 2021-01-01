@@ -19,7 +19,7 @@ import pytest
 
 from gstore.repo import RepoManager
 
-HOME_DIR = environ.get('HOME')
+HOME_DIR = environ.get('HOME', environ.get('USERPROFILE'))
 
 paths_data = [
     ('~/work', '%s/work' % HOME_DIR),
