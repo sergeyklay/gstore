@@ -12,3 +12,6 @@
 
 # Python cache.
 __pycache__
+
+# Ignore codecoverage stuff
+.coverage
