@@ -18,9 +18,11 @@ TOP := $(dir $(lastword $(MAKEFILE_LIST)))
 # Run “make package” by default
 .DEFAULT_GOAL = package
 
-PYTHON ?= python
-TWINE  ?= twine
-FLAKE8 ?= flake8
+PYTHON    ?= python
+PYTEST     = pytest
+PYTEST_COV = pytest-cov
+TWINE      = twine
+FLAKE8     = flake8
 
 # Program availability
 HAVE_PYTHON := $(shell sh -c "command -v $(PYTHON)")
@@ -36,6 +38,18 @@ endif
 HAVE_FLAKE8 := $(shell sh -c "command -v $(FLAKE8)")
 ifndef HAVE_FLAKE8
 $(warning "$(FLAKE8) is not available.")
+endif
+
+HAVE_PYTEST := $(shell sh -c "command -v $(PYTEST)")
+ifndef HAVE_PYTEST
+$(warning "$(PYTEST) is not available.")
+endif
+
+HAVE_PYTEST_COV =
+ifdef HAVE_PYTHON
+ifdef HAVE_PYTEST
+HAVE_PYTEST_COV = $(shell sh -c "$(PYTHON) -m pip show $(PYTEST_COV) 2>/dev/null")
+endif
 endif
 
 PACKAGE = $(shell sed -nre "s/PKG_NAME[[:space:]]*=[[:space:]]*'(.*)'/\1/p" $(TOP)/setup.py)

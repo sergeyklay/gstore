@@ -30,12 +30,21 @@ dist/$(ARCHIVE_NAME).tar.gz: $(ARCHIVE_CONTENTS)
 .PHONY: clean
 clean:
 	$(info Remove all build artefacts and directories...)
-	@$(RM) -rf *.egg-info/ dist/ build/
+	@$(RM) -rf .pytest_cache/ build/ dist/ *.egg-info/ htmlcov/
+	@$(RM) -f .coverage coverage.xml
 
 .PHONY: check
 check: package
 	$(TWINE) check dist/*
 	$(info Done.)
+
+.PHONY: test
+test:
+ifeq ($(HAVE_PYTEST_COV),)
+	$(PYTEST) -v --color=yes
+else
+	$(PYTEST) -v --color=yes --cov=$(TOP) --cov-report=xml
+endif
 
 .PHONY: lint
 lint:
@@ -59,12 +68,15 @@ help: .title
 	@echo '  upload:     Upload $(PACKAGE) distribution to the repository'
 	@echo '  clean:      Remove all build artefacts and directories'
 	@echo '  check:      Check distribution files'
+	@echo '  test:       Run unit tests'
 	@echo '  lint:       Lint code'
 	@echo ''
 	@echo 'Available programs:'
-	@echo '  $(PYTHON): $(if $(HAVE_PYTHON),yes,no)'
-	@echo '  $(TWINE): $(if $(HAVE_TWINE),yes,no)'
-	@echo '  $(FLAKE8): $(if $(HAVE_FLAKE8),yes,no)'
+	@echo '  python:     $(if $(HAVE_PYTHON),yes,no)'
+	@echo '  twine:      $(if $(HAVE_TWINE),yes,no)'
+	@echo '  flake8:     $(if $(HAVE_FLAKE8),yes,no)'
+	@echo '  pytest:     $(if $(HAVE_PYTEST),yes,no)'
+	@echo '  pytest-cov: $(if $(HAVE_PYTEST_COV),yes,no)'
 	@echo ''
 	@echo 'You need $(TWINE) to develop $(PACKAGE).'
 	@echo 'See https://twine.readthedocs.io/en/latest for more'
