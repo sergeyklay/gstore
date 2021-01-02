@@ -58,22 +58,22 @@ def setup_logger(verbose=False, quiet=False) -> logging.Logger:
     """
 
     root = logging.getLogger('gstore')
-    root.setLevel(logging.WARNING if quiet else logging.DEBUG)
+    root.setLevel(logging.ERROR if quiet else logging.DEBUG)
 
     formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
 
     specs = (
-        {'on': verbose, 'level': logging.DEBUG, 'filter': DebugFilter()},
+        {'on': verbose, 'filter': DebugFilter()},
         {'on': not quiet, 'level': logging.INFO, 'filter': InfoFilter()},
-        {'on': True, 'stream': sys.stderr, 'level': logging.WARNING},
+        {'on': True, 'stream': sys.stderr, 'level': logging.ERROR},
     )
 
     for spec in specs:
         if spec['on']:
             handler = logging.StreamHandler(spec.get('stream', sys.stdout))
-            handler.setLevel(spec['level'])
+            handler.setLevel(spec.get('level', logging.DEBUG))
             handler.setFormatter(formatter)
 
             if spec.get('filter'):
