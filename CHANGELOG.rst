@@ -9,6 +9,7 @@ v0.2.1
 
 * Improved logging and error reporting
 * Improved local repo handling by checking the directory contents
+* Correct log level on ``--quiet`` mode.
 
 v0.2.0
 ------
