@@ -17,7 +17,7 @@ import logging
 import sys
 
 
-class DebugFilter(logging.Filter):
+class DebugFilter(logging.Filter):  # pylint: disable=too-few-public-methods
     """
     Extended standard logging Filter to filer only DEBUG messages.
     """
@@ -33,7 +33,7 @@ class DebugFilter(logging.Filter):
         return record.levelno == logging.DEBUG
 
 
-class InfoFilter(logging.Filter):
+class InfoFilter(logging.Filter):  # pylint: disable=too-few-public-methods
     """
     Extended standard logging Filter to filer only INFO messages.
     """
@@ -58,34 +58,27 @@ def setup_logger(verbose=False, quiet=False) -> logging.Logger:
     """
 
     root = logging.getLogger('gstore')
-    log_level = logging.DEBUG
-
-    if quiet:
-        log_level = logging.WARNING
-
-    root.setLevel(log_level)
+    root.setLevel(logging.WARNING if quiet else logging.DEBUG)
 
     formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
 
-    if verbose:
-        debug_handler = logging.StreamHandler(sys.stdout)
-        debug_handler.setLevel(logging.DEBUG)
-        debug_handler.addFilter(DebugFilter())
-        debug_handler.setFormatter(formatter)
-        root.addHandler(debug_handler)
+    specs = (
+        {'on': verbose, 'level': logging.DEBUG, 'filter': DebugFilter()},
+        {'on': not quiet, 'level': logging.INFO, 'filter': InfoFilter()},
+        {'on': True, 'stream': sys.stderr, 'level': logging.WARNING},
+    )
 
-    if not quiet:
-        info_handler = logging.StreamHandler(sys.stdout)
-        info_handler.setLevel(logging.INFO)
-        info_handler.addFilter(InfoFilter())
-        info_handler.setFormatter(formatter)
-        root.addHandler(info_handler)
+    for spec in specs:
+        if spec['on']:
+            handler = logging.StreamHandler(spec.get('stream', sys.stdout))
+            handler.setLevel(spec['level'])
+            handler.setFormatter(formatter)
 
-    error_handler = logging.StreamHandler(sys.stderr)
-    error_handler.setLevel(logging.WARNING)
-    error_handler.setFormatter(formatter)
-    root.addHandler(error_handler)
+            if spec.get('filter'):
+                handler.addFilter(spec['filter'])
+
+            root.addHandler(handler)
 
     return root
