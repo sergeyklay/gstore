@@ -42,10 +42,10 @@ def locate_package_directory():
 
     try:
         return path.abspath(path.dirname(__file__))
-    except Exception:
+    except Exception as path_error:
         message = ('The directory in which the package and its '
                    'associated files are stored could not be located.')
-        raise ValueError(message)
+        raise ValueError(message) from path_error
 
 
 def read_file(filepath):
@@ -66,9 +66,9 @@ def load_long_description(pkg_dir):
     try:
         filepath_readme = path.join(pkg_dir, 'README.rst')
         return read_file(filepath_readme)
-    except Exception:
+    except Exception as read_error:
         message = 'Long description could not be read from README.rst'
-        raise ValueError(message)
+        raise ValueError(message) from read_error
 
 
 # Source: https://www.python.org/dev/peps/pep-0440
@@ -102,10 +102,10 @@ def get_version_string(pkg_dir, pkg_name):
                        '__version__ in file __init__.py')
             raise ValueError(message)
         version_string = match.group(1)
-    except Exception:
+    except Exception as version_error:
         message = ("Version couldn't be read from variable "
                    '__version__ in file __init__.py')
-        raise ValueError(message)
+        raise ValueError(message) from version_error
 
     # Check validity
     if not is_canonical_version(version_string):
