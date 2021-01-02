@@ -34,7 +34,8 @@ TOKEN_NAMES = (
 
 
 class Client:
-    """This is a wrapper class around :class:`github.Github` to interact with
+    """
+    This is a wrapper class around :class:`github.Github` to interact with
     GitHub API.
 
     :param str token: Authentication token for github.com API requests
@@ -64,7 +65,8 @@ class Client:
         self.logger = logging.getLogger('gstore.client')
 
     def get_repos(self, org: Organization):
-        """Getting organization repositories.
+        """
+        Getting organization repositories.
 
         :param Organization org: User's organization
         :return: A collection with repositories
@@ -87,7 +89,8 @@ class Client:
         return repos
 
     def get_orgs(self):
-        """Getting organizations for a user.
+        """
+        Getting organizations for a user.
 
         :returns: A collection with organizations
         :rtype: :class:`github.PaginatedList.PaginatedList`
