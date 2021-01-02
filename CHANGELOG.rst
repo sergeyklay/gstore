@@ -4,12 +4,15 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
-v0.2.1
+v0.3.0
 ------
 
-* Improved logging and error reporting
-* Improved local repo handling by checking the directory contents
-* Correct log level on ``--quiet`` mode.
+* Improved logging and error reporting.
+* Improved local repo handling by checking the directory contents.
+* Corrected log level on ``--quiet`` mode.
+* Changed the way to get repositories from specific organizations.
+  From now, to get repositories from specific organizations, list each of them
+  on the command line using the argument ``--org``.
 
 v0.2.0
 ------

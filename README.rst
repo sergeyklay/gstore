@@ -132,8 +132,8 @@ Usage
     environment variable will be used. If environment variable is not set,
     ``api.github.com`` will be used.
 
-  ``--org ORG [ORG ...]``
-    Organizations you have access to (by default all).
+  ``--org ORG``
+    Organization you have access to (all if not provided).
 
   ``-v``, ``--verbose``
     Enable verbose mode. Causes Gstore to print debugging messages about its
@@ -197,21 +197,14 @@ To get all repositories of a specific organization, just specify it as follows:
 
    $ gstore --org Acme --token "$TOKEN" ~/backup
 
-To specify a *target directory* right after organization list use double dash
-to signify the end of ``--org`` option.:
-
-.. code-block:: bash
-
-   $ gstore --token "$TOKEN" --org Acme -- ~/backup
-
 **Sync all repos from Foo, Bar and Baz organizations**
 
-To get all repositories of the listed organizations, specify them separated by
-a space:
+To get repositories from specific organizations, list each of them on the
+command line using the argument ``--org`` as follows:
 
 .. code-block:: bash
 
-   $ gstore --token "$TOKEN" --org Foo Bar Baz -- ~/backup
+   $ gstore --token "$TOKEN" --org Foo --org Bar --org Baz ~/backup
 
 Logging
 -------
