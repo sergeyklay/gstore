@@ -83,9 +83,9 @@ class RepoManager:
                 target,
                 progress=RepoProgressPrinter()
             )
-        except git.GitCommandError as e:
+        except git.GitCommandError as ex:
             self.logger.error('Failed to clone %s/%s', org.login, repo.name)
-            for msg in get_error(e):
+            for msg in get_error(ex):
                 self.logger.error(msg)
 
     def fetch(self, org: Organization, repo: Repository, target: str):
@@ -96,9 +96,9 @@ class RepoManager:
         try:
             local_repo.git.fetch(['--prune', '--quiet'])
             local_repo.git.pull(['--all', '--quiet'])
-        except git.GitCommandError as e:
+        except git.GitCommandError as ex:
             self.logger.error('Failed to update %s/%s', org.login, repo.name)
-            for msg in get_error(e):
+            for msg in get_error(ex):
                 self.logger.error(msg)
 
     def sync(self, org: Organization, repos):
