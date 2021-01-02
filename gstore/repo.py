@@ -53,13 +53,14 @@ class RepoProgressPrinter(git.RemoteProgress):
             In case of the 'WRITING' operation, it contains the amount of bytes
             transferred. It may, possibly be used for other purposes as well.
         """
-        logging.getLogger('gstore.repo').debug('{} {} {} {} {}'.format(
+        logging.getLogger('gstore.repo').debug(
+            '%s %s %s %s %s',
             op_code,
             cur_count,
             max_count,
             cur_count / (max_count or 100.0),
             message or '',
-        ))
+        )
 
 
 class RepoManager:
