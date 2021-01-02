@@ -24,7 +24,8 @@ from .client import DEFAULT_HOST, TOKEN_NAMES
 
 
 class LineBreaksFormatter(HelpFormatter):
-    """ArgParse help formatter that allows line breaks in the usage messages
+    """
+    ArgParse help formatter that allows line breaks in the usage messages
     and argument help strings.
 
     Normally to include newlines in the help output of argparse, you have

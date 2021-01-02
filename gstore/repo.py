@@ -29,7 +29,8 @@ class RepoProgressPrinter(git.RemoteProgress):
     """
 
     def update(self, op_code, cur_count, max_count=None, message=''):
-        """Called whenever the progress changes
+        """
+        Called whenever the progress changes
 
         :param op_code:
             Integer allowing to be compared against Operation IDs and stage
