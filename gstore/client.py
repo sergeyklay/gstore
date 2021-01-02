@@ -71,19 +71,18 @@ class Client:
         :rtype: :class:`github.PaginatedList.PaginatedList`
             of :class:`github.Repository.Repository`
         """
-        self.logger.info('Getting repositories for {} organization'.format(
-            org.login
-        ))
+        self.logger.info('Getting repositories for %s organization', org.login)
 
         repos = org.get_repos(
             type='all',
             sort='full_name'
         )
 
-        self.logger.info('Total number of repositories for {}: {}'.format(
+        self.logger.info(
+            'Total number of repositories for %s: %s',
             org.login,
             repos.totalCount
-        ))
+        )
 
         return repos
 
@@ -99,10 +98,11 @@ class Client:
         user = self.github.get_user()
         orgs = user.get_orgs()
 
-        self.logger.info('Total number of organizations for {}: {}'.format(
+        self.logger.info(
+            'Total number of organizations for %s: %s',
             user.login,
             orgs.totalCount
-        ))
+        )
 
         return orgs
 
