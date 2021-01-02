@@ -13,6 +13,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+"""Gstore is a simple tool to synchronize GitHub repositories of your
+organizations.
+
+This tool uses the GitHub API to get a list of all forked, mirrored, public,
+and private repos owned by your organizations. If the repo already exists
+locally, it will update it via git-pull. Otherwise, it will properly clone the
+repo.
+
+Please refer to the documentation provided in the README.rst, which can be
+found at Gstore's PyPI URL: https://pypi.org/project/gstore/
+"""
+
 __copyright__ = 'Copyright (C) 2020, 2021 Serghei Iakovlev'
 __version__ = '0.2.1'
 __license__ = 'GPLv3+'
