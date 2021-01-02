@@ -125,6 +125,8 @@ def argparse():
     parser.add_argument('-dumpversion', action='version',
                         help=dumpversion_help, version=__version__)
 
+    # Show help message and exit when Gstore is called without any argument and
+    # there are not enough environment variables for normal operation.
     if len(sys.argv) == 1 and token is None:
         parser.print_help(sys.stderr)
         sys.exit(1)
