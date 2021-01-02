@@ -89,7 +89,7 @@ def get_token_from_env():
 
 
 def argparse():
-    p = ArgumentParser(
+    parser = ArgumentParser(
         description='Synchronize GitHub repositories of your organizations.',
         formatter_class=LineBreaksFormatter)
 
@@ -99,29 +99,29 @@ def argparse():
     quiet_help = 'silence any informational messages, but not error ones'
     token = get_token_from_env()
 
-    p.add_argument('target', nargs='?', type=str,
-                   default=env.get('GSTORE_DIR', os.getcwd()),
-                   help='base target to sync repos (e.g. folder on disk)')
+    parser.add_argument('target', nargs='?', type=str,
+                        default=env.get('GSTORE_DIR', os.getcwd()),
+                        help='base target to sync repos (e.g. folder on disk)')
 
-    p.add_argument('--token', dest='token', default=token, type=str,
-                   help='an authentication token for GitHub API requests')
-    p.add_argument('--host', dest='host',
-                   default=env.get('GH_HOST', DEFAULT_HOST), type=str,
-                   help='the GitHub API hostname (by default api.github.com)')
-    p.add_argument('--org', dest='org', nargs='*', type=str,
-                   help='organizations you have access to (by default all)')
-    p.add_argument('-v', '--verbose', dest='verbose', action='store_true',
-                   help='enable verbose mode')
-    p.add_argument('-q', '--quiet', dest='quiet', action='store_true',
-                   help=quiet_help)
-    p.add_argument('-V', '--version', action='version',
-                   help="print program's version information and quit",
-                   version=get_version_str())
-    p.add_argument('-dumpversion', action='version', help=dumpversion_help,
-                   version=__version__)
+    parser.add_argument('--token', dest='token', default=token, type=str,
+                        help='an authentication token for GitHub API requests')
+    parser.add_argument('--host', dest='host',
+                        default=env.get('GH_HOST', DEFAULT_HOST), type=str,
+                        help='the GitHub API hostname')
+    parser.add_argument('--org', dest='org', nargs='*', type=str,
+                        help='organizations you have access to')
+    parser.add_argument('-v', '--verbose', dest='verbose', action='store_true',
+                        help='enable verbose mode')
+    parser.add_argument('-q', '--quiet', dest='quiet', action='store_true',
+                        help=quiet_help)
+    parser.add_argument('-V', '--version', action='version',
+                        help="print program's version information and quit",
+                        version=get_version_str())
+    parser.add_argument('-dumpversion', action='version',
+                        help=dumpversion_help, version=__version__)
 
     if len(sys.argv) == 1 and token is None:
-        p.print_help(sys.stderr)
+        parser.print_help(sys.stderr)
         sys.exit(1)
 
-    return p.parse_args()
+    return parser.parse_args()
