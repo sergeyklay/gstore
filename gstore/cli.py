@@ -22,20 +22,20 @@ from .repo import RepoManager
 
 
 def main():
-    ns = argparse()
-    setup_logger(verbose=ns.verbose, quiet=ns.quiet)
+    args = argparse()
+    setup_logger(verbose=args.verbose, quiet=args.quiet)
 
     logger = logging.getLogger('gstore.cli')
 
     try:
-        client = Client(token=ns.token, api_host=ns.host)
+        client = Client(token=args.token, api_host=args.host)
 
-        if ns.org is None:
+        if args.org is None:
             orgs = client.get_orgs()
         else:
-            orgs = client.resolve_orgs(ns.org)
+            orgs = client.resolve_orgs(args.org)
 
-        manager = RepoManager(ns.target)
+        manager = RepoManager(args.target)
 
         for org in orgs:
             repos = client.get_repos(org)
