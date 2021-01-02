@@ -40,5 +40,5 @@ def main():
         for org in orgs:
             repos = client.get_repos(org)
             manager.sync(org, repos)
-    except Exception as e:
-        logger.critical(e)
+    except Exception as exception:
+        logger.critical(exception)
