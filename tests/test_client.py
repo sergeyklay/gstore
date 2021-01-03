@@ -19,6 +19,8 @@ from unittest import mock
 from gstore.client import Client
 from gstore.models import Organization
 
+import pytest
+
 
 def test_client_resolve_orgs():
     client = Client('secret')
@@ -48,26 +50,21 @@ def test_client_resolve_repos():
         mock_logger.assert_called_once_with(
             'Resolve repositories from provided configuration')
 
-    with mock.patch.object(logger, 'error') as mock_logger:
-        repos = client.resolve_repos([''], fake_org)
-
-        assert len(repos) == 0
-        mock_logger.assert_called_once_with(
-            'Invalid repo pattern: "%s", skip resolving', '')
-
-    with mock.patch.object(logger, 'error') as mock_logger:
-        repos = client.resolve_repos(['a:b:c'], fake_org)
-
-        assert len(repos) == 0
-        mock_logger.assert_called_once_with(
-            'Invalid repo pattern: "%s", skip resolving', 'a:b:c')
-
-    with mock.patch.object(logger, 'error') as mock_logger:
-        repos = client.resolve_repos(['a:'], fake_org)
-
-        assert len(repos) == 0
-        mock_logger.assert_called_once_with(
-            'Invalid repo pattern: "%s", skip resolving', 'a:')
-
     repos = client.resolve_repos(['foo:bar'], fake_org)
     assert len(repos) == 0
+
+
+@pytest.mark.parametrize('repo', ['', ':', 'a', 'a:', 'a:b:', 'a:b:c'])
+def test_client_resolve_invalid_repos(repo):
+    client = Client('secret')
+    fake_org = Organization('fake_org')
+
+    logger = logging.getLogger('gstore.client.test')
+    client.logger = logger
+
+    with mock.patch.object(logger, 'error') as mock_logger:
+        repos = client.resolve_repos([repo], fake_org)
+
+        assert len(repos) == 0
+        mock_logger.assert_called_once_with(
+            'Invalid repo pattern: "%s", skip resolving', repo)
