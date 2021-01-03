@@ -13,29 +13,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-from os import environ
+from pathlib import Path
 
 import pytest
 
 from gstore.repo import RepoManager
 
-HOME_DIR = environ.get('HOME', environ.get('USERPROFILE'))
 
-target_paths = [
-    ('~/work', '%s/work' % HOME_DIR),
-    ('~/backup/~/work', '%s/backup/~/work' % HOME_DIR),
-    ('/mnt/backup\\', '/mnt/backup'),
-    ('/mnt/backup////', '/mnt/backup'),
-    ('/mnt/backup\\//', '/mnt/backup'),
-    ('./backup/', './backup'),
-    ('.\\here', '.\\here'),
-    ('c:\\projects\\', 'c:\\projects'),
-    ('', ''),
-    ('data', 'data'),
-]
-
-
-@pytest.mark.parametrize('actual,expected', target_paths)
-def test_repo_manager_init(actual, expected):
-    rm = RepoManager(actual)
-    assert rm.base_path == expected
+@pytest.mark.parametrize(
+    'provided,expected',
+    [
+        ('~/work', f'''{Path.home()}/work'''),
+        ('~/backup/~/work', f'''{Path.home()}/backup/~/work'''),
+        ('/mnt/backup\\', '/mnt/backup'),
+        ('/mnt/backup////', '/mnt/backup'),
+        ('/mnt/backup\\//', '/mnt/backup'),
+        ('./backup/', './backup'),
+        ('.\\here', '.\\here'),
+        ('c:\\projects\\', 'c:\\projects'),
+        ('', ''),
+        ('data', 'data'),
+    ]
+)
+def test_repo_manager_init(provided, expected):
+    """RepoManager() will resolve a base path."""
+    manager = RepoManager(provided)
+    assert manager.base_path == expected

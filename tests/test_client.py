@@ -21,7 +21,16 @@ from gstore.client import Client
 from gstore.models import Organization
 
 
+@pytest.mark.parametrize('token', ['', None, False])
+def test_client_empty_token(token):
+    with pytest.raises(ValueError) as excinfo:
+        Client(token)
+
+    assert 'GitHub token was not provided or it is empty' in str(excinfo.value)
+
+
 def test_client_resolve_orgs():
+    """Call Client.resolve_orgs() with empty list should return empty list."""
     client = Client('secret')
 
     with mock.patch.object(client.logger, 'info') as mock_logger:
@@ -33,22 +42,31 @@ def test_client_resolve_orgs():
 
 
 def test_client_resolve_empty_repos():
+    """
+    Call Client.resolve_repos() with empty repo list or not expected org
+    should return empty list.
+    """
     client = Client('secret')
     fake_org = Organization('fake_org')
 
     with mock.patch.object(client.logger, 'info') as mock_logger:
         repos = client.resolve_repos([], fake_org)
-
         assert len(repos) == 0
-        mock_logger.assert_called_once_with(
-            'Resolve repositories from provided configuration')
 
-    repos = client.resolve_repos(['foo:bar'], fake_org)
-    assert len(repos) == 0
+        repos = client.resolve_repos(['foo:bar'], fake_org)
+        assert len(repos) == 0
+
+        mock_logger.assert_called_with(
+            'Resolve repositories from provided configuration'
+        )
 
 
 @pytest.mark.parametrize('repo', ['', ':', 'a', 'a:', 'a:b:', 'a:b:c'])
 def test_client_resolve_invalid_repos(repo):
+    """
+    Call Client.resolve_repos() with invalid repo pattern
+    should return empty list and log error.
+    """
     client = Client('secret')
     fake_org = Organization('fake_org')
 

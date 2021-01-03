@@ -51,7 +51,7 @@ class Client:
     ):
         if not token:
             raise ValueError(
-                'GitHub token was not provided but it is mandatory')
+                'GitHub token was not provided or it is empty')
 
         api_url = 'https://{}'.format(api_host)
 
