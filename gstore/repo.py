@@ -18,8 +18,8 @@ import os
 
 import git
 
-from .models import Organization, Repository
 from .exceptions import get_error
+from .models import Organization, Repository
 
 
 class RepoProgressPrinter(git.RemoteProgress):

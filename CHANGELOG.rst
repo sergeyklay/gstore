@@ -24,7 +24,7 @@ New features
 Packaging changes
 ~~~~~~~~~~~~~~~~~
 
-* Python < 3.7 no longer supported
+* Python < 3.7 is no longer supported.
 
 v0.2.0
 ------
