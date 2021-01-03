@@ -14,6 +14,18 @@ v0.3.0
   From now, to get repositories from specific organizations, list each of them
   on the command line using the argument ``--org``.
 
+New features
+~~~~~~~~~~~~
+
+* Added ``-o`` as a short form of ``--org`` argument.
+* Added ability to limit sync to the specified repositories using ``--repo``
+  option.
+
+Packaging changes
+~~~~~~~~~~~~~~~~~
+
+* Python < 3.7 no longer supported
+
 v0.2.0
 ------
 
