@@ -1,7 +1,7 @@
 Gstore
 ======
 
-|build| |nbsp| |codecov|
+|pypi| |nbsp| |pyver| |nbsp| |build| |nbsp| |codecov|
 
 Gstore is a simple tool to synchronize GitHub repositories of your organizations.
 
@@ -172,7 +172,7 @@ At the end Gstore will sync repositories of organizations via Git.
    $ gstore --token "$TOKEN" ~/backup
 
 Unless you set the ``GSTORE_DIR`` environment variable and don't provide
-*target directory*, Gstore will sync all the repositories to current working
+target directory, Gstore will sync all the repositories to current working
 directory.:
 
 .. code-block:: bash
@@ -310,7 +310,7 @@ License
 -------
 
 This project is open source software licensed under the
-`GNU General Public Licence version 3`_.  © 2020 `Serghei Iakovlev`_
+`GNU General Public Licence version 3`_.  © 2020, 2021 `Serghei Iakovlev`_
 
 .. _tag: https://github.com/sergeyklay/gstore/tags
 .. _Python: https://www.python.org/
@@ -325,7 +325,13 @@ This project is open source software licensed under the
 .. _open an issue: https://github.com/sergeyklay/gstore/issues
 .. _Serghei Iakovlev: https://github.com/sergeyklay
 .. _GNU General Public Licence version 3: https://github.com/sergeyklay/gstore/blob/master/LICENSE
-.. |build| image:: https://action-badges.now.sh/sergeyklay/gstore?workflow=build
+.. |pypi| image:: https://img.shields.io/pypi/v/gstore.svg
+   :target: https://pypi.org/project/gstore/
+   :alt: PyPI page
+.. |pyver| image:: https://img.shields.io/pypi/pyversions/gstore.svg
+   :target: https://pypi.org/project/gstore/
+   :alt: Python
+.. |build| image:: https://img.shields.io/github/workflow/status/sergeyklay/gstore/build/master
    :target: https://github.com/sergeyklay/gstore/actions?query=workflow%3Abuild
    :alt: CI status
 .. |codecov| image:: https://codecov.io/gh/sergeyklay/gstore/branch/master/graph/badge.svg?token=41NCMH94LQ
