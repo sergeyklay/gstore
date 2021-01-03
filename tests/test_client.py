@@ -25,10 +25,7 @@ import pytest
 def test_client_resolve_orgs():
     client = Client('secret')
 
-    logger = logging.getLogger('gstore.client.test')
-    client.logger = logger
-
-    with mock.patch.object(logger, 'info') as mock_logger:
+    with mock.patch.object(client.logger, 'info') as mock_logger:
         orgs = client.resolve_orgs([])
 
         assert len(orgs) == 0
@@ -36,14 +33,11 @@ def test_client_resolve_orgs():
             'Resolve organizations from provided configuration')
 
 
-def test_client_resolve_repos():
+def test_client_resolve_empty_repos():
     client = Client('secret')
     fake_org = Organization('fake_org')
 
-    logger = logging.getLogger('gstore.client.test')
-    client.logger = logger
-
-    with mock.patch.object(logger, 'info') as mock_logger:
+    with mock.patch.object(client.logger, 'info') as mock_logger:
         repos = client.resolve_repos([], fake_org)
 
         assert len(repos) == 0
@@ -59,10 +53,7 @@ def test_client_resolve_invalid_repos(repo):
     client = Client('secret')
     fake_org = Organization('fake_org')
 
-    logger = logging.getLogger('gstore.client.test')
-    client.logger = logger
-
-    with mock.patch.object(logger, 'error') as mock_logger:
+    with mock.patch.object(client.logger, 'error') as mock_logger:
         repos = client.resolve_repos([repo], fake_org)
 
         assert len(repos) == 0
