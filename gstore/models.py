@@ -24,3 +24,4 @@ class Organization:
 @dataclass
 class Repository:
     name: str
+    org: Organization
