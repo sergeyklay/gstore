@@ -22,15 +22,15 @@ from gstore.models import Organization
 
 
 @pytest.mark.parametrize('token', ['', None, False])
-def test_client_empty_token(token):
+def test_empty_token(token):
     """Call Client() with empty token should raise exception."""
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(
+            ValueError,
+            match='GitHub token is not provided or it is empty'):
         Client(token)
 
-    assert 'GitHub token was not provided or it is empty' in str(excinfo.value)
 
-
-def test_client_resolve_orgs():
+def test_resolve_orgs():
     """Call Client.resolve_orgs() with empty list should return empty list."""
     client = Client('secret')
 
@@ -42,7 +42,17 @@ def test_client_resolve_orgs():
             'Resolve organizations from provided configuration')
 
 
-def test_client_resolve_empty_repos():
+def test_resolve_orgs_invalid_token():
+    """Call Client.resolve_orgs() with invalid token."""
+    client = Client('secret')
+
+    with pytest.raises(
+            RuntimeError,
+            match='Bad token was used when accessing the GitHub API'):
+        client.resolve_orgs(['github'])
+
+
+def test_resolve_empty_repos():
     """
     Call Client.resolve_repos() with empty repo list or not expected org
     should return empty list.
@@ -63,7 +73,7 @@ def test_client_resolve_empty_repos():
 
 
 @pytest.mark.parametrize('repo', ['', ':', 'a', 'a:', 'a:b:', 'a:b:c'])
-def test_client_resolve_invalid_repos(repo):
+def test_resolve_invalid_repos(repo):
     """
     Call Client.resolve_repos() with invalid repo pattern
     should return empty list and log error.
