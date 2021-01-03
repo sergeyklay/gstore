@@ -33,3 +33,13 @@ def get_error(ex) -> list:
     messages = map(replace, holders)
 
     return list(messages)
+
+
+class BaseValidationError(ValueError):
+    """Base validation error."""
+    pass
+
+
+class InvalidCredentialsError(BaseValidationError):
+    """An error resulting from the use of incorrect credentials."""
+    pass
