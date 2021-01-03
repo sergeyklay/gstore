@@ -4,54 +4,71 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
-v0.3.1
-------
+Versions follow `Semantic Versioning`_ (``<major>.<minor>.<patch>``).
+
+Backward incompatible (breaking) changes will only be introduced in major
+versions with advance notice in the **Deprecations** section of releases.
+
+
+gstore 0.3.1 (XXXX-XX-XX)
+-------------------------
+
+Improvements
+~~~~~~~~~~~~
 
 * Gstore will exit with a status of one if there are critical errors during
   synchronization.
 * Gstore will handle situations with invalid API token or organization name.
 
-v0.3.0
-------
+gstore 0.3.0 (2021-01-03)
+-------------------------
 
-* Improved logging and error reporting.
-* Improved local repo handling by checking the directory contents.
-* Corrected log level on ``--quiet`` mode.
+Breaking Changes
+~~~~~~~~~~~~~~~~
+
+* Python < 3.7 is no longer supported.
 * Changed the way to get repositories from specific organizations.
   From now, to get repositories from specific organizations, list each of them
   on the command line using the argument ``--org``.
-* Fixed invalid local repo handling.
 
-New features
-~~~~~~~~~~~~
+Features
+~~~~~~~~
 
 * Added ``-o`` as a short form of ``--org`` argument.
 * Added ability to limit sync to the specified repositories using ``-r``,
   ``--repo`` option.
 
-Packaging changes
-~~~~~~~~~~~~~~~~~
+Improvements
+~~~~~~~~~~~~
 
-* Python < 3.7 is no longer supported.
+* Improved logging and error reporting.
+* Improved local repo handling by checking the directory contents.
 
-v0.2.0
-------
+Bug Fixes
+~~~~~~~~~
+
+* Corrected log level on ``--quiet`` mode.
+* Fixed invalid local repo handling.
+
+gstore 0.2.0 (2020-12-27)
+-------------------------
+
+Features
+~~~~~~~~
+
+* Added ability to specify host for Github Enterprise.
+
+Improvements
+~~~~~~~~~~~~
 
 * Show help message and exit when Gstore is called without any argument and
   there are not enough environment variables for normal operation.
 
-New features
-~~~~~~~~~~~~
+gstore 0.1.1 (2020-12-27)
+-------------------------
 
-* Added ability to specify host for Github Enterprise.
-
-v0.1.1
-------
-
-* Handling situations when the target for sync is a regular file or readonly.
-
-New features
-~~~~~~~~~~~~
+Features
+~~~~~~~~
 
 * Added ``-V``, ``--version`` arguments to print program's version information.
 * Added ``-dumpversion`` argument to print the version of the program and don't
@@ -59,69 +76,80 @@ New features
 * Added ``-q``, ``--quiet`` arguments to silence any informational messages
   except error ones
 
-v0.1.0
-------
-
-New features
+Improvements
 ~~~~~~~~~~~~
 
-* The GitHub username is no longer required upon obtaining organizations list.
+* Handling situations when the target for sync is a regular file or readonly.
+
+gstore 0.1.0 (2020-12-26)
+-------------------------
+
+Features
+~~~~~~~~
+
 * Provided ability to pass authentication token for github.com API requests via
   environment variables.
 * Added ``-v`` argument support to enable verbose mode.
 
-Packaging changes
-~~~~~~~~~~~~~~~~~
+Breaking Changes
+~~~~~~~~~~~~~~~~
+
+* The GitHub username is no longer used upon obtaining organizations list.
+
+Trivial/Internal Changes
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Changed the way to communicate with GitHub API. ``requests`` library no
   longer used thanks to ``PyGithub``.
 
-v0.0.5
-------
+gstore 0.0.5 (2020-12-25)
+-------------------------
 
-New features
-~~~~~~~~~~~~
+Features
+~~~~~~~~
 
 * Added better logging subsystem
 
-Packaging changes
-~~~~~~~~~~~~~~~~~
+Trivial/Internal Changes
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Bump GitPython version to fix a crash for users with
   ``gitpython>=3.0.0, <3.0.6``. For more see:
   https://github.com/gitpython-developers/GitPython/issues/983 .
 
-v0.0.4
-------
+gstore 0.0.4 (2020-12-24)
+-------------------------
+
+Breaking Changes
+~~~~~~~~~~~~~~~~
 
 * Renamed ``GHS_DIR`` environment variable to ``GSTORE_DIR``.
-
-Packaging changes
-~~~~~~~~~~~~~~~~~
-
 * Renamed package name from ``ghs`` to ``gstore`` to avoid collision with the
   existing package with the same name.
 
-v0.0.3
-------
+ghs 0.0.3 (2020-12-24)
+----------------------
 
-New features
-~~~~~~~~~~~~
+Features
+~~~~~~~~
 
 * Added ability to use ``GHS_DIR`` as a sync base directory.
 * Added ability to omit target directory and use current working directory.
 * Added ability to fetch objects and refs from an existent repository.
 
-v0.0.2
-------
+ghs 0.0.2 (2020-12-24)
+----------------------
 
-Packaging changes
-~~~~~~~~~~~~~~~~~
+Breaking Changes
+~~~~~~~~~~~~~~~~
 
 * Renamed package name from ``ghsync`` to ``ghs`` to avoid collision with the
   existing package with the same name.
 
-v0.0.1
-------
+ghsync 0.0.1 (2020-12-23)
+-------------------------
 
 * Initial release.
+
+.. _Semantic Versioning: https://semver.org/
+
