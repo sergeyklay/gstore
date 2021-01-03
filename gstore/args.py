@@ -16,7 +16,7 @@
 import os
 import sys
 import textwrap as _textwrap
-from argparse import ArgumentParser, HelpFormatter
+from argparse import SUPPRESS, ArgumentParser, HelpFormatter
 from os import environ as env
 
 from gstore import __copyright__, __version__
@@ -92,37 +92,53 @@ def get_token_from_env():
 def argparse():
     parser = ArgumentParser(
         description='Synchronize GitHub repositories of your organizations.',
-        formatter_class=LineBreaksFormatter)
+        usage='%(prog)s [options] [[--] target]',
+        formatter_class=LineBreaksFormatter,
+        add_help=False,
+    )
 
     token = get_token_from_env()
 
-    parser.add_argument('target', nargs='?', type=str,
+    pgroup = parser.add_argument_group('Positional parameters')
+
+    pgroup.add_argument('target', nargs='?', type=str,
                         default=env.get('GSTORE_DIR', os.getcwd()),
-                        help='base target to sync repos (e.g. folder on disk)')
+                        help='Base target to sync repos (e.g. folder on disk)')
 
-    parser.add_argument('--token', dest='token', default=token, type=str,
-                        help='an authentication token for GitHub API requests')
-    parser.add_argument('--host', dest='host',
+    ogroup = parser.add_argument_group('Options')
+
+    ogroup.add_argument('-h', '--help', action='help', default=SUPPRESS,
+                        help='Print this help message and quit')
+
+    ogroup.add_argument('--token', dest='token', default=token, type=str,
+                        help='An authentication token for GitHub API requests')
+
+    ogroup.add_argument('--host', dest='host',
                         default=env.get('GH_HOST', DEFAULT_HOST), type=str,
-                        help='the GitHub API hostname')
+                        help='The GitHub API hostname')
 
-    org_help = 'organization you have access to (all if not provided)'
-    parser.add_argument('--org', dest='org', action='append', type=str,
-                        help=org_help)
+    ogroup.add_argument('-o', '--org', dest='org', action='append', type=str,
+                        help='Organization to sync (all if not provided)')
 
-    parser.add_argument('-v', '--verbose', dest='verbose', action='store_true',
-                        help='be verbose')
+    repo_help = ('Limit sync to the specified repository, ' +
+                 'otherwise sync all repositories (format "org:repo")')
+    ogroup.add_argument('-r', '--repo', dest='repo', action='append',
+                        type=str, help=repo_help)
 
-    quiet_help = 'silence any informational messages, but not error ones'
-    parser.add_argument('-q', '--quiet', dest='quiet', action='store_true',
+    ogroup.add_argument('-v', '--verbose', dest='verbose', action='store_true',
+                        help='Increase output verbosity')
+
+    quiet_help = 'Silence any informational messages, but not error ones'
+    ogroup.add_argument('-q', '--quiet', dest='quiet', action='store_true',
                         help=quiet_help)
-    parser.add_argument('-V', '--version', action='version',
-                        help="print program's version information and quit",
+
+    ogroup.add_argument('-V', '--version', action='version',
+                        help="Print program's version information and quit",
                         version=get_version_str())
 
-    dumpversion_help = ("print the version of the program and don't " +
+    dumpversion_help = ("Print the version of the program and don't " +
                         'do anything else')
-    parser.add_argument('-dumpversion', action='version',
+    ogroup.add_argument('-dumpversion', action='version',
                         help=dumpversion_help, version=__version__)
 
     # Show help message and exit when Gstore is called without any argument and

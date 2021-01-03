@@ -16,9 +16,9 @@
 import logging
 
 from github import Github
-from github.Organization import Organization
 
 from gstore import __version__
+from .models import Organization, Repository
 
 USER_AGENT = 'Gstore/{}'.format(__version__)
 
@@ -70,12 +70,12 @@ class Client:
 
         :param Organization org: User's organization
         :return: A collection with repositories
-        :rtype: :class:`github.PaginatedList.PaginatedList`
-            of :class:`github.Repository.Repository`
+        :rtype: list of :class:`gstore.models.Repository`
         """
         self.logger.info('Getting repositories for %s organization', org.login)
 
-        repos = org.get_repos(
+        github_org = self.github.get_organization(org.login)
+        repos = github_org.get_repos(
             type='all',
             sort='full_name'
         )
@@ -86,15 +86,46 @@ class Client:
             repos.totalCount
         )
 
-        return repos
+        retval = []
+        for repo in repos:
+            retval.append(Repository(repo.name))
+
+        return retval
+
+    def resolve_repos(self, repos: list, org: Organization):
+        """
+        Initialize repositories from provided list.
+
+        :param list repos: A list of repositories in form 'org:repo'
+        :param Organization org: User's organization
+        :return: A collection with repositories
+        :rtype: list of :class:`gstore.models.Repository`
+        """
+        self.logger.info('Initialize repositories from provided configuration')
+
+        retval = []
+
+        for name in repos:
+            parts = name.split(':')
+            # TODO(serghei): Check for parts[0] index
+            if parts[0].lower() != org.login.lower():
+                continue
+
+            # This will do API request, so we'll validate the repo.
+            # TODO(serghei): Catch exceptions here and do not add repo
+            org = self.github.get_organization(org.login)
+            repo = org.get_repo(parts[-1])
+
+            retval.append(Repository(repo.name))
+
+        return retval
 
     def get_orgs(self):
         """
         Getting organizations for a user.
 
         :returns: A collection with organizations
-        :rtype: :class:`github.PaginatedList.PaginatedList`
-            of :class:`github.Organization.Organization`
+        :rtype: list of :class:`gstore.models.Organization`
         """
         self.logger.info('Getting organizations for a user')
 
@@ -107,14 +138,31 @@ class Client:
             orgs.totalCount
         )
 
-        return orgs
+        retval = []
+        for org in orgs:
+            retval.append(Organization(org.login))
+
+        return retval
 
     def resolve_orgs(self, orgs: list):
-        self.logger.info('Resolve organizations from user input')
+        """
+        Initialize organizations from provided list.
+
+        :param list orgs: A list of organizations names
+        :return: A collection with organizations
+        :rtype: list of :class:`gstore.models.Organization`
+        """
+        self.logger.info('Initialize organizations from provided configuration')
 
         retval = []
 
         for name in orgs:
-            retval.append(self.github.get_organization(name))
+            # This will do API request, so we'll validate the org.
+            # TODO(serghei): Catch exceptions here
+            org = self.github.get_organization(name)
+
+            retval.append(Organization(org.login))
 
         return retval
+
+

@@ -43,7 +43,7 @@ Install
 Requirements
 ~~~~~~~~~~~~
 
-* Python_ >= 3.6.7
+* Python_ >= 3.7
 * Git_ >= 1.7.0
 
 Installing Gstore
@@ -110,11 +110,11 @@ Usage
 
 ::
 
-   gstore [<options>] [[--] target]
+   gstore [options] [[--] target]
 
 **Options:**
   ``-h``, ``--help``
-    Show help message and exit.
+    Print help message and quit.
 
   ``--token TOKEN``
     An authentication token for GitHub API requests. If not provided via CLI
@@ -132,8 +132,13 @@ Usage
     environment variable will be used. If environment variable is not set,
     ``api.github.com`` will be used.
 
-  ``--org ORG``
-    Organization you have access to (all if not provided).
+  ``-o ORG``, ``--org ORG``
+    Organization to sync (all if not provided). Option is additive, and can be
+    used multiple times.
+
+  ``-r REPO``, ``--repo REPO``
+    Limit sync to the specified repository, otherwise sync all repositories
+    (format *org:repo*). Option is additive, and can be used multiple times.
 
   ``-v``, ``--verbose``
     Enable verbose mode. Causes Gstore to print debugging messages about its
@@ -158,9 +163,9 @@ Examples
 
 **Sync all repos from all organizations**
 
-The example below will perform 2 API requests. The first is to obtain GitHub
-username, and the second one to get a list of user's organizations. At the end
-Gstore will sync repositories of organizations via Git.
+The example below will perform HTTP requests to GitHub API. In general, we'll
+need to obtain GitHub username, and to get a list of user's organizations.
+At the end Gstore will sync repositories of organizations via Git.
 
 .. code-block:: bash
 
@@ -197,6 +202,16 @@ To get all repositories of a specific organization, just specify it as follows:
 
    $ gstore --org Acme --token "$TOKEN" ~/backup
 
+**Sync specified repos from Acme organization**
+
+To get only specified repos for a particular organization use ``--repo``
+option. This option is additive, and can be used multiple times.:
+
+.. code-block:: bash
+
+   $ gstore --org Acme --repo Acme:foo --repo Acme:bar \
+       --token "$TOKEN" ~/backup
+
 **Sync all repos from Foo, Bar and Baz organizations**
 
 To get repositories from specific organizations, list each of them on the
@@ -205,6 +220,8 @@ command line using the argument ``--org`` as follows:
 .. code-block:: bash
 
    $ gstore --token "$TOKEN" --org Foo --org Bar --org Baz ~/backup
+
+Option ``--org`` is additive, and can be used multiple times.
 
 Logging
 -------
