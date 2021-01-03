@@ -20,6 +20,14 @@ Improvements
   synchronization.
 * Gstore will handle situations with invalid API token or organization name.
 
+Trivial/Internal Changes
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+* ``Client.__init__()``, as well as ``Client.resolve_orgs()`` will raise now
+  ``gstore.exceptions.InvalidCredentialsError`` in case of incorrect
+  credentials usage.
+* ``gstore.models.Repository`` now holds ``gstore.models.Organization``.
+
 gstore 0.3.0 (2021-01-03)
 -------------------------
 
