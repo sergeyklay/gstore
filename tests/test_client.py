@@ -19,13 +19,14 @@ import pytest
 
 from gstore.client import Client
 from gstore.models import Organization
+from gstore.exceptions import InvalidCredentialsError
 
 
 @pytest.mark.parametrize('token', ['', None, False])
 def test_empty_token(token):
     """Call Client() with empty token should raise exception."""
     with pytest.raises(
-            ValueError,
+            InvalidCredentialsError,
             match='GitHub token is not provided or it is empty'):
         Client(token)
 
@@ -47,7 +48,7 @@ def test_resolve_orgs_invalid_token():
     client = Client('secret')
 
     with pytest.raises(
-            RuntimeError,
+            InvalidCredentialsError,
             match='Bad token was used when accessing the GitHub API'):
         client.resolve_orgs(['github'])
 
