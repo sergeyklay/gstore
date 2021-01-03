@@ -19,8 +19,8 @@ New features
 ~~~~~~~~~~~~
 
 * Added ``-o`` as a short form of ``--org`` argument.
-* Added ability to limit sync to the specified repositories using ``--repo``
-  option.
+* Added ability to limit sync to the specified repositories using ``-r``,
+  ``--repo`` option.
 
 Packaging changes
 ~~~~~~~~~~~~~~~~~

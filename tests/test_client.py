@@ -23,6 +23,7 @@ from gstore.models import Organization
 
 @pytest.mark.parametrize('token', ['', None, False])
 def test_client_empty_token(token):
+    """Call Client() with empty token should raise exception."""
     with pytest.raises(ValueError) as excinfo:
         Client(token)
 
