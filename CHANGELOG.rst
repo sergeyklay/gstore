@@ -4,6 +4,12 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
+v0.3.1
+------
+
+* Gstore will exit with a status of one if there are critical errors during
+  synchronization.
+
 v0.3.0
 ------
 
