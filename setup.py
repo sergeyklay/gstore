@@ -30,8 +30,8 @@ def check_python_version():
             'ERROR: This module is not supported with Python >= 4.0\n')
         sys.exit(1)
 
-    if sys.version_info < (3, 6):
-        sys.stderr.write('ERROR: This module requires at least Python 3.6\n')
+    if sys.version_info < (3, 7):
+        sys.stderr.write('ERROR: This module requires at least Python 3.7\n')
         sys.exit(1)
 
 
@@ -160,7 +160,6 @@ setup(
 
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
@@ -181,7 +180,7 @@ setup(
 
     # Dependencies that need to be fulfilled
     platforms='any',
-    python_requires='>=3.6, <4',
+    python_requires='>=3.7, <4',
 
     # Dependencies that are downloaded by pip on installation and why
     install_requires=[
