@@ -69,6 +69,7 @@ ARCHIVE_CONTENTS = CHANGELOG.rst \
 	$(PACKAGE)/client.py \
 	$(PACKAGE)/exceptions.py \
 	$(PACKAGE)/logger.py \
+	$(PACKAGE)/models.py \
 	$(PACKAGE)/repo.py \
 	setup.cfg \
 	setup.py

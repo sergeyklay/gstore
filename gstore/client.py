@@ -94,20 +94,27 @@ class Client:
 
     def resolve_repos(self, repos: list, org: Organization):
         """
-        Initialize repositories from provided list.
+        Resolve repositories from provided list.
 
         :param list repos: A list of repositories in form 'org:repo'
         :param Organization org: User's organization
         :return: A collection with repositories
         :rtype: list of :class:`gstore.models.Repository`
         """
-        self.logger.info('Initialize repositories from provided configuration')
+        self.logger.info('Resolve repositories from provided configuration')
 
         retval = []
 
         for name in repos:
             parts = name.split(':')
-            # TODO(serghei): Check for parts[0] index
+
+            if len(parts) != 2 or parts[0] == '' or parts[1] == '':
+                self.logger.error(
+                    'Invalid repo pattern: "%s", skip resolving',
+                    name
+                )
+                continue
+
             if parts[0].lower() != org.login.lower():
                 continue
 
@@ -146,14 +153,14 @@ class Client:
 
     def resolve_orgs(self, orgs: list):
         """
-        Initialize organizations from provided list.
+        Resolve organizations from provided list.
 
         :param list orgs: A list of organizations names
         :return: A collection with organizations
         :rtype: list of :class:`gstore.models.Organization`
         """
         self.logger.info(
-            'Initialize organizations from provided configuration')
+            'Resolve organizations from provided configuration')
 
         retval = []
 
