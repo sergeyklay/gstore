@@ -35,7 +35,7 @@ from gstore.repo import RepoManager
         ('data', 'data'),
     ]
 )
-def test_repo_manager_init(provided, expected):
+def test_init(provided, expected):
     """RepoManager() will resolve a base path."""
     manager = RepoManager(provided)
     assert manager.base_path == expected
