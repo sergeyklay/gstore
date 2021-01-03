@@ -69,14 +69,18 @@ class RepoManager:
         self.base_path = os.path.expanduser(base_path).rstrip('/\\')
         self.logger = logging.getLogger('gstore.repo_manager')
 
-    def clone(self, org: Organization, repo: Repository, target: str):
-        self.logger.info('Clone repository to %s/%s', org.login, repo.name)
+    def clone(self, repo: Repository, target: str):
+        self.logger.info(
+            'Clone repository to %s/%s',
+            repo.org.login,
+            repo.name
+        )
 
         if os.path.exists(target):
             os.removedirs(target)
 
         # TODO(serghei): Provide a way to configure git protocol
-        git_url = 'git@github.com:%s/%s.git' % (org.login, repo.name)
+        git_url = 'git@github.com:%s/%s.git' % (repo.org.login, repo.name)
 
         try:
             git.Repo.clone_from(
@@ -85,12 +89,20 @@ class RepoManager:
                 progress=RepoProgressPrinter()
             )
         except git.GitCommandError as exception:
-            self.logger.error('Failed to clone %s/%s', org.login, repo.name)
+            self.logger.error(
+                'Failed to clone %s/%s',
+                repo.org.login,
+                repo.name
+            )
             for msg in get_error(exception):
                 self.logger.error(msg)
 
-    def fetch(self, org: Organization, repo: Repository, target: str):
-        self.logger.info('Update repository in %s/%s', org.login, repo.name)
+    def fetch(self, repo: Repository, target: str):
+        self.logger.info(
+            'Update repository in %s/%s',
+            repo.org.login,
+            repo.name
+        )
 
         self.logger.debug('Initialize repository instance')
         local_repo = git.Repo(target)
@@ -102,11 +114,15 @@ class RepoManager:
             self.logger.debug('Fetch from and integrate with repository')
             local_repo.git.pull(['--all', '--quiet'])
         except git.GitCommandError as exception:
-            self.logger.error('Failed to update %s/%s', org.login, repo.name)
+            self.logger.error(
+                'Failed to update %s/%s',
+                repo.org.login,
+                repo.name
+            )
             for msg in get_error(exception):
                 self.logger.error(msg)
 
-    def sync(self, org: Organization, repos: list):
+    def sync(self, org: Organization, repos: list[Repository]):
         self.logger.info('Sync repos for %s', org.login)
 
         org_path = os.path.join(self.base_path, org.login)
@@ -147,6 +163,6 @@ class RepoManager:
                     shutil.rmtree(repo_path, ignore_errors=True)
 
             if os.path.exists(git_path):
-                self.fetch(org, repo, repo_path)
+                self.fetch(repo, repo_path)
             else:
-                self.clone(org, repo, repo_path)
+                self.clone(repo, repo_path)

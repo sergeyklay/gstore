@@ -20,6 +20,7 @@ from github.GithubException import BadCredentialsException
 from github.GithubException import UnknownObjectException
 
 from gstore import __version__
+from .exceptions import InvalidCredentialsError
 from .models import Organization, Repository
 
 USER_AGENT = 'Gstore/{}'.format(__version__)
@@ -43,7 +44,7 @@ class Client:
     :param str token: Authentication token for github.com API requests
     :param str api_host: Default base URL for github.com API requests
     :param int timeout: Timeout for HTTP requests
-    :raise ValueError: in case of GitHub token is not provided.
+    :raise InvalidCredentialsError: in case of GitHub token is not provided.
     """
 
     def __init__(
@@ -55,7 +56,7 @@ class Client:
         self.logger = logging.getLogger('gstore.client')
 
         if not token:
-            raise ValueError(
+            raise InvalidCredentialsError(
                 'GitHub token is not provided or it is empty')
 
         api_url = 'https://{}'.format(api_host)
@@ -92,7 +93,7 @@ class Client:
 
         retval = []
         for repo in repos:
-            retval.append(Repository(repo.name))
+            retval.append(Repository(repo.name, org))
 
         return retval
 
@@ -124,10 +125,10 @@ class Client:
 
             # This will do API request, so we'll validate the repo.
             # TODO(serghei): Catch exceptions here and do not add repo
-            org = self.github.get_organization(org.login)
-            repo = org.get_repo(parts[-1])
+            github_org = self.github.get_organization(org.login)
+            repo = github_org.get_repo(parts[-1])
 
-            retval.append(Repository(repo.name))
+            retval.append(Repository(repo.name, org))
 
         return retval
 
@@ -160,7 +161,7 @@ class Client:
         Resolve organizations from provided list.
 
         :param list orgs: A list of organizations names
-        :raise RuntimeError: in case of bad credentials.
+        :raise InvalidCredentialsError: in case of bad credentials.
         :return: A collection with organizations
         :rtype: list of :class:`gstore.models.Organization`
         """
@@ -178,7 +179,7 @@ class Client:
                 self.logger.error('Invalid organization name "%s"', name)
                 continue
             except BadCredentialsException:
-                raise RuntimeError(
+                raise InvalidCredentialsError(
                     'Bad token was used when accessing the GitHub API')
 
         return retval
