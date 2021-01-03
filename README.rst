@@ -117,18 +117,18 @@ Usage
     Print help message and quit.
 
   ``--token TOKEN``
-    An authentication token for GitHub API requests. If not provided via CLI
-    argument, then environment variable will be used. The order of searching
+    An authentication token for GitHub API requests. If not provided via this
+    option, then environment variable will be used. The order of searching
     for a token in environment variables as follows (in order of precedence):
 
     #. ``GH_TOKEN``, ``GITHUB_TOKEN``
     #. ``GH_ENTERPRISE_TOKEN``, ``GITHUB_ENTERPRISE_TOKEN``
 
     Setting these variables allows you not to not pass token directly via CLI
-    argument and avoids storing it in the Shell history.
+    and avoids storing it in the Shell history.
 
   ``--host HOST``
-    The GitHub API hostname. If not provided via CLI argument, then ``GH_HOST``
+    The GitHub API hostname. If not provided via this options, then ``GH_HOST``
     environment variable will be used. If environment variable is not set,
     ``api.github.com`` will be used.
 
@@ -154,9 +154,9 @@ Usage
     Print the version of the program and don't do anything else.
 
   ``[--] target``
-    Base target to sync repos (e.g. folder on disk). If not provided via
-    argument environment variable ``GSTORE_DIR`` will be used. If there is not
-    environment variable current working directory will be used.
+    Base target to sync repos (e.g. folder on disk). If not provided
+    environment variable ``GSTORE_DIR`` will be used. If there is not
+    environment variable, then current working directory will be used.
 
 Examples
 ~~~~~~~~
@@ -180,8 +180,8 @@ directory.:
    # Will sync all the repositories to current working directory
    $ gstore --token "$TOKEN"
 
-   # Will sync all the repositories to ~/work directory
-   $ export GSTORE_DIR=~/work
+   # Will sync all the repositories to ~/backup directory
+   $ export GSTORE_DIR=~/backup
    $ export GH_TOKEN="secret"
    $ gstore
 
@@ -215,7 +215,7 @@ option. This option is additive, and can be used multiple times.:
 **Sync all repos from Foo, Bar and Baz organizations**
 
 To get repositories from specific organizations, list each of them on the
-command line using the argument ``--org`` as follows:
+command line using the option ``--org`` as follows:
 
 .. code-block:: bash
 
@@ -248,21 +248,21 @@ Let's look at a few examples to demonstrate the above:
 .. code-block:: bash
 
    # All messages are visible
-   $ gstore ~/work
+   $ gstore ~/backup
 
    # Only informational message are visible
-   $ gstore ~/work 2>/dev/null
+   $ gstore ~/backup 2>/dev/null
 
    # Only error messages and warnings are visible
-   $ gstore ~/work 1>/dev/null
+   $ gstore ~/backup 1>/dev/null
 
    # Store logs separately
-   $ gstore ~/work > info.log 2> err.log
+   $ gstore ~/backup > info.log 2> err.log
 
    # Store all the logs in the same file
-   $ gstore ~/work > gstore.log 2>&1
+   $ gstore ~/backup > gstore.log 2>&1
 
-You can control the logging level using the following arguments:
+You can control the logging level using the following options:
 
 ``-v``, ``--verbose``
   Enable verbose mode. Causes Gstore to print debugging messages about its
@@ -279,7 +279,7 @@ the host and possible environment variables.:
 
 .. code-block:: bash
 
-   # Using CLI arguments to configure Gstore
+   # Using command line options to configure Gstore
    $ gstore --token "secret" --host "github.example.com" ~/backup
 
    # Using environment variables to configure Gstore
