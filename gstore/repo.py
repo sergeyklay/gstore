@@ -122,7 +122,7 @@ class RepoManager:
             for msg in get_error(exception):
                 self.logger.error(msg)
 
-    def sync(self, org: Organization, repos: list[Repository]):
+    def sync(self, org: Organization, repos: list):
         self.logger.info('Sync repos for %s', org.login)
 
         org_path = os.path.join(self.base_path, org.login)
