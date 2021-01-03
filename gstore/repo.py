@@ -15,6 +15,7 @@
 
 import logging
 import os
+import shutil
 
 import git
 
@@ -112,10 +113,12 @@ class RepoManager:
 
         # Just in case create directories recursively
         if not os.path.exists(org_path):
+            self.logger.debug('Creating directory %s', org_path)
             os.makedirs(org_path)
 
         for repo in repos:
             repo_path = os.path.join(org_path, repo.name)
+            git_path = os.path.join(repo_path, '.git')
 
             if os.path.exists(repo_path):
                 if os.path.isfile(repo_path):
@@ -134,8 +137,16 @@ class RepoManager:
                     )
                     continue
 
-            if os.path.exists(os.path.join(repo_path, '.git')):
+                # We're plan to run a Git command, but weren't inside a
+                # local Git repository.
+                if not os.path.exists(git_path):
+                    self.logger.debug(
+                        'Remove wrong formed local repo from %s',
+                        repo_path
+                    )
+                    shutil.rmtree(repo_path, ignore_errors=True)
+
+            if os.path.exists(git_path):
                 self.fetch(org, repo, repo_path)
             else:
-                os.removedirs(repo_path)  # remove garbage
                 self.clone(org, repo, repo_path)

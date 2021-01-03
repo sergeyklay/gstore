@@ -13,6 +13,7 @@ v0.3.0
 * Changed the way to get repositories from specific organizations.
   From now, to get repositories from specific organizations, list each of them
   on the command line using the argument ``--org``.
+* Fixed invalid local repo handling.
 
 New features
 ~~~~~~~~~~~~
