@@ -9,6 +9,7 @@ v0.3.1
 
 * Gstore will exit with a status of one if there are critical errors during
   synchronization.
+* Gstore will handle situations with invalid API token or organization name.
 
 v0.3.0
 ------

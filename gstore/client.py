@@ -16,6 +16,8 @@
 import logging
 
 from github import Github
+from github.GithubException import BadCredentialsException
+from github.GithubException import UnknownObjectException
 
 from gstore import __version__
 from .models import Organization, Repository
@@ -41,6 +43,7 @@ class Client:
     :param str token: Authentication token for github.com API requests
     :param str api_host: Default base URL for github.com API requests
     :param int timeout: Timeout for HTTP requests
+    :raise ValueError: in case of GitHub token is not provided.
     """
 
     def __init__(
@@ -49,11 +52,14 @@ class Client:
             api_host=DEFAULT_HOST,
             timeout=DEFAULT_TIMEOUT,
     ):
+        self.logger = logging.getLogger('gstore.client')
+
         if not token:
             raise ValueError(
-                'GitHub token was not provided or it is empty')
+                'GitHub token is not provided or it is empty')
 
         api_url = 'https://{}'.format(api_host)
+        self.logger.debug('Setting API URL to %s', api_url)
 
         self.github = Github(
             login_or_token=token,
@@ -61,8 +67,6 @@ class Client:
             timeout=timeout,
             user_agent=USER_AGENT
         )
-
-        self.logger = logging.getLogger('gstore.client')
 
     def get_repos(self, org: Organization):
         """
@@ -156,6 +160,7 @@ class Client:
         Resolve organizations from provided list.
 
         :param list orgs: A list of organizations names
+        :raise RuntimeError: in case of bad credentials.
         :return: A collection with organizations
         :rtype: list of :class:`gstore.models.Organization`
         """
@@ -165,10 +170,15 @@ class Client:
         retval = []
 
         for name in orgs:
-            # This will do API request, so we'll validate the org.
-            # TODO(serghei): Catch exceptions here
-            org = self.github.get_organization(name)
-
-            retval.append(Organization(org.login))
+            try:
+                # This will do API request, so we'll validate the org.
+                org = self.github.get_organization(name)
+                retval.append(Organization(org.login))
+            except UnknownObjectException:
+                self.logger.error('Invalid organization name "%s"', name)
+                continue
+            except BadCredentialsException:
+                raise RuntimeError(
+                    'Bad token was used when accessing the GitHub API')
 
         return retval
