@@ -17,9 +17,8 @@ import logging
 import os
 
 import git
-from github.Organization import Organization
-from github.Repository import Repository
 
+from .models import Organization, Repository
 from .exceptions import get_error
 
 
@@ -84,25 +83,29 @@ class RepoManager:
                 target,
                 progress=RepoProgressPrinter()
             )
-        except git.GitCommandError as ex:
+        except git.GitCommandError as exception:
             self.logger.error('Failed to clone %s/%s', org.login, repo.name)
-            for msg in get_error(ex):
+            for msg in get_error(exception):
                 self.logger.error(msg)
 
     def fetch(self, org: Organization, repo: Repository, target: str):
         self.logger.info('Update repository in %s/%s', org.login, repo.name)
 
+        self.logger.debug('Initialize repository instance')
         local_repo = git.Repo(target)
 
         try:
+            self.logger.debug('Download objects and refs from repository')
             local_repo.git.fetch(['--prune', '--quiet'])
+
+            self.logger.debug('Fetch from and integrate with repository')
             local_repo.git.pull(['--all', '--quiet'])
-        except git.GitCommandError as ex:
+        except git.GitCommandError as exception:
             self.logger.error('Failed to update %s/%s', org.login, repo.name)
-            for msg in get_error(ex):
+            for msg in get_error(exception):
                 self.logger.error(msg)
 
-    def sync(self, org: Organization, repos):
+    def sync(self, org: Organization, repos: list):
         self.logger.info('Sync repos for %s', org.login)
 
         org_path = os.path.join(self.base_path, org.login)

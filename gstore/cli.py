@@ -38,7 +38,11 @@ def main():
         manager = RepoManager(args.target)
 
         for org in orgs:
-            repos = client.get_repos(org)
+            if args.repo is None:
+                repos = client.get_repos(org)
+            else:
+                repos = client.resolve_repos(args.repo, org)
+
             manager.sync(org, repos)
-    except Exception as ex:
-        logger.critical(ex)
+    except Exception as exception:
+        logger.critical(exception)
