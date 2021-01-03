@@ -152,7 +152,8 @@ class Client:
         :return: A collection with organizations
         :rtype: list of :class:`gstore.models.Organization`
         """
-        self.logger.info('Initialize organizations from provided configuration')
+        self.logger.info(
+            'Initialize organizations from provided configuration')
 
         retval = []
 
@@ -164,5 +165,3 @@ class Client:
             retval.append(Organization(org.login))
 
         return retval
-
-
