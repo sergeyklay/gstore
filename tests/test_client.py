@@ -13,13 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-import logging
 from unittest import mock
+
+import pytest
 
 from gstore.client import Client
 from gstore.models import Organization
-
-import pytest
 
 
 def test_client_resolve_orgs():
