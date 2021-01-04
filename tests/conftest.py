@@ -12,3 +12,126 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
+
+import pytest
+
+from github import Github
+from github.GithubException import UnknownObjectException
+
+
+class MicroMock:
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+    def __iter__(self):
+        return iter([])
+
+
+class MockOrganization:
+    @staticmethod
+    def get_repo(name):
+        return MicroMock(name=name)
+
+    @staticmethod
+    def get_repos(*args, **kwargs):
+        return MicroMock(totalCount=0)
+
+
+class MockUser:
+    login = 'mock_user'
+
+    @staticmethod
+    def get_orgs():
+        return MicroMock(totalCount=0)
+
+
+@pytest.fixture
+def mock_user(monkeypatch):
+    """github.Github.get_user() mocked to return fake user."""
+    def mock_get_user(*args, **kwargs):
+        return MockUser()
+
+    monkeypatch.setattr(
+        Github,
+        'get_user',
+        mock_get_user
+    )
+
+
+@pytest.fixture
+def mock_micro_organization(monkeypatch):
+    """
+    github.Github.get_organization() mocked to return fake organization object
+    without methods.
+    """
+    def mock_get_organization(_, name):
+        return MicroMock(login=name)
+
+    monkeypatch.setattr(
+        Github,
+        'get_organization',
+        mock_get_organization
+    )
+
+
+@pytest.fixture
+def mock_organization(monkeypatch):
+    """github.Github.get_organization() mocked to return fake organization."""
+    def mock_get_organization(*args, **kwargs):
+        return MockOrganization()
+
+    monkeypatch.setattr(
+        Github,
+        'get_organization',
+        mock_get_organization
+    )
+
+
+@pytest.fixture
+def mock_orgs_iter(monkeypatch):
+    """
+    MicroMock.__iter__() mocked to return fake list of organizations.
+    """
+    def mock_iter(*args, **kwargs):
+        return iter(
+            [MicroMock(login='awesome'), MicroMock(login='company')]
+        )
+
+    monkeypatch.setattr(
+        MicroMock,
+        '__iter__',
+        mock_iter
+    )
+
+
+@pytest.fixture
+def mock_repos_iter(monkeypatch):
+    """
+    MicroMock.__iter__() mocked to return fake list of repositories.
+    """
+    def mock_get_repos(*args, **kwargs):
+        return iter(
+            [MicroMock(name='repo1'), MicroMock(name='repo2')]
+        )
+
+    monkeypatch.setattr(
+        MicroMock,
+        '__iter__',
+        mock_get_repos
+    )
+
+
+@pytest.fixture
+def mock_repository(monkeypatch):
+    """
+    MockOrganization.get_repo() mocked to raise
+    :class:`github.GithubException.UnknownObjectException`.
+    """
+    def mock_get_repo(*args, **kwargs):
+        raise UnknownObjectException(401, 'Not found')
+
+    monkeypatch.setattr(
+        MockOrganization,
+        'get_repo',
+        mock_get_repo
+    )
