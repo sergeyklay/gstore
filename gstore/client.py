@@ -77,7 +77,7 @@ class Client:
         :return: A collection with repositories
         :rtype: list of :class:`gstore.models.Repository`
         """
-        self.logger.info('Getting repositories for %s organization', org.login)
+        self.logger.info('Getting repositories for organization')
 
         github_org = self.github.get_organization(org.login)
         repos = github_org.get_repos(
@@ -86,7 +86,7 @@ class Client:
         )
 
         self.logger.info(
-            'Total number of repositories for %s: %s',
+            'Number of available repositories for %s organization: %s',
             org.login,
             repos.totalCount
         )
@@ -123,12 +123,20 @@ class Client:
             if parts[0].lower() != org.login.lower():
                 continue
 
-            # This will do API request, so we'll validate the repo.
-            # TODO(serghei): Catch exceptions here and do not add repo
-            github_org = self.github.get_organization(org.login)
-            repo = github_org.get_repo(parts[-1])
+            repo_name = parts[-1]
 
-            retval.append(Repository(repo.name, org))
+            try:
+                # This will do API request, so we'll validate the repo.
+                github_org = self.github.get_organization(org.login)
+                repo = github_org.get_repo(repo_name)
+
+                retval.append(Repository(repo.name, org))
+            except UnknownObjectException:
+                self.logger.error('Invalid repository name "%s"', repo_name)
+                continue
+            except BadCredentialsException:
+                raise InvalidCredentialsError(
+                    'Bad token was used when accessing the GitHub API')
 
         return retval
 
@@ -139,13 +147,13 @@ class Client:
         :returns: A collection with organizations
         :rtype: list of :class:`gstore.models.Organization`
         """
-        self.logger.info('Getting organizations for a user')
+        self.logger.info('Getting organizations for user')
 
         user = self.github.get_user()
         orgs = user.get_orgs()
 
         self.logger.info(
-            'Total number of organizations for %s: %s',
+            'Number of available organizations for %s user: %s',
             user.login,
             orgs.totalCount
         )
