@@ -52,8 +52,8 @@ HAVE_PYTEST_COV = $(shell sh -c "$(PYTHON) -m pip show $(PYTEST_COV) 2>/dev/null
 endif
 endif
 
-PACKAGE = $(shell sed -nre "s/PKG_NAME[[:space:]]*=[[:space:]]*'(.*)'/\1/p" $(TOP)/setup.py)
-VERSION = $(shell sed -nre "s/^__version__[[:space:]]*=[[:space:]]*['\"](.*)['\"]/\1/p" $(TOP)/$(PACKAGE)/__init__.py)
+PACKAGE = $(shell sed -nEe "s/PKG_NAME[[:space:]]*=[[:space:]]*'(.*)'/\1/p" $(TOP)/setup.py)
+VERSION = $(shell sed -nEe "s/^__version__[[:space:]]*=[[:space:]]*['\"](.*)['\"]/\1/p" $(TOP)/$(PACKAGE)/__init__.py)
 
 ARCHIVE_NAME = $(PACKAGE)-$(VERSION)
 WHL_NAME = $(PACKAGE)-$(VERSION)-py3-none-any
