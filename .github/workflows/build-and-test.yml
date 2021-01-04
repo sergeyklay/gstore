@@ -82,7 +82,7 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
+          files: ./coverage.xml
           env_vars: OS,PYTHON
           name: codecov-umbrella
           flags: unittests
