@@ -331,8 +331,8 @@ This project is open source software licensed under the
 .. |pyver| image:: https://img.shields.io/pypi/pyversions/gstore.svg
    :target: https://pypi.org/project/gstore/
    :alt: Python
-.. |build| image:: https://img.shields.io/github/workflow/status/sergeyklay/gstore/build/master
-   :target: https://github.com/sergeyklay/gstore/actions?query=workflow%3Abuild
+.. |build| image:: https://img.shields.io/github/workflow/status/sergeyklay/gstore/main/master
+   :target: https://github.com/sergeyklay/gstore/actions?query=workflow%3Amain
    :alt: CI status
 .. |codecov| image:: https://codecov.io/gh/sergeyklay/gstore/branch/master/graph/badge.svg?token=41NCMH94LQ
    :target: https://codecov.io/gh/sergeyklay/gstore
