@@ -35,28 +35,50 @@ install:
 	@echo $(H1)Installing Gstore$(H1END)
 	$(PYTHON) -m pip install --upgrade --editable .
 
+.PHONY: uninstall
+uninstall:
+	@echo $(H1)Uninstalling $(PACKAGE)$(H1END)
+	- $(PYTHON) -m pip uninstall --yes $(PACKAGE) &2>/dev/null
+
+	@echo "Verifying..."
+	cd .. && ! $(PYTHON) -m $(PACKAGE) --version &2>/dev/null
+
+	@echo "Done"
+	@echo
 
 .PHONY: clean
 clean:
-	@echo $(H1)Remove Python cache ...$(H1END)
+	@echo $(H1)Remove Python cache$(H1END)
 	find $(TOP) -name '__pycache__' -delete -o -name '*.pyc' -delete
-	@echo $(H1)Remove all build artefacts and directories...$(H1END)
+	@echo $(H1)Remove all build artefacts and directories$(H1END)
 	$(RM) -r $(TOP)build $(TOP)dist $(TOP)*.egg-info
-	@echo $(H1)Remove tests artefacts ...$(H1END)
+	@echo $(H1)Remove tests artefacts$(H1END)
 	$(RM) -r $(TOP).tox $(TOP).pytest_cache
-	@echo $(H1)Remove code coverage artefacts ...$(H1END)
+	@echo $(H1)Remove code coverage artefacts$(H1END)
 	$(RM) -r $(TOP)htmlcov
 	$(RM) $(TOP).coverage $(TOP)coverage.xml
 
 .PHONY: check
 check: build
+	@echo $(H1)Check distribution files$(HEADER_EXTRA)$(H1END)
 	$(TWINE) check $(TOP)dist/*
-	$(info Done.)
+	@echo
 
 .PHONY: test-ccov
 test-ccov: COV=--cov
 test-ccov: HEADER_EXTRA=' (with coverage)'
 test-ccov: test
+
+.PHONY: test-all
+test-all: clean install test
+
+.PHONY: test-sdist
+test-sdist: clean dist/$(ARCHIVE_NAME).tar.gz
+	@echo $(H1)Testing sdist build an installation$(H1END)
+	$(PYTHON) -m pip install --force-reinstall --upgrade dist/*.gz
+	@echo
+	$(PACKAGE) --version
+	@echo
 
 .PHONY: test
 test:
@@ -76,6 +98,7 @@ publish: build
 
 .PHONY: build
 build: dist/$(ARCHIVE_NAME).tar.gz dist/$(WHL_NAME).whl
+	@echo
 
 .PHONY: help
 help: .title
@@ -83,11 +106,14 @@ help: .title
 	@echo 'Available targets:'
 	@echo '  help:       Show this help and exit'
 	@echo '  install:    Install development version of $(PACKAGE)'
+	@echo '  uninstall:  Uninstall $(PACKAGE)'
 	@echo '  build:      Build $(PACKAGE) distribution'
 	@echo '  publish:    Upload $(PACKAGE) distribution to the repository'
 	@echo '  clean:      Remove all build artefacts and directories'
 	@echo '  check:      Check distribution files'
 	@echo '  test:       Run unit tests'
+	@echo '  test-sdist: Testing source distribution build an installation'
+	@echo '  test-all:   Test everything'
 	@echo '  test-ccov:  Run unit tests with coverage'
 	@echo '  lint:       Lint code'
 	@echo ''
