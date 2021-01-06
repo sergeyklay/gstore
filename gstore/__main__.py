@@ -13,7 +13,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+"""The main entry point. Invoke as `gstore' or `python -m gstore'."""
+
+import sys
+
 from gstore.cli import main
 
-if __name__ == '__main__':
-    main()
+
+def init():
+    """
+    Main entrypoint.
+
+    This simple wrapper function runs the main() function when the file is
+    executed by interpreter. Conversely, if the file is used as a module, the
+    main() function will not automatically execute.
+
+    The sys.exit() function is called with a return value of main(), as all
+    good UNIX programs do.
+    """
+    if __name__ == '__main__':
+        sys.exit(main())
+
+
+init()

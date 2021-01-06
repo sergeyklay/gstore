@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+"""Command line argument parsing methods for gstore."""
+
 import os
 import sys
 import textwrap as _textwrap
@@ -56,6 +58,7 @@ class LineBreaksFormatter(HelpFormatter):
 
 
 def get_version_str():
+    """A helper function to format version info."""
     version = '''
     {prog}s {version}|n
     {copy}.|n
@@ -90,6 +93,12 @@ def get_token_from_env():
 
 
 def argparse():
+    """
+    The function initializes command line arguments parser.
+
+    :return: The list of parsed arguments or None in case of any error.
+    :rtype: :class:`argparse.Namespace` or None
+    """
     parser = ArgumentParser(
         description='Synchronize GitHub repositories of your organizations.',
         usage='%(prog)s [options] [[--] target]',
@@ -141,10 +150,10 @@ def argparse():
     ogroup.add_argument('-dumpversion', action='version',
                         help=dumpversion_help, version=__version__)
 
-    # Show help message and exit when Gstore is called without any argument and
+    # Show help message and exit when gstore is called without any argument and
     # there are not enough environment variables for normal operation.
     if len(sys.argv) == 1 and token is None:
         parser.print_help(sys.stderr)
-        sys.exit(1)
+        return None
 
     return parser.parse_args()

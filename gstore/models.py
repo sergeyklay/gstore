@@ -13,15 +13,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+"""Data classes used by various operations within gstore."""
+
 from dataclasses import dataclass
 
 
 @dataclass
 class Organization:
+    """Represents Organization data class."""
+
     login: str
 
 
 @dataclass
 class Repository:
+    """Represents Repository data class."""
+
     name: str
     org: Organization
