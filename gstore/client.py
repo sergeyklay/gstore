@@ -23,7 +23,7 @@ from gstore import __version__
 from .exceptions import InvalidCredentialsError
 from .models import Organization, Repository
 
-USER_AGENT = 'Gstore/{}'.format(__version__)
+USER_AGENT = f'Gstore/{__version__}'
 
 DEFAULT_HOST = 'api.github.com'
 DEFAULT_TIMEOUT = 15
