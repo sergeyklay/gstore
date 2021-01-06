@@ -119,14 +119,15 @@ def get_version_string(pkg_dir, pkg_name):
 
 PKG_NAME = 'gstore'
 PKG_DIR = locate_package_directory()
-
+PKG_VERSION = get_version_string(PKG_DIR, PKG_NAME)
+PKG_GIT = f'https://github.com/sergeyklay/{PKG_NAME}'
 
 check_python_version()
 
 setup(
     # Basic package information
     name=PKG_NAME,
-    version=get_version_string(PKG_DIR, PKG_NAME),
+    version=PKG_VERSION,
     author='Serghei Iakovlev',
     author_email='egrep@protonmail.ch',
     maintainer='Serghei Iakovlev',
@@ -139,11 +140,11 @@ setup(
     keywords='git github backup repo sync',
 
     # Project's URLs
-    url=f'https://github.com/sergeyklay/{PKG_NAME}',
-    download_url=f'https://github.com/sergeyklay/{PKG_NAME}/archive/{get_version_string(PKG_DIR, PKG_NAME)}.tar.gz',  # noqa: E501
+    url=PKG_GIT,
+    download_url=f'{PKG_GIT}/archive/{PKG_VERSION}.tar.gz',
     project_urls={
-        'Tracker': f'https://github.com/sergeyklay/{PKG_NAME}/issues',
-        'Source': f'https://github.com/sergeyklay/{PKG_NAME}',
+        'Tracker': f'{PKG_GIT}/issues',
+        'Source': PKG_GIT,
     },
 
     # Classifiers: available ones listed at https://pypi.org/classifiers
@@ -194,14 +195,14 @@ setup(
 
     # Dependencies that are required to run tests
     tests_require=[
-        'pytest',           # Our tests framework
-        'pytest-cov',       # Pytest plugin to produce coverage reports
+        'pytest',            # Our tests framework
+        'pytest-cov',        # Pytest plugin to produce coverage reports
     ],
 
     # Entry points
     entry_points={
         'console_scripts': [
-            '{pkg}={pkg}.cli:main'.format(pkg=PKG_NAME)
+            f'{PKG_NAME}={PKG_NAME}.cli:main'
         ]
     },
 
