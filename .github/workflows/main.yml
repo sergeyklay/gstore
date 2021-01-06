@@ -81,8 +81,14 @@ jobs:
       - name: Makefile selftest
         run: make help
 
+      - name: Install dev version of gstore
+        run: make install
+
       - name: Minimal load test
-        run: python -m gstore --help
+        run: |
+          gstore --help
+          gstore --version
+          gstore -dumpversion
 
       - name: Test with pytest
         run: make test-ccov
