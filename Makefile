@@ -56,8 +56,8 @@ clean:
 	$(RM) -r $(TOP)htmlcov
 	$(RM) $(TOP).coverage $(TOP)coverage.xml
 
-.PHONY: check-dst
-check-dst:
+.PHONY: check-dist
+check-dist:
 	@echo $(H1)Check distribution files$(HEADER_EXTRA)$(H1END)
 	$(TWINE) check $(TOP)dist/*
 	@echo
@@ -70,6 +70,7 @@ test-ccov: test
 .PHONY: test-all
 test-all: clean install lint test test-dist
 
+.PHONY: test-dist
 test-dist: test-sdist test-bdist
 	@echo
 
@@ -127,9 +128,10 @@ help: .title
 	@echo '  build:      Build $(PACKAGE) distribution'
 	@echo '  publish:    Publish $(PACKAGE) package'
 	@echo '  upload:     Upload $(PACKAGE) distribution to the repository'
-	@echo '              (meant for "publish")'
+	@echo '                (meant for "publish")'
 	@echo '  clean:      Remove build and tests artefacts and directories'
-	@echo '  check-dst:  Check distribution files'
+	@echo '  check-dist: Check integrity of distribution files'
+	@echo '                and validate packages'
 	@echo '  test:       Run unit tests'
 	@echo '  test-dist:  Testing package distribution and installation'
 	@echo '  test-sdist: Testing source distribution and installation'
