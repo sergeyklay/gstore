@@ -22,6 +22,8 @@ H1END=" \#\#\# \033[0m\n"
 COV=
 HEADER_EXTRA=
 
+REQUIREMENTS=requirements-dev.txt
+
 # Run “make build” by default
 .DEFAULT_GOAL = build
 
@@ -34,7 +36,7 @@ FLAKE8     = flake8
 # Program availability
 HAVE_PYTHON := $(shell sh -c "command -v $(PYTHON)")
 ifndef HAVE_PYTHON
-$(warning "$(PYTHON) is not available.")
+$(error "$(PYTHON) is not available.")
 endif
 
 HAVE_TWINE := $(shell sh -c "command -v $(TWINE)")
