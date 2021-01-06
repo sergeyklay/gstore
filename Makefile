@@ -29,22 +29,29 @@ dist/$(ARCHIVE_NAME).tar.gz: $(ARCHIVE_CONTENTS)
 
 .PHONY: clean
 clean:
-	$(info Remove all build artefacts and directories...)
-	@$(RM) -rf .pytest_cache/ build/ dist/ *.egg-info/ htmlcov/
-	@$(RM) -f .coverage coverage.xml
+	@echo $(H1)Remove all build artefacts and directories...$(H1END)
+	$(RM) -rf build/ dist/ *.egg-info/
+	@echo $(H1)Remove tests artefacts ...$(H1END)
+	$(RM) -rf .tox/ .pytest_cache/
+	@echo $(H1)Remove code coverage artefacts ...$(H1END)
+	$(RM) -rf htmlcov/
+	$(RM) -f .coverage coverage.xml
 
 .PHONY: check
-check: package
+check: build
 	$(TWINE) check dist/*
 	$(info Done.)
 
+.PHONY: test-ccov
+test-ccov: COV=--cov
+test-ccov: HEADER_EXTRA=' (with coverage)'
+test-ccov: test
+
 .PHONY: test
 test:
-ifeq ($(HAVE_PYTEST_COV),)
-	$(PYTEST) -v --color=yes
-else
-	$(PYTEST) -v --color=yes --cov=$(TOP) --cov-report=xml
-endif
+	@echo $(H1)Running tests$(HEADER_EXTRA)$(H1END)
+	$(PYTEST) $(COV) ./gstore $(COV) ./tests --verbose ./gstore ./tests
+	@echo
 
 .PHONY: lint
 lint:
@@ -52,23 +59,24 @@ lint:
 	@$(FLAKE8) . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 .PHONY: upload
-publish: distrib
+publish: build
 	$(TWINE) upload dist/*
 	$(info Done.)
 
-.PHONY: distrib
-distrib: dist/$(ARCHIVE_NAME).tar.gz dist/$(WHL_NAME).whl
+.PHONY: build
+build: dist/$(ARCHIVE_NAME).tar.gz dist/$(WHL_NAME).whl
 
 .PHONY: help
 help: .title
 	@echo ''
 	@echo 'Available targets:'
 	@echo '  help:       Show this help and exit'
-	@echo '  distrib:    Build $(PACKAGE) distribution'
+	@echo '  build:      Build $(PACKAGE) distribution'
 	@echo '  publish:    Upload $(PACKAGE) distribution to the repository'
 	@echo '  clean:      Remove all build artefacts and directories'
 	@echo '  check:      Check distribution files'
 	@echo '  test:       Run unit tests'
+	@echo '  test-ccov:  Run unit tests with coverage'
 	@echo '  lint:       Lint code'
 	@echo ''
 	@echo 'Available programs:'

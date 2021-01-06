@@ -14,9 +14,16 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 TOP := $(dir $(lastword $(MAKEFILE_LIST)))
+ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-# Run “make package” by default
-.DEFAULT_GOAL = package
+H1="\n\n\033[0;32m\#\#\# "
+H1END=" \#\#\# \033[0m\n"
+
+COV=
+HEADER_EXTRA=
+
+# Run “make build” by default
+.DEFAULT_GOAL = build
 
 PYTHON    ?= python
 PYTEST     = pytest
