@@ -27,19 +27,30 @@ dist/$(ARCHIVE_NAME).tar.gz: $(ARCHIVE_CONTENTS)
 
 ## Public targets
 
+.PHONY: install
+install:
+	@echo $(H1)Installing dev requirements$(H1END)
+	$(PYTHON) -m pip install --upgrade -r $(REQUIREMENTS)
+
+	@echo $(H1)Installing Gstore$(H1END)
+	$(PYTHON) -m pip install --upgrade --editable .
+
+
 .PHONY: clean
 clean:
+	@echo $(H1)Remove Python cache ...$(H1END)
+	find $(TOP) -name '__pycache__' -delete -o -name '*.pyc' -delete
 	@echo $(H1)Remove all build artefacts and directories...$(H1END)
-	$(RM) -rf build/ dist/ *.egg-info/
+	$(RM) -r $(TOP)build $(TOP)dist $(TOP)*.egg-info
 	@echo $(H1)Remove tests artefacts ...$(H1END)
-	$(RM) -rf .tox/ .pytest_cache/
+	$(RM) -r $(TOP).tox $(TOP).pytest_cache
 	@echo $(H1)Remove code coverage artefacts ...$(H1END)
-	$(RM) -rf htmlcov/
-	$(RM) -f .coverage coverage.xml
+	$(RM) -r $(TOP)htmlcov
+	$(RM) $(TOP).coverage $(TOP)coverage.xml
 
 .PHONY: check
 check: build
-	$(TWINE) check dist/*
+	$(TWINE) check $(TOP)dist/*
 	$(info Done.)
 
 .PHONY: test-ccov
@@ -50,17 +61,17 @@ test-ccov: test
 .PHONY: test
 test:
 	@echo $(H1)Running tests$(HEADER_EXTRA)$(H1END)
-	$(PYTEST) $(COV) ./gstore $(COV) ./tests --verbose ./gstore ./tests
+	$(PYTEST) $(COV) $(TOP)$(PACKAGE) $(COV) $(TOP)tests --verbose $(TOP)$(PACKAGE) $(TOP)tests
 	@echo
 
 .PHONY: lint
 lint:
-	@$(FLAKE8) . --count --show-source --statistics
-	@$(FLAKE8) . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+	$(FLAKE8) $(TOP) --count --show-source --statistics
+	$(FLAKE8) $(TOP) --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 .PHONY: upload
 publish: build
-	$(TWINE) upload dist/*
+	$(TWINE) upload $(TOP)dist/*
 	$(info Done.)
 
 .PHONY: build
@@ -71,6 +82,7 @@ help: .title
 	@echo ''
 	@echo 'Available targets:'
 	@echo '  help:       Show this help and exit'
+	@echo '  install:    Install development version of $(PACKAGE)'
 	@echo '  build:      Build $(PACKAGE) distribution'
 	@echo '  publish:    Upload $(PACKAGE) distribution to the repository'
 	@echo '  clean:      Remove all build artefacts and directories'
