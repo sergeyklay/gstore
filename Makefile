@@ -48,18 +48,16 @@ uninstall:
 
 .PHONY: clean
 clean:
-	@echo $(H1)Remove Python cache$(H1END)
+	@echo $(H1)Remove build and tests artefacts and directories$(H1END)
+
 	find $(TOP) -name '__pycache__' -delete -o -name '*.pyc' -delete
-	@echo $(H1)Remove all build artefacts and directories$(H1END)
 	$(RM) -r $(TOP)build $(TOP)dist $(TOP)*.egg-info
-	@echo $(H1)Remove tests artefacts$(H1END)
 	$(RM) -r $(TOP).tox $(TOP).pytest_cache
-	@echo $(H1)Remove code coverage artefacts$(H1END)
 	$(RM) -r $(TOP)htmlcov
 	$(RM) $(TOP).coverage $(TOP)coverage.xml
 
-.PHONY: check
-check: build
+.PHONY: check-dst
+check-dst:
 	@echo $(H1)Check distribution files$(HEADER_EXTRA)$(H1END)
 	$(TWINE) check $(TOP)dist/*
 	@echo
@@ -70,12 +68,23 @@ test-ccov: HEADER_EXTRA=' (with coverage)'
 test-ccov: test
 
 .PHONY: test-all
-test-all: clean install test
+test-all: clean install lint test test-dist
+
+test-dist: test-sdist test-bdist
+	@echo
 
 .PHONY: test-sdist
 test-sdist: clean dist/$(ARCHIVE_NAME).tar.gz
-	@echo $(H1)Testing sdist build an installation$(H1END)
+	@echo $(H1)Testing source distribution and installation$(H1END)
 	$(PYTHON) -m pip install --force-reinstall --upgrade dist/*.gz
+	@echo
+	$(PACKAGE) --version
+	@echo
+
+.PHONY: test-bdist
+test-bdist: clean dist/$(WHL_NAME).whl
+	@echo $(H1)Testing built distribution and installation$(H1END)
+	$(PYTHON) -m pip install --force-reinstall --upgrade dist/*.whl
 	@echo
 	$(PACKAGE) --version
 	@echo
@@ -91,10 +100,18 @@ lint:
 	$(FLAKE8) $(TOP) --count --show-source --statistics
 	$(FLAKE8) $(TOP) --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
+.PHONY: publish
+publish: test-all upload
+
 .PHONY: upload
-publish: build
+upload:
+	@echo $(H1)Upload built distribution$(H1END)
+	@echo "$(VERSION)"
+	@echo "$(VERSION)" | grep -q "dav" && echo '!!! Not publishing dev version !!!' && exit 1 || echo ok
+	$(MAKE) build
+	$(MAKE) check-dst
 	$(TWINE) upload $(TOP)dist/*
-	$(info Done.)
+	@echo
 
 .PHONY: build
 build: dist/$(ARCHIVE_NAME).tar.gz dist/$(WHL_NAME).whl
@@ -108,14 +125,18 @@ help: .title
 	@echo '  install:    Install development version of $(PACKAGE)'
 	@echo '  uninstall:  Uninstall $(PACKAGE)'
 	@echo '  build:      Build $(PACKAGE) distribution'
-	@echo '  publish:    Upload $(PACKAGE) distribution to the repository'
-	@echo '  clean:      Remove all build artefacts and directories'
-	@echo '  check:      Check distribution files'
+	@echo '  publish:    Publish $(PACKAGE) package'
+	@echo '  upload:     Upload $(PACKAGE) distribution to the repository'
+	@echo '              (meant for "publish")'
+	@echo '  clean:      Remove build and tests artefacts and directories'
+	@echo '  check-dst:  Check distribution files'
 	@echo '  test:       Run unit tests'
-	@echo '  test-sdist: Testing source distribution build an installation'
+	@echo '  test-dist:  Testing package distribution and installation'
+	@echo '  test-sdist: Testing source distribution and installation'
+	@echo '  test-bdist: Testing built distribution and installation'
 	@echo '  test-all:   Test everything'
 	@echo '  test-ccov:  Run unit tests with coverage'
-	@echo '  lint:       Lint code'
+	@echo '  lint:       Lint the code'
 	@echo ''
 	@echo 'Available programs:'
 	@echo '  python:     $(if $(HAVE_PYTHON),yes,no)'
