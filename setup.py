@@ -131,16 +131,19 @@ setup(
     author_email='egrep@protonmail.ch',
     maintainer='Serghei Iakovlev',
     maintainer_email='egrep@protonmail.ch',
-    url='https://github.com/sergeyklay/gstore',
     license='GPLv3+',
     description='Gstore is a simple tool to synchronize GitHub '
                 'repositories of your organizations.',
     long_description=load_long_description(PKG_DIR),
     long_description_content_type='text/x-rst',
     keywords='git github backup repo sync',
+
+    # Project's URLs
+    url=f'https://github.com/sergeyklay/{PKG_NAME}',
+    download_url=f'https://github.com/sergeyklay/{PKG_NAME}/archive/{get_version_string(PKG_DIR, PKG_NAME)}.tar.gz',  # noqa: E501
     project_urls={
-        'Tracker': 'https://github.com/sergeyklay/gstore/issues',
-        'Source': 'https://github.com/sergeyklay/gstore',
+        'Tracker': f'https://github.com/sergeyklay/{PKG_NAME}/issues',
+        'Source': f'https://github.com/sergeyklay/{PKG_NAME}',
     },
 
     # Classifiers: available ones listed at https://pypi.org/classifiers
