@@ -19,7 +19,7 @@ import shutil
 
 import git
 
-from gstore.exceptions import get_error
+from gstore.exceptions import parse_git_errors
 from gstore.models import Organization, Repository
 
 
@@ -94,7 +94,7 @@ class RepoManager:
                 repo.org.login,
                 repo.name
             )
-            for msg in get_error(exception):
+            for msg in parse_git_errors(exception):
                 self.logger.error(msg)
 
     def fetch(self, repo: Repository, target: str):
@@ -119,7 +119,7 @@ class RepoManager:
                 repo.org.login,
                 repo.name
             )
-            for msg in get_error(exception):
+            for msg in parse_git_errors(exception):
                 self.logger.error(msg)
 
     def sync(self, org: Organization, repos: list):

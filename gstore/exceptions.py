@@ -13,11 +13,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+"""Exception classes raised by various operations within gstore."""
+
 import re
+import git
 
 
-def get_error(ex) -> list:
+def parse_git_errors(ex: git.GitCommandError) -> list:
+    """
+    A helper function to parse errors produced by :class:`git.GitCommandError`
+    subclasses.
 
+    :param git.GitCommandError ex: An error instance
+    :return: A list of error messages
+    :rtype: list of str
+    """
     def replace(msg):
         wrp_regex = re.compile(r"(?:(?:std(?:out|err)|error):[ ]*'?|\n)")
         spc_regex = re.compile(r'[\s]{2,}')
