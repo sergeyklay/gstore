@@ -13,6 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+"""
+A simple wrapper for github.GitHub to provide convenient way to clone and
+sync repositories from the GitHub.
+"""
+
 import logging
 
 from github import Github
@@ -134,9 +139,10 @@ class Client:
             except UnknownObjectException:
                 self.logger.error('Invalid repository name "%s"', repo_name)
                 continue
-            except BadCredentialsException:
+            except BadCredentialsException as bad_credentials:
                 raise InvalidCredentialsError(
-                    'Bad token was used when accessing the GitHub API')
+                    'Bad token was used when accessing the GitHub API'
+                ) from bad_credentials
 
         return retval
 
@@ -186,8 +192,9 @@ class Client:
             except UnknownObjectException:
                 self.logger.error('Invalid organization name "%s"', name)
                 continue
-            except BadCredentialsException:
+            except BadCredentialsException as bad_credentials:
                 raise InvalidCredentialsError(
-                    'Bad token was used when accessing the GitHub API')
+                    'Bad token was used when accessing the GitHub API'
+                ) from bad_credentials
 
         return retval

@@ -21,10 +21,7 @@ from setuptools import setup, find_packages
 
 
 def check_python_version():
-    """
-    Check Python's version.
-    """
-
+    """Check Python's version."""
     if sys.version_info >= (4, 0):
         sys.stderr.write(
             'ERROR: This module is not supported with Python >= 4.0\n')
@@ -36,10 +33,7 @@ def check_python_version():
 
 
 def locate_package_directory():
-    """
-    Identify a directory of the package and its associated files.
-    """
-
+    """Identify a directory of the package and its associated files."""
     try:
         return path.abspath(path.dirname(__file__))
     except Exception as path_error:
@@ -49,20 +43,14 @@ def locate_package_directory():
 
 
 def read_file(filepath):
-    """
-    Read content from a UTF-8 encoded text file.
-    """
-
+    """Read content from a UTF-8 encoded text file."""
     with open(filepath, 'r', encoding='utf-8') as file_handle:
         text = file_handle.read()
     return text
 
 
 def load_long_description(pkg_dir):
-    """
-    Load long description from file README.rst.
-    """
-
+    """Load long description from file README.rst."""
     try:
         filepath_readme = path.join(pkg_dir, 'README.rst')
         return read_file(filepath_readme)
@@ -73,10 +61,7 @@ def load_long_description(pkg_dir):
 
 # Source: https://www.python.org/dev/peps/pep-0440
 def is_canonical_version(version):
-    """
-    Check if a version string is in the canonical format of PEP 440.
-    """
-
+    """Check if a version string is in the canonical format of PEP 440."""
     pattern = (
         r'^([1-9][0-9]*!)?(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*))'
         r'*((a|b|rc)(0|[1-9][0-9]*))?(\.post(0|[1-9][0-9]*))'
@@ -85,10 +70,7 @@ def is_canonical_version(version):
 
 
 def get_version_string(pkg_dir, pkg_name):
-    """
-    Read __version__ string for an init file.
-    """
-
+    """Return package version as listed in `__version__` in init file."""
     try:
         # Read init file contents
         init_file = path.join(pkg_dir, pkg_name, '__init__.py')

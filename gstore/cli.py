@@ -13,38 +13,50 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-import sys
+"""The CLI entry point. Invoke as `gstore' or `python -m gstore'."""
+
 import logging
 
 from gstore.args import argparse
 from gstore.client import Client
 from gstore.logger import setup_logger
 from gstore.repo import RepoManager
+from gstore.exceptions import BaseValidationError
 
 
 def main():
+    """
+    The main function to call gstore from the command line.
+
+    :return: An exit code
+    :rtype: int
+    """
     args = argparse()
-    setup_logger(verbose=args.verbose, quiet=args.quiet)
+    retval = 0
 
-    logger = logging.getLogger('gstore.cli')
+    if args:
+        setup_logger(verbose=args.verbose, quiet=args.quiet)
+        logger = logging.getLogger('gstore.cli')
 
-    try:
-        client = Client(token=args.token, api_host=args.host)
+        try:
+            client = Client(token=args.token, api_host=args.host)
 
-        if args.org is None:
-            orgs = client.get_orgs()
-        else:
-            orgs = client.resolve_orgs(args.org)
-
-        manager = RepoManager(args.target)
-
-        for org in orgs:
-            if args.repo is None:
-                repos = client.get_repos(org)
+            if args.org is None:
+                orgs = client.get_orgs()
             else:
-                repos = client.resolve_repos(args.repo, org)
+                orgs = client.resolve_orgs(args.org)
 
-            manager.sync(org, repos)
-    except Exception as exception:
-        logger.critical(exception)
-        sys.exit(1)
+            manager = RepoManager(args.target)
+
+            for org in orgs:
+                if args.repo is None:
+                    repos = client.get_repos(org)
+                else:
+                    repos = client.resolve_repos(args.repo, org)
+
+                manager.sync(org, repos)
+        except BaseValidationError as gstore_exception:
+            logger.error(gstore_exception)
+            retval = 1
+
+    return retval

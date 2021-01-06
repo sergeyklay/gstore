@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+"""Logging initialization for the gstore command-line tool."""
+
 import logging
 import sys
 

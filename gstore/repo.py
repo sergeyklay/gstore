@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+"""Repository classes used to wrap git classes for gstore."""
+
 import logging
 import os
 import shutil
@@ -65,11 +67,14 @@ class RepoProgressPrinter(git.RemoteProgress):
 
 
 class RepoManager:
+    """Repository manager used to clone and sync repos."""
+
     def __init__(self, base_path: str):
         self.base_path = os.path.expanduser(base_path).rstrip('/\\')
         self.logger = logging.getLogger('gstore.repo_manager')
 
     def clone(self, repo: Repository, target: str):
+        """Clone a repository to the target directory."""
         self.logger.info(
             'Clone repository to %s/%s',
             repo.org.login,
@@ -79,7 +84,6 @@ class RepoManager:
         if os.path.exists(target):
             os.removedirs(target)
 
-        # TODO(serghei): Provide a way to configure git protocol
         git_url = 'git@github.com:%s/%s.git' % (repo.org.login, repo.name)
 
         try:
@@ -98,6 +102,7 @@ class RepoManager:
                 self.logger.error(msg)
 
     def fetch(self, repo: Repository, target: str):
+        """Sync a repository in the target directory."""
         self.logger.info(
             'Update repository in %s/%s',
             repo.org.login,
@@ -123,6 +128,7 @@ class RepoManager:
                 self.logger.error(msg)
 
     def sync(self, org: Organization, repos: list):
+        """Sync repositories for an organization."""
         self.logger.info('Sync repos for %s', org.login)
 
         org_path = os.path.join(self.base_path, org.login)
