@@ -16,40 +16,80 @@
 include default.mk
 
 dist/$(WHL_NAME).whl: $(ARCHIVE_CONTENTS)
-	$(PYTHON) setup.py bdist_wheel
+	$(VENV_PYTHON) setup.py bdist_wheel
 
 dist/$(ARCHIVE_NAME).tar.gz: $(ARCHIVE_CONTENTS)
-	$(PYTHON) setup.py sdist
+	$(VENV_PYTHON) setup.py sdist
 
 .PHONY: .title
 .title:
-	@echo "$(PACKAGE) $(VERSION)"
+	@echo $(PACKAGE) $(VERSION)
+
+define mk-venv-link
+	@if [ -n "$(WORKON_HOME)" ]; then \
+		echo $(ROOT_DIR) >  $(VENV_ROOT)/.project; \
+		if [ ! -d $(WORKON_HOME)/$(PACKAGE) -a ! -L $(WORKON_HOME)/$(PACKAGE) ]; \
+		then \
+			ln -s $(ROOT_DIR)/$(VENV_ROOT) $(WORKON_HOME)/$(PACKAGE); \
+			echo ; \
+			echo Since you use virtualenvwrapper, we created a symlink; \
+			echo "so you can also use "workon $(PACKAGE)" to activate the venv."; \
+			echo ; \
+		fi; \
+	fi
+endef
+
+define rm-venv-link
+	@if [ -n "$(WORKON_HOME)" ]; then \
+		if [ -L "$(WORKON_HOME)/$(PACKAGE)" -a -f "$(WORKON_HOME)/$(PACKAGE)" ]; \
+		then \
+			$(RM) $(WORKON_HOME)/$(PACKAGE); \
+		fi; \
+	fi
+endef
 
 ## Public targets
 
+$(VENV_ROOT):
+	@echo $(H1)Creating a Python environment $(VENV_ROOT)$(H1END)
+	$(PYTHON) -m venv --prompt $(PACKAGE) $(VENV_ROOT)
+	@echo
+	@echo Done.
+	@echo
+	@echo To active it manually, run:
+	@echo
+	@echo     source $(VENV_BIN)/activate
+	@echo
+	@echo See https://docs.python.org/3/library/venv.html for more.
+	@echo
+	$(call mk-venv-link)
+
 .PHONY: install
-install:
+install: $(VENV_ROOT)
 	@echo $(H1)Installing dev requirements$(H1END)
-	$(PYTHON) -m pip install --upgrade -r $(REQUIREMENTS)
+	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS)
+	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS_DEV)
 
 	@echo $(H1)Installing Gstore$(H1END)
-	$(PYTHON) -m pip install --upgrade --editable .
+	$(VENV_PIP) install --upgrade --editable .
 
 .PHONY: uninstall
 uninstall:
 	@echo $(H1)Uninstalling $(PACKAGE)$(H1END)
-	- $(PYTHON) -m pip uninstall --yes $(PACKAGE) &2>/dev/null
+	- $(VENV_PIP) uninstall --yes $(PACKAGE) &2>/dev/null
 
-	@echo "Verifying..."
-	cd .. && ! $(PYTHON) -m $(PACKAGE) --version &2>/dev/null
+	@echo Verifying...
+	cd .. && ! $(VENV_PYTHON) -m $(PACKAGE) --version &2>/dev/null
 
-	@echo "Done"
+	@echo Done.
 	@echo
 
 .PHONY: clean
 clean:
 	@echo $(H1)Remove build and tests artefacts and directories$(H1END)
 
+	$(RM) -r $(VENV_ROOT)
+	$(call rm-venv-link)
 	find $(TOP) -name '__pycache__' -delete -o -name '*.pyc' -delete
 	$(RM) -r $(TOP)build $(TOP)dist $(TOP)*.egg-info
 	$(RM) -r $(TOP).cache $(TOP).pytest_cache
@@ -57,51 +97,51 @@ clean:
 	$(RM) $(TOP).coverage $(TOP)coverage.xml
 
 .PHONY: check-dist
-check-dist:
+check-dist: $(VENV_ROOT)
 	@echo $(H1)Check distribution files$(HEADER_EXTRA)$(H1END)
-	$(TWINE) check $(TOP)dist/*
+	$(VENV_BIN)/twine check $(TOP)dist/*
 	@echo
 
 .PHONY: test-ccov
-test-ccov: COV=--cov
+test-ccov: COV=--cov --cov-report=html --cov-report=xml
 test-ccov: HEADER_EXTRA=' (with coverage)'
 test-ccov: test
 
 .PHONY: test-all
-test-all: clean lint install test test-dist
+test-all: clean install test test-dist lint
 
 .PHONY: test-dist
 test-dist: test-sdist test-bdist
 	@echo
 
 .PHONY: test-sdist
-test-sdist: clean dist/$(ARCHIVE_NAME).tar.gz
+test-sdist: clean $(VENV_ROOT) dist/$(ARCHIVE_NAME).tar.gz
 	@echo $(H1)Testing source distribution and installation$(H1END)
-	$(PYTHON) -m pip install --force-reinstall --upgrade dist/*.gz
+	$(VENV_PIP) install --force-reinstall --upgrade dist/*.gz
 	@echo
-	$(PACKAGE) --version
+	$(VENV_BIN)/$(PACKAGE) --version
 	@echo
 
 .PHONY: test-bdist
-test-bdist: clean dist/$(WHL_NAME).whl
+test-bdist: clean $(VENV_ROOT) dist/$(WHL_NAME).whl
 	@echo $(H1)Testing built distribution and installation$(H1END)
-	$(PYTHON) -m pip install --force-reinstall --upgrade dist/*.whl
+	$(VENV_PIP) install --force-reinstall --upgrade dist/*.whl
 	@echo
-	$(PACKAGE) --version
+	$(VENV_BIN)/$(PACKAGE) --version
 	@echo
 
 .PHONY: test
 test:
 	@echo $(H1)Running tests$(HEADER_EXTRA)$(H1END)
-	$(PYTEST) $(COV) $(TOP)$(PACKAGE) $(COV) $(TOP)tests --verbose $(TOP)$(PACKAGE) $(TOP)tests
+	$(VENV_BIN)/py.test $(COV) $(TOP)$(PACKAGE) $(COV) $(TOP)tests --verbose $(TOP)$(PACKAGE) $(TOP)tests
 	@echo
 
 .PHONY: lint
 lint:
 	@echo $(H1)Running linters$(H1END)
-	$(FLAKE8) $(TOP) --count --show-source --statistics
-	$(FLAKE8) $(TOP) --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-	pylint $(TOP)$(PACKAGE)
+	$(VENV_BIN)/flake8 $(TOP) --count --show-source --statistics
+	$(VENV_BIN)/flake8 $(TOP) --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+	$(VENV_BIN)/pylint $(TOP)$(PACKAGE)
 
 .PHONY: publish
 publish: test-all upload
@@ -113,7 +153,7 @@ upload:
 	@echo "$(VERSION)" | grep -q "dav" && echo '!!! Not publishing dev version !!!' && exit 1 || echo ok
 	$(MAKE) build
 	$(MAKE) check-dst
-	$(TWINE) upload $(TOP)dist/*
+	$(VENV_BIN)/twine upload $(TOP)dist/*
 	@echo
 
 .PHONY: build
@@ -122,18 +162,20 @@ build: dist/$(ARCHIVE_NAME).tar.gz dist/$(WHL_NAME).whl
 
 .PHONY: help
 help: .title
-	@echo ''
+	@echo
+	@echo 'Run "make venv" first to install and update all dev dependencies.'
+	@echo 'See "default.mk" for variables you might want to set.'
+	@echo
 	@echo 'Available targets:'
 	@echo '  help:       Show this help and exit'
+	@echo '  venv:       Creating a Python environment (has to be launched first)'
 	@echo '  install:    Install development version of $(PACKAGE)'
 	@echo '  uninstall:  Uninstall $(PACKAGE)'
 	@echo '  build:      Build $(PACKAGE) distribution'
 	@echo '  publish:    Publish $(PACKAGE) distribution to the repository'
-	@echo '  upload:     Upload $(PACKAGE) distribution to the repository'
-	@echo '                without tests'
+	@echo '  upload:     Upload $(PACKAGE) distribution to the repository (w/o tests)'
 	@echo '  clean:      Remove build and tests artefacts and directories'
-	@echo '  check-dist: Check integrity of distribution files'
-	@echo '                and validate packages'
+	@echo '  check-dist: Check integrity of distribution files and validate packages'
 	@echo '  test:       Run unit tests'
 	@echo '  test-dist:  Testing package distribution and installation'
 	@echo '  test-sdist: Testing source distribution and installation'
@@ -141,14 +183,4 @@ help: .title
 	@echo '  test-all:   Test everything'
 	@echo '  test-ccov:  Run unit tests with coverage'
 	@echo '  lint:       Lint the code'
-	@echo ''
-	@echo 'Available programs:'
-	@echo '  python:     $(if $(HAVE_PYTHON),yes,no)'
-	@echo '  twine:      $(if $(HAVE_TWINE),yes,no)'
-	@echo '  flake8:     $(if $(HAVE_FLAKE8),yes,no)'
-	@echo '  pytest:     $(if $(HAVE_PYTEST),yes,no)'
-	@echo '  pytest-cov: $(if $(HAVE_PYTEST_COV),yes,no)'
-	@echo ''
-	@echo 'You need $(TWINE) to develop $(PACKAGE).'
-	@echo 'See https://twine.readthedocs.io/en/latest for more'
-	@echo ''
+	@echo

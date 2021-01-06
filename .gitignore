@@ -7,6 +7,7 @@
 
 # Directories to ignore (do not add trailing '/'s, they skip symlinks).
 /.pytest_cache
+/.venv
 /build
 /dist
 /*.egg-info

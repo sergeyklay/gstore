@@ -22,13 +22,22 @@ H1END=" \#\#\# \033[0m\n"
 COV=
 HEADER_EXTRA=
 
-REQUIREMENTS=requirements-dev.txt
+REQUIREMENTS=$(ROOT_DIR)/requirements.txt
+REQUIREMENTS_DEV=$(ROOT_DIR)/requirements-dev.txt
 
 # Run “make build” by default
 .DEFAULT_GOAL = build
 
-PYTHON    ?= python
-PYTEST     = pytest
+# Will used to create venv
+PYTHON ?= python3
+
+VENV_ROOT=.venv
+VENV_BIN=$(VENV_ROOT)/bin
+VENV_PIP=$(VENV_BIN)/pip3
+VENV_PYTHON=$(VENV_BIN)/python
+
+export PATH := $(VENV_BIN):$(PATH)
+
 PYTEST_COV = pytest-cov
 TWINE      = twine
 FLAKE8     = flake8
@@ -37,28 +46,6 @@ FLAKE8     = flake8
 HAVE_PYTHON := $(shell sh -c "command -v $(PYTHON)")
 ifndef HAVE_PYTHON
 $(error "$(PYTHON) is not available.")
-endif
-
-HAVE_TWINE := $(shell sh -c "command -v $(TWINE)")
-ifndef HAVE_TWINE
-$(warning "$(TWINE) is not available.")
-endif
-
-HAVE_FLAKE8 := $(shell sh -c "command -v $(FLAKE8)")
-ifndef HAVE_FLAKE8
-$(warning "$(FLAKE8) is not available.")
-endif
-
-HAVE_PYTEST := $(shell sh -c "command -v $(PYTEST)")
-ifndef HAVE_PYTEST
-$(warning "$(PYTEST) is not available.")
-endif
-
-HAVE_PYTEST_COV =
-ifdef HAVE_PYTHON
-ifdef HAVE_PYTEST
-HAVE_PYTEST_COV = $(shell sh -c "$(PYTHON) -m pip show $(PYTEST_COV) 2>/dev/null")
-endif
 endif
 
 PACKAGE = $(shell sed -nEe "s/PKG_NAME[[:space:]]*=[[:space:]]*'(.*)'/\1/p" $(TOP)/setup.py)
