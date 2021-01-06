@@ -27,6 +27,7 @@ Trivial/Internal Changes
   ``gstore.exceptions.InvalidCredentialsError`` in case of incorrect
   credentials usage.
 * ``gstore.models.Repository`` now holds ``gstore.models.Organization``.
+* Starting with v0.3.1 tests will be included in the PyPI package.
 
 gstore 0.3.0 (2021-01-03)
 -------------------------

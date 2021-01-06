@@ -189,6 +189,12 @@ setup(
         'gitpython>=3.0.6',  # Interact with Git repositories
     ],
 
+    # Dependencies that are required to run tests
+    tests_require=[
+        'pytest-cov'
+        'pytest'
+    ],
+
     # Entry points
     entry_points={
         'console_scripts': [
