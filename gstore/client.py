@@ -20,8 +20,8 @@ from github.GithubException import BadCredentialsException
 from github.GithubException import UnknownObjectException
 
 from gstore import __version__
-from .exceptions import InvalidCredentialsError
-from .models import Organization, Repository
+from gstore.exceptions import InvalidCredentialsError
+from gstore.models import Organization, Repository
 
 USER_AGENT = f'Gstore/{__version__}'
 

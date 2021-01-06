@@ -19,8 +19,8 @@ import shutil
 
 import git
 
-from .exceptions import get_error
-from .models import Organization, Repository
+from gstore.exceptions import get_error
+from gstore.models import Organization, Repository
 
 
 class RepoProgressPrinter(git.RemoteProgress):

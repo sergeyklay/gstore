@@ -20,7 +20,7 @@ from argparse import SUPPRESS, ArgumentParser, HelpFormatter
 from os import environ as env
 
 from gstore import __copyright__, __version__
-from .client import DEFAULT_HOST, TOKEN_NAMES
+from gstore.client import DEFAULT_HOST, TOKEN_NAMES
 
 
 class LineBreaksFormatter(HelpFormatter):
