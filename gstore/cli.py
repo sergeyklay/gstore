@@ -16,10 +16,10 @@
 import sys
 import logging
 
-from .args import argparse
-from .client import Client
-from .logger import setup_logger
-from .repo import RepoManager
+from gstore.args import argparse
+from gstore.client import Client
+from gstore.logger import setup_logger
+from gstore.repo import RepoManager
 
 
 def main():

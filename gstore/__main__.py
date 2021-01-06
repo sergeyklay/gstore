@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-from .cli import main
+from gstore.cli import main
 
 if __name__ == '__main__':
     main()
