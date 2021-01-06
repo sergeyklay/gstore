@@ -52,20 +52,20 @@ lint:
 	@$(FLAKE8) . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 .PHONY: upload
-upload: package
+publish: distrib
 	$(TWINE) upload dist/*
 	$(info Done.)
 
-.PHONY: package
-package: dist/$(ARCHIVE_NAME).tar.gz dist/$(WHL_NAME).whl
+.PHONY: distrib
+distrib: dist/$(ARCHIVE_NAME).tar.gz dist/$(WHL_NAME).whl
 
 .PHONY: help
 help: .title
 	@echo ''
 	@echo 'Available targets:'
 	@echo '  help:       Show this help and exit'
-	@echo '  package:    Build $(PACKAGE) package'
-	@echo '  upload:     Upload $(PACKAGE) distribution to the repository'
+	@echo '  distrib:    Build $(PACKAGE) distribution'
+	@echo '  publish:    Upload $(PACKAGE) distribution to the repository'
 	@echo '  clean:      Remove all build artefacts and directories'
 	@echo '  check:      Check distribution files'
 	@echo '  test:       Run unit tests'
