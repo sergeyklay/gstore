@@ -98,9 +98,10 @@ test:
 
 .PHONY: lint
 lint:
-	@echo $(H1)Running flake$(H1END)
+	@echo $(H1)Running linters$(H1END)
 	$(FLAKE8) $(TOP) --count --show-source --statistics
 	$(FLAKE8) $(TOP) --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+	pylint $(TOP)$(PACKAGE)
 
 .PHONY: publish
 publish: test-all upload
