@@ -194,8 +194,8 @@ setup(
 
     # Dependencies that are required to run tests
     tests_require=[
-        'pytest-cov'
-        'pytest'
+        'pytest',           # Our tests framework
+        'pytest-cov',       # Pytest plugin to produce coverage reports
     ],
 
     # Entry points
