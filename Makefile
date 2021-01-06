@@ -52,7 +52,7 @@ clean:
 
 	find $(TOP) -name '__pycache__' -delete -o -name '*.pyc' -delete
 	$(RM) -r $(TOP)build $(TOP)dist $(TOP)*.egg-info
-	$(RM) -r $(TOP).tox $(TOP).pytest_cache
+	$(RM) -r $(TOP).cache $(TOP).pytest_cache
 	$(RM) -r $(TOP)htmlcov
 	$(RM) $(TOP).coverage $(TOP)coverage.xml
 
@@ -68,7 +68,7 @@ test-ccov: HEADER_EXTRA=' (with coverage)'
 test-ccov: test
 
 .PHONY: test-all
-test-all: clean install lint test test-dist
+test-all: clean lint install test test-dist
 
 .PHONY: test-dist
 test-dist: test-sdist test-bdist
@@ -98,6 +98,7 @@ test:
 
 .PHONY: lint
 lint:
+	@echo $(H1)Running flake$(H1END)
 	$(FLAKE8) $(TOP) --count --show-source --statistics
 	$(FLAKE8) $(TOP) --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
@@ -126,9 +127,9 @@ help: .title
 	@echo '  install:    Install development version of $(PACKAGE)'
 	@echo '  uninstall:  Uninstall $(PACKAGE)'
 	@echo '  build:      Build $(PACKAGE) distribution'
-	@echo '  publish:    Publish $(PACKAGE) package'
+	@echo '  publish:    Publish $(PACKAGE) distribution to the repository'
 	@echo '  upload:     Upload $(PACKAGE) distribution to the repository'
-	@echo '                (meant for "publish")'
+	@echo '                without tests'
 	@echo '  clean:      Remove build and tests artefacts and directories'
 	@echo '  check-dist: Check integrity of distribution files'
 	@echo '                and validate packages'
