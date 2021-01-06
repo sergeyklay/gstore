@@ -74,15 +74,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
-
-      - name: Install test dependencies
-        run: pip install -r requirements-dev.txt
-
-      - name: Makefile selftest
-        run: make help
+          pip install -r requirements-dev.txt
 
       - name: Install dev version of gstore
-        run: make install
+        run: python -m pip install --upgrade --editable .
 
       - name: Minimal load test
         run: |
@@ -91,7 +86,7 @@ jobs:
           gstore -dumpversion
 
       - name: Test with pytest
-        run: make test-ccov
+        run: pytest --verbose --color=yes --cov=./tests --cov=./gstore --cov-report=xml ./gstore ./tests
 
       - name: Upload code coverage report
         uses: codecov/codecov-action@v1
@@ -130,7 +125,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
+          pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
       - name: Lint with flake8
-        run: make lint
+        run: |
+          flake8 ./ --count --show-source --statistics
+          flake8 ./ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+          pylint --reports=y ./gstore
