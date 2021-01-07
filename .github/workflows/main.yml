@@ -66,7 +66,7 @@ jobs:
           python-version: ${{ matrix.python }}
 
       - name: Adding Python 3.10 to system path
-        if: startsWith(runner.os, 'Windows') && startsWith(matrix.python, '3.10')
+        if: startsWith(runner.os, 'Windows')
         run: echo "$pythonLocation\Scripts" >> $GITHUB_PATH
 
       - name: Makefile selftest
@@ -101,7 +101,7 @@ jobs:
           fail_ci_if_error: true
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Code linting
 
     steps:
