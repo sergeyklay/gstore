@@ -15,25 +15,15 @@
 
 include default.mk
 
-dist/$(WHL_NAME).whl: $(ARCHIVE_CONTENTS)
-	$(VENV_PYTHON) setup.py bdist_wheel
-
-dist/$(ARCHIVE_NAME).tar.gz: $(ARCHIVE_CONTENTS)
-	$(VENV_PYTHON) setup.py sdist
-
-.PHONY: .title
-.title:
-	@echo $(PACKAGE) $(VERSION)
-
 define mk-venv-link
 	@if [ -n "$(WORKON_HOME)" ]; then \
 		echo $(ROOT_DIR) >  $(VENV_ROOT)/.project; \
-		if [ ! -d $(WORKON_HOME)/$(PACKAGE) -a ! -L $(WORKON_HOME)/$(PACKAGE) ]; \
+		if [ ! -d $(WORKON_HOME)/gstore -a ! -L $(WORKON_HOME)/gstore ]; \
 		then \
-			ln -s $(ROOT_DIR)/$(VENV_ROOT) $(WORKON_HOME)/$(PACKAGE); \
+			ln -s $(ROOT_DIR)/$(VENV_ROOT) $(WORKON_HOME)/gstore; \
 			echo ; \
 			echo Since you use virtualenvwrapper, we created a symlink; \
-			echo "so you can also use "workon $(PACKAGE)" to activate the venv."; \
+			echo "so you can also use "workon gstore" to activate the venv."; \
 			echo ; \
 		fi; \
 	fi
@@ -41,9 +31,9 @@ endef
 
 define rm-venv-link
 	@if [ -n "$(WORKON_HOME)" ]; then \
-		if [ -L "$(WORKON_HOME)/$(PACKAGE)" -a -f "$(WORKON_HOME)/$(PACKAGE)" ]; \
+		if [ -L "$(WORKON_HOME)/gstore" -a -f "$(WORKON_HOME)/gstore" ]; \
 		then \
-			$(RM) $(WORKON_HOME)/$(PACKAGE); \
+			$(RM) $(WORKON_HOME)/gstore; \
 		fi; \
 	fi
 endef
@@ -52,7 +42,7 @@ endef
 
 $(VENV_ROOT):
 	@echo $(CS)Creating a Python environment $(VENV_ROOT)$(CE)
-	$(PYTHON) -m venv --prompt $(PACKAGE) $(VENV_ROOT)
+	$(PYTHON) -m venv --prompt gstore $(VENV_ROOT)
 	@echo
 	@echo Done.
 	@echo
@@ -76,11 +66,11 @@ install: $(VENV_ROOT)
 
 .PHONY: uninstall
 uninstall:
-	@echo $(CS)Uninstalling $(PACKAGE)$(CE)
-	- $(VENV_PIP) uninstall --yes $(PACKAGE) &2>/dev/null
+	@echo $(CS)Uninstalling gstore$(CE)
+	- $(VENV_PIP) uninstall --yes gstore &2>/dev/null
 
 	@echo Verifying...
-	cd .. && ! $(VENV_PYTHON) -m $(PACKAGE) --version &2>/dev/null
+	cd .. && ! $(VENV_PYTHON) -m gstore --version &2>/dev/null
 
 	@echo Done.
 	@echo
@@ -104,7 +94,7 @@ check-dist: $(VENV_ROOT)
 	@echo
 
 .PHONY: test-ccov
-test-ccov: COV=--cov=$(TOP)$(PACKAGE) --cov=$(TOP)tests --cov-report=xml --cov-report=html
+test-ccov: COV=--cov=$(TOP)gstore --cov=$(TOP)tests --cov-report=xml --cov-report=html
 test-ccov: HEADER_EXTRA=' (with coverage)'
 test-ccov: test
 
@@ -112,37 +102,46 @@ test-ccov: test
 test-all: clean install test test-dist lint
 
 .PHONY: test-dist
-test-dist: test-sdist test-bdist
+test-dist: test-sdist test-wheel
 	@echo
 
+.PHONY: sdist
+sdist:
+	@echo $(CS)Creating source distribution$(CE)
+	$(VENV_PYTHON) setup.py sdist
+
 .PHONY: test-sdist
-test-sdist: clean $(VENV_ROOT) dist/$(ARCHIVE_NAME).tar.gz
+test-sdist: clean $(VENV_ROOT) sdist
 	@echo $(CS)Testing source distribution and installation$(CE)
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.gz
 	@echo
-	$(VENV_BIN)/$(PACKAGE) --version
+	$(VENV_BIN)/gstore --version
 	@echo
 
-.PHONY: test-bdist
-test-bdist: clean $(VENV_ROOT) dist/$(WHL_NAME).whl
+.PHONY: wheel
+wheel:
+	@echo $(CS)Creating wheel distribution$(CE)
+	$(VENV_PYTHON) setup.py bdist_wheel
+
+.PHONY: test-wheel
+test-wheel: clean $(VENV_ROOT) wheel
 	@echo $(CS)Testing built distribution and installation$(CE)
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.whl
 	@echo
-	$(VENV_BIN)/$(PACKAGE) --version
+	$(VENV_BIN)/gstore --version
 	@echo
 
 .PHONY: test
 test:
 	@echo $(CS)Running tests$(HEADER_EXTRA)$(CE)
-	$(VENV_BIN)/py.test $(PYTEST_FLAGS) $(COV) $(TOP)$(PACKAGE) $(TOP)tests
+	$(VENV_BIN)/py.test $(PYTEST_FLAGS) $(COV) $(TOP)gstore $(TOP)tests
 	@echo
 
 .PHONY: lint
 lint:
 	@echo $(CS)Running linters$(CE)
-	$(VENV_BIN)/flake8 $(TOP) --count --show-source --statistics
-	$(VENV_BIN)/flake8 $(TOP) --count --max-complexity=10 --statistics
-	$(VENV_BIN)/pylint $(TOP)$(PACKAGE)
+	$(VENV_BIN)/flake8 $(FLAKE8_FLAGS) $(TOP)
+	$(VENV_BIN)/pylint $(TOP)gstore
 
 .PHONY: publish
 publish: test-all upload
@@ -150,7 +149,6 @@ publish: test-all upload
 .PHONY: upload
 upload:
 	@echo $(CS)Upload built distribution$(CE)
-	@echo "$(VERSION)"
 	@echo "$(VERSION)" | grep -q "dav" && echo '!!! Not publishing dev version !!!' && exit 1 || echo ok
 	$(MAKE) build
 	$(MAKE) check-dst
@@ -158,39 +156,46 @@ upload:
 	@echo
 
 .PHONY: build
-build: dist/$(ARCHIVE_NAME).tar.gz dist/$(WHL_NAME).whl
+build: sdist wheel
 	@echo
 
 .PHONY: help
-help: .title
+help:
+	@echo gstore
 	@echo
 	@echo 'Run "make venv" first to install and update all dev dependencies.'
 	@echo 'See "default.mk" for variables you might want to set.'
 	@echo
 	@echo 'Available targets:'
-	@echo '  help:       Show this help and exit'
-	@echo '  venv:       Creating a Python environment (has to be launched first)'
-	@echo '  install:    Install development version of $(PACKAGE)'
-	@echo '  uninstall:  Uninstall $(PACKAGE)'
-	@echo '  build:      Build $(PACKAGE) distribution'
-	@echo '  publish:    Publish $(PACKAGE) distribution to the repository'
-	@echo '  upload:     Upload $(PACKAGE) distribution to the repository (w/o tests)'
-	@echo '  clean:      Remove build and tests artefacts and directories'
-	@echo '  check-dist: Check integrity of distribution files and validate packages'
-	@echo '  test:       Run unit tests'
-	@echo '  test-dist:  Testing package distribution and installation'
-	@echo '  test-sdist: Testing source distribution and installation'
-	@echo '  test-bdist: Testing built distribution and installation'
-	@echo '  test-all:   Test everything'
-	@echo '  test-ccov:  Run unit tests with coverage'
-	@echo '  lint:       Lint the code'
+	@echo
+	@echo '  help:         Show this help and exit'
+	@echo '  venv:         Creating a Python environment (has to be launched first)'
+	@echo '  install:      Install development version of gstore'
+	@echo '  uninstall:    Uninstall local version of gstore'
+	@echo '  build:        Build gstore distribution (sdist and wheel)'
+	@echo '  sdist:        Create a source distribution'
+	@echo '  wheel:        Create a wheel distribution'
+	@echo '  publish:      Publish gstore distribution to the repository'
+	@echo '  upload:       Upload gstore distribution to the repository (w/o tests)'
+	@echo '  clean:        Remove build and tests artefacts and directories'
+	@echo '  check-dist:   Check integrity of the distribution files and validate package'
+	@echo '  test:         Run unit tests'
+	@echo '  test-dist:    Testing package distribution and installation'
+	@echo '  test-sdist:   Testing source distribution and installation'
+	@echo '  test-wheel:   Testing built distribution and installation'
+	@echo '  test-all:     Test everything'
+	@echo '  test-ccov:    Run unit tests with coverage'
+	@echo '  lint:         Lint the code'
 	@echo
 	@echo 'Used variables:'
-	@echo '  PYTHON=$(PYTHON)'
-	@echo '  VENV_PYTHON=$(VENV_PYTHON)'
-	@echo '  VENV_PIP=$(VENV_PIP)'
-	@echo '  SHELL=$(shell echo $$SHELL)'
-	@echo '  TERM=$(shell echo $$TERM)'
-	@echo '  TOP=$(TOP)'
-	@echo '  ROOT_DIR=$(ROOT_DIR)'
+	@echo
+	@echo '  PYTHON:       $(PYTHON)'
+	@echo '  VENV_PYTHON:  $(VENV_PYTHON)'
+	@echo '  VENV_PIP:     $(VENV_PIP)'
+	@echo '  FLAKE8_FLAGS: $(FLAKE8_FLAGS)'
+	@echo '  PYTEST_FLAGS: $(PYTEST_FLAGS)'
+	@echo '  SHELL:        $(shell echo $$SHELL)'
+	@echo '  TERM:         $(shell echo $$TERM)'
+	@echo '  TOP:          $(TOP)'
+	@echo '  ROOT_DIR:     $(ROOT_DIR)'
 	@echo

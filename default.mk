@@ -13,6 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+# Run “make build” by default
+.DEFAULT_GOAL = build
+
 TOP      := $(dir $(lastword $(MAKEFILE_LIST)))
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
@@ -26,16 +29,14 @@ else
 	CE = " ~~~"
 endif
 
-COV =
+COV          =
 HEADER_EXTRA =
 
-REQUIREMENTS = requirements.txt
+REQUIREMENTS     = requirements.txt
 REQUIREMENTS_DEV = requirements-dev.txt
 
-PYTEST_FLAGS ?= --verbose --color=yes
-
-# Run “make build” by default
-.DEFAULT_GOAL = build
+PYTEST_FLAGS ?= --color=yes -v
+FLAKE8_FLAGS ?= --show-source --statistics
 
 VENV_ROOT = .venv
 
@@ -59,24 +60,5 @@ ifndef HAVE_PYTHON
 $(error "$(PYTHON) is not available.")
 endif
 
-PACKAGE = $(shell sed -nEe "s/PKG_NAME[[:space:]]*=[[:space:]]*'(.*)'/\1/p" $(TOP)setup.py)
-VERSION = $(shell sed -nEe "s/^__version__[[:space:]]*=[[:space:]]*['\"](.*)['\"]/\1/p" $(TOP)$(PACKAGE)/__init__.py)
+VERSION = $(shell grep __version__ gstore/__init__.py)
 
-ARCHIVE_NAME = $(PACKAGE)-$(VERSION)
-WHL_NAME = $(PACKAGE)-$(VERSION)-py3-none-any
-
-ARCHIVE_CONTENTS = CHANGELOG.rst \
-	LICENSE \
-	MANIFEST.in \
-	README.rst \
-	$(PACKAGE)/__init__.py \
-	$(PACKAGE)/__main__.py \
-	$(PACKAGE)/args.py \
-	$(PACKAGE)/cli.py \
-	$(PACKAGE)/client.py \
-	$(PACKAGE)/exceptions.py \
-	$(PACKAGE)/logger.py \
-	$(PACKAGE)/models.py \
-	$(PACKAGE)/repo.py \
-	setup.cfg \
-	setup.py
