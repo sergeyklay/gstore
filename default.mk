@@ -16,7 +16,6 @@
 # Run “make build” by default
 .DEFAULT_GOAL = build
 
-TOP      := $(dir $(lastword $(MAKEFILE_LIST)))
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 ifneq (,$(findstring xterm,${TERM}))
@@ -60,5 +59,5 @@ ifndef HAVE_PYTHON
 $(error "$(PYTHON) is not available.")
 endif
 
-VERSION = $(shell grep __version__ gstore/__init__.py)
+VERSION = $(shell grep __version__ ./gstore/__init__.py)
 
