@@ -187,14 +187,20 @@ help:
 	@echo '  test-ccov:    Run unit tests with coverage'
 	@echo '  lint:         Lint the code'
 	@echo
-	@echo 'Used variables:'
+	@echo 'Virtualenv:'
 	@echo
-	@echo '  PYTHON:       $(PYTHON)'
-	@echo '  VENV_PYTHON:  $(VENV_PYTHON)'
-	@echo '  VENV_PIP:     $(VENV_PIP)'
+	@echo '  Python:       $(VENV_PYTHON)'
+	@echo '  pip:          $(VENV_PIP)'
+	@echo
+	@echo 'Flags:'
+	@echo
 	@echo '  FLAKE8_FLAGS: $(FLAKE8_FLAGS)'
 	@echo '  PYTEST_FLAGS: $(PYTEST_FLAGS)'
+	@echo
+	@echo 'Environment variables:'
+	@echo
+	@echo '  PYTHON:       $(PYTHON)'
+	@echo '  WORKON_HOME:  ${WORKON_HOME}'
 	@echo '  SHELL:        $(shell echo $$SHELL)'
 	@echo '  TERM:         $(shell echo $$TERM)'
-	@echo '  ROOT_DIR:     $(ROOT_DIR)'
 	@echo
