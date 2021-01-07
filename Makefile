@@ -64,10 +64,10 @@ $(VENV_ROOT):
 	@echo
 	$(call mk-venv-link)
 
+# $(VENV_PIP) install --upgrade pip setuptools wheel
 .PHONY: install
 install: $(VENV_ROOT)
 	@echo $(H1)Installing dev requirements$(H1END)
-	$(VENV_PIP) install --upgrade pip setuptools wheel
 	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS)
 	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS_DEV)
 

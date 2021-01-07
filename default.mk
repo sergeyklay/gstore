@@ -14,25 +14,35 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 TOP := $(dir $(lastword $(MAKEFILE_LIST)))
-ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 H1="\n\n\033[0;32m\#\#\# "
 H1END=" \#\#\# \033[0m\n"
 
-COV=
-HEADER_EXTRA=
+COV =
+HEADER_EXTRA =
 
-REQUIREMENTS=requirements.txt
-REQUIREMENTS_DEV=requirements-dev.txt
+REQUIREMENTS = requirements.txt
+REQUIREMENTS_DEV = requirements-dev.txt
 
 # Run “make build” by default
 .DEFAULT_GOAL = build
 
 # Will used to create venv
-PYTHON ?= python3
+ifeq ($(OS),Windows_NT)
+	PYTHON ?= python
+else
+	PYTHON ?= python3
+endif
 
 VENV_ROOT=.venv
-VENV_BIN=$(VENV_ROOT)/bin
+
+ifeq ($(OS),Windows_NT)
+	VENV_BIN=$(VENV_ROOT)/Scripts
+else
+	VENV_BIN=$(VENV_ROOT)/bin
+endif
+
 VENV_PIP=$(VENV_BIN)/pip
 VENV_PYTHON=$(VENV_BIN)/python
 
