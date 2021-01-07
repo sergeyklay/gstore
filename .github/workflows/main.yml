@@ -60,16 +60,14 @@ jobs:
         with:
           fetch-depth: 5
 
+      - name: Adding Python 3.10 to system path
+        if: startsWith(runner.os, 'Windows')
+        run: echo "$pythonLocation\Scripts" >> $GITHUB_PATH
+
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
-
-      - name: Adding Python 3.10 to system path
-        if: startsWith(runner.os, 'Windows')
-        run: |
-          echo "$pythonLocation\Scripts" >> $GITHUB_PATH
-          cat $GITHUB_PATH
 
       - name: Makefile selftest
         run: make help
