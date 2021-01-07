@@ -32,6 +32,8 @@ HEADER_EXTRA =
 REQUIREMENTS = requirements.txt
 REQUIREMENTS_DEV = requirements-dev.txt
 
+PYTEST_FLAGS ?= --verbose --color=yes
+
 # Run “make build” by default
 .DEFAULT_GOAL = build
 
