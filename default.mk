@@ -57,10 +57,10 @@ export PATH := $(VENV_BIN):$(PATH)
 
 # Program availability
 ifndef PYTHON
-$(error "Python is not available please install Python 1")
-endif
-
+$(error "Python is not available please install Python")
+else
 PYTHON_VERSION := $(shell $(PYTHON) --version 2>$(NULL))
 ifndef PYTHON_VERSION
-$(error "Python is not available please install Python 2")
+$(error "Python is not available please install Python")
+endif
 endif
