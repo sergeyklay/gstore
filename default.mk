@@ -41,13 +41,11 @@ VENV_ROOT = .venv
 
 # PYTHON will used to create venv
 ifeq ($(OS),Windows_NT)
-PYTHON  ?= python
-VENV_BIN = $(VENV_ROOT)/Scripts
-NULL     = NUL
+	PYTHON  ?= python
+	VENV_BIN = $(VENV_ROOT)/Scripts
 else
-PYTHON  ?= python3
-VENV_BIN = $(VENV_ROOT)/bin
-NULL     = /dev/null
+	PYTHON  ?= python3
+	VENV_BIN = $(VENV_ROOT)/bin
 endif
 
 VENV_PIP    = $(VENV_BIN)/pip
@@ -59,8 +57,10 @@ export PATH := $(VENV_BIN):$(PATH)
 ifndef PYTHON
 $(error "Python is not available please install Python")
 else
-PYTHON_VERSION := $(shell $(PYTHON) --version 2>$(NULL))
-ifndef PYTHON_VERSION
+ifneq ($(OS),Windows_NT)
+HAVE_PYTHON := $(shell sh -c "command -v $(PYTHON)")
+ifndef HAVE_PYTHON
 $(error "Python is not available please install Python")
+endif
 endif
 endif
