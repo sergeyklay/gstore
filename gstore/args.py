@@ -92,27 +92,20 @@ def get_token_from_env():
     return token
 
 
-def argparse():
-    """
-    The function initializes command line arguments parser.
-
-    :return: The list of parsed arguments or None in case of any error.
-    :rtype: :class:`argparse.Namespace` or None
-    """
-    parser = ArgumentParser(
-        description='Synchronize GitHub repositories of your organizations.',
-        usage='%(prog)s [options] [[--] target]',
-        formatter_class=LineBreaksFormatter,
-        add_help=False,
-    )
-
-    token = get_token_from_env()
-
+def parser_add_positionals(parser: ArgumentParser):
+    """Adds positional parameters group to a parser."""
     pgroup = parser.add_argument_group('Positional parameters')
 
     pgroup.add_argument('target', nargs='?', type=str,
                         default=env.get('GSTORE_DIR', os.getcwd()),
                         help='Base target to sync repos (e.g. folder on disk)')
+
+    return parser
+
+
+def parser_add_options(parser: ArgumentParser):
+    """Adds options group to a parser."""
+    token = get_token_from_env()
 
     ogroup = parser.add_argument_group('Options')
 
@@ -150,9 +143,29 @@ def argparse():
     ogroup.add_argument('-dumpversion', action='version',
                         help=dumpversion_help, version=__version__)
 
-    # Show help message and exit when gstore is called without any argument and
-    # there are not enough environment variables for normal operation.
-    if len(sys.argv) == 1 and token is None:
+
+def argparse():
+    """
+    The function initializes command line arguments parser.
+
+    This function will show help message and return None if gstore was called
+    without any argument and environment variables were not enough to start
+    gstore.
+
+    :return: The list of parsed arguments or None in case of any error.
+    :rtype: :class:`argparse.Namespace` or None
+    """
+    parser = ArgumentParser(
+        description='Synchronize GitHub repositories of your organizations.',
+        usage='%(prog)s [options] [[--] target]',
+        formatter_class=LineBreaksFormatter,
+        add_help=False,
+    )
+
+    parser_add_positionals(parser)
+    parser_add_options(parser)
+
+    if len(sys.argv) == 1 and get_token_from_env() is None:
         parser.print_help(sys.stderr)
         return None
 
