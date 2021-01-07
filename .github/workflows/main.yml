@@ -60,10 +60,6 @@ jobs:
         with:
           fetch-depth: 5
 
-      - name: Adding Python 3.10 to system path
-        if: startsWith(runner.os, 'Windows')
-        run: echo "$pythonLocation\Scripts" >> $GITHUB_PATH
-
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v2
         with:
@@ -99,6 +95,10 @@ jobs:
           name: codecov-umbrella
           flags: unittests
           fail_ci_if_error: true
+
+      - name: Success Reporting
+        if: success()
+        run: git log --format=fuller -5
 
   lint:
     runs-on: ubuntu-20.04
