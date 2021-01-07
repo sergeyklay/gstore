@@ -13,11 +13,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-TOP := $(dir $(lastword $(MAKEFILE_LIST)))
+TOP      := $(dir $(lastword $(MAKEFILE_LIST)))
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-H1="\n\n\033[0;32m\#\#\# "
-H1END=" \#\#\# \033[0m\n"
+ifneq (,$(findstring xterm,${TERM}))
+	GREEN := $(shell tput -Txterm setaf 2)
+	RESET := $(shell tput -Txterm sgr0)
+	CS    = "\n\n${GREEN}~~~ "
+	CE    = " ~~~${RESET}\n"
+else
+	CS    = "\#\#\# "
+	CE    = " \#\#\#"
+endif
 
 COV =
 HEADER_EXTRA =

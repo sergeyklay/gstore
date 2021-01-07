@@ -51,7 +51,7 @@ endef
 ## Public targets
 
 $(VENV_ROOT):
-	@echo $(H1)Creating a Python environment $(VENV_ROOT)$(H1END)
+	@echo $(CS)Creating a Python environment $(VENV_ROOT)$(CE)
 	$(PYTHON) -m venv --prompt $(PACKAGE) $(VENV_ROOT)
 	@echo
 	@echo Done.
@@ -67,16 +67,16 @@ $(VENV_ROOT):
 # $(VENV_PIP) install --upgrade pip setuptools wheel
 .PHONY: install
 install: $(VENV_ROOT)
-	@echo $(H1)Installing dev requirements$(H1END)
+	@echo $(CS)Installing dev requirements$(CE)
 	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS)
 	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS_DEV)
 
-	@echo $(H1)Installing Gstore$(H1END)
+	@echo $(CS)Installing Gstore$(CE)
 	$(VENV_PIP) install --upgrade --editable .
 
 .PHONY: uninstall
 uninstall:
-	@echo $(H1)Uninstalling $(PACKAGE)$(H1END)
+	@echo $(CS)Uninstalling $(PACKAGE)$(CE)
 	- $(VENV_PIP) uninstall --yes $(PACKAGE) &2>/dev/null
 
 	@echo Verifying...
@@ -87,7 +87,7 @@ uninstall:
 
 .PHONY: clean
 clean:
-	@echo $(H1)Remove build and tests artefacts and directories$(H1END)
+	@echo $(CS)Remove build and tests artefacts and directories$(CE)
 
 	$(RM) -r $(VENV_ROOT)
 	$(call rm-venv-link)
@@ -99,7 +99,7 @@ clean:
 
 .PHONY: check-dist
 check-dist: $(VENV_ROOT)
-	@echo $(H1)Check distribution files$(HEADER_EXTRA)$(H1END)
+	@echo $(CS)Check distribution files$(HEADER_EXTRA)$(CE)
 	$(VENV_BIN)/twine check $(TOP)dist/*
 	@echo
 
@@ -117,7 +117,7 @@ test-dist: test-sdist test-bdist
 
 .PHONY: test-sdist
 test-sdist: clean $(VENV_ROOT) dist/$(ARCHIVE_NAME).tar.gz
-	@echo $(H1)Testing source distribution and installation$(H1END)
+	@echo $(CS)Testing source distribution and installation$(CE)
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.gz
 	@echo
 	$(VENV_BIN)/$(PACKAGE) --version
@@ -125,7 +125,7 @@ test-sdist: clean $(VENV_ROOT) dist/$(ARCHIVE_NAME).tar.gz
 
 .PHONY: test-bdist
 test-bdist: clean $(VENV_ROOT) dist/$(WHL_NAME).whl
-	@echo $(H1)Testing built distribution and installation$(H1END)
+	@echo $(CS)Testing built distribution and installation$(CE)
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.whl
 	@echo
 	$(VENV_BIN)/$(PACKAGE) --version
@@ -133,13 +133,13 @@ test-bdist: clean $(VENV_ROOT) dist/$(WHL_NAME).whl
 
 .PHONY: test
 test:
-	@echo $(H1)Running tests$(HEADER_EXTRA)$(H1END)
+	@echo $(CS)Running tests$(HEADER_EXTRA)$(CE)
 	$(VENV_BIN)/py.test $(COV) $(TOP)$(PACKAGE) $(COV) $(TOP)tests --verbose $(TOP)$(PACKAGE) $(TOP)tests
 	@echo
 
 .PHONY: lint
 lint:
-	@echo $(H1)Running linters$(H1END)
+	@echo $(CS)Running linters$(CE)
 	$(VENV_BIN)/flake8 $(TOP) --count --show-source --statistics
 	$(VENV_BIN)/flake8 $(TOP) --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 	$(VENV_BIN)/pylint $(TOP)$(PACKAGE)
@@ -149,7 +149,7 @@ publish: test-all upload
 
 .PHONY: upload
 upload:
-	@echo $(H1)Upload built distribution$(H1END)
+	@echo $(CS)Upload built distribution$(CE)
 	@echo "$(VERSION)"
 	@echo "$(VERSION)" | grep -q "dav" && echo '!!! Not publishing dev version !!!' && exit 1 || echo ok
 	$(MAKE) build
