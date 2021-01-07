@@ -37,23 +37,19 @@ PYTEST_FLAGS ?= --verbose --color=yes
 # Run “make build” by default
 .DEFAULT_GOAL = build
 
-# Will used to create venv
+VENV_ROOT = .venv
+
+# PYTHON will used to create venv
 ifeq ($(OS),Windows_NT)
-	PYTHON ?= python
+	PYTHON  ?= python
+	VENV_BIN = $(VENV_ROOT)/Scripts
 else
-	PYTHON ?= python3
+	PYTHON  ?= python3
+	VENV_BIN = $(VENV_ROOT)/bin
 endif
 
-VENV_ROOT=.venv
-
-ifeq ($(OS),Windows_NT)
-	VENV_BIN=$(VENV_ROOT)/Scripts
-else
-	VENV_BIN=$(VENV_ROOT)/bin
-endif
-
-VENV_PIP=$(VENV_BIN)/pip
-VENV_PYTHON=$(VENV_BIN)/python
+VENV_PIP    = $(VENV_BIN)/pip
+VENV_PYTHON = $(VENV_BIN)/python
 
 export PATH := $(VENV_BIN):$(PATH)
 
