@@ -104,7 +104,7 @@ check-dist: $(VENV_ROOT)
 	@echo
 
 .PHONY: test-ccov
-test-ccov: COV=--cov --cov-report=html --cov-report=xml
+test-ccov: COV=--cov=$(TOP)$(PACKAGE) --cov=$(TOP)tests --cov-report=xml
 test-ccov: HEADER_EXTRA=' (with coverage)'
 test-ccov: test
 
@@ -134,14 +134,14 @@ test-bdist: clean $(VENV_ROOT) dist/$(WHL_NAME).whl
 .PHONY: test
 test:
 	@echo $(CS)Running tests$(HEADER_EXTRA)$(CE)
-	$(VENV_BIN)/py.test $(COV) $(TOP)$(PACKAGE) $(COV) $(TOP)tests --verbose $(TOP)$(PACKAGE) $(TOP)tests
+	$(VENV_BIN)/py.test $(PYTEST_FLAGS) $(COV) $(TOP)$(PACKAGE) $(TOP)tests
 	@echo
 
 .PHONY: lint
 lint:
 	@echo $(CS)Running linters$(CE)
 	$(VENV_BIN)/flake8 $(TOP) --count --show-source --statistics
-	$(VENV_BIN)/flake8 $(TOP) --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+	$(VENV_BIN)/flake8 $(TOP) --count --max-complexity=10 --statistics
 	$(VENV_BIN)/pylint $(TOP)$(PACKAGE)
 
 .PHONY: publish
