@@ -149,7 +149,7 @@ publish: test-all upload
 .PHONY: upload
 upload:
 	@echo $(CS)Upload built distribution$(CE)
-	@echo "$(VERSION)" | grep -q "dav" && echo '!!! Not publishing dev version !!!' && exit 1 || echo ok
+	@$(VENV_PYTHON) setup.py --version | grep -q "dev" && echo '!!! Not publishing dev version !!!' && exit 1 || echo ok
 	$(MAKE) build
 	$(MAKE) check-dst
 	$(VENV_BIN)/twine upload ./dist/*
