@@ -185,3 +185,12 @@ help: .title
 	@echo '  test-ccov:  Run unit tests with coverage'
 	@echo '  lint:       Lint the code'
 	@echo
+	@echo 'Used variables:'
+	@echo '  PYTHON=$(PYTHON)'
+	@echo '  VENV_PYTHON=$(VENV_PYTHON)'
+	@echo '  VENV_PIP=$(VENV_PIP)'
+	@echo '  SHELL=$(shell echo $$SHELL)'
+	@echo '  TERM=$(shell echo $$TERM)'
+	@echo '  TOP=$(TOP)'
+	@echo '  ROOT_DIR=$(ROOT_DIR)'
+	@echo
