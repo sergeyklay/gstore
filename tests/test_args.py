@@ -14,7 +14,7 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from unittest import mock
 
 from gstore import args
@@ -38,3 +38,18 @@ def test_none_args(monkeypatch):
     with mock.patch.object(ArgumentParser, 'print_help') as mock_help:
         assert args.argparse() is None
         mock_help.assert_called_once_with(sys.stderr)
+
+
+def test_only_token(monkeypatch):
+    """Token is enough to run gstore without arguments."""
+    def mock_get_token_from_env():
+        return 'secret'
+
+    monkeypatch.setattr('sys.argv', ['gstore'])
+    monkeypatch.setattr(
+        args,
+        'get_token_from_env',
+        mock_get_token_from_env
+    )
+
+    assert isinstance(args.argparse(), Namespace)
