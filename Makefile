@@ -68,6 +68,7 @@ $(VENV_ROOT):
 .PHONY: install
 install: $(VENV_ROOT)
 	@echo $(CS)Installing dev requirements$(CE)
+	$(VENV_PIP) install --upgrade pip
 	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS)
 	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS_DEV)
 
