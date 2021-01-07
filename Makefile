@@ -58,7 +58,7 @@ $(VENV_ROOT):
 	@echo
 	@echo To active it manually, run:
 	@echo
-	@echo     source $(VENV_BIN)/activate
+	@echo "    source $(VENV_BIN)/activate"
 	@echo
 	@echo See https://docs.python.org/3/library/venv.html for more.
 	@echo
@@ -67,6 +67,7 @@ $(VENV_ROOT):
 .PHONY: install
 install: $(VENV_ROOT)
 	@echo $(H1)Installing dev requirements$(H1END)
+	$(VENV_PIP) install --upgrade pip setuptools wheel
 	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS)
 	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS_DEV)
 
