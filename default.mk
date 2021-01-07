@@ -19,11 +19,11 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 ifneq (,$(findstring xterm,${TERM}))
 	GREEN := $(shell tput -Txterm setaf 2)
 	RESET := $(shell tput -Txterm sgr0)
-	CS    = "\n\n${GREEN}~~~ "
-	CE    = " ~~~${RESET}\n"
+	CS = "${GREEN}~~~ "
+	CE = " ~~~${RESET}"
 else
-	CS    = "\#\#\# "
-	CE    = " \#\#\#"
+	CS = "~~~ "
+	CE = " ~~~"
 endif
 
 COV =
