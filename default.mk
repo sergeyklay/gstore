@@ -58,6 +58,3 @@ HAVE_PYTHON := $(shell sh -c "command -v $(PYTHON)")
 ifndef HAVE_PYTHON
 $(error "$(PYTHON) is not available.")
 endif
-
-VERSION = $(shell grep __version__ ./gstore/__init__.py)
-
