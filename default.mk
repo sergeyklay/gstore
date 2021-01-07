@@ -22,8 +22,8 @@ H1END=" \#\#\# \033[0m\n"
 COV=
 HEADER_EXTRA=
 
-REQUIREMENTS=$(ROOT_DIR)/requirements.txt
-REQUIREMENTS_DEV=$(ROOT_DIR)/requirements-dev.txt
+REQUIREMENTS=requirements.txt
+REQUIREMENTS_DEV=requirements-dev.txt
 
 # Run “make build” by default
 .DEFAULT_GOAL = build
@@ -33,14 +33,10 @@ PYTHON ?= python3
 
 VENV_ROOT=.venv
 VENV_BIN=$(VENV_ROOT)/bin
-VENV_PIP=$(VENV_BIN)/pip3
+VENV_PIP=$(VENV_BIN)/pip
 VENV_PYTHON=$(VENV_BIN)/python
 
 export PATH := $(VENV_BIN):$(PATH)
-
-PYTEST_COV = pytest-cov
-TWINE      = twine
-FLAKE8     = flake8
 
 # Program availability
 HAVE_PYTHON := $(shell sh -c "command -v $(PYTHON)")
@@ -48,8 +44,8 @@ ifndef HAVE_PYTHON
 $(error "$(PYTHON) is not available.")
 endif
 
-PACKAGE = $(shell sed -nEe "s/PKG_NAME[[:space:]]*=[[:space:]]*'(.*)'/\1/p" $(TOP)/setup.py)
-VERSION = $(shell sed -nEe "s/^__version__[[:space:]]*=[[:space:]]*['\"](.*)['\"]/\1/p" $(TOP)/$(PACKAGE)/__init__.py)
+PACKAGE = $(shell sed -nEe "s/PKG_NAME[[:space:]]*=[[:space:]]*'(.*)'/\1/p" $(TOP)setup.py)
+VERSION = $(shell sed -nEe "s/^__version__[[:space:]]*=[[:space:]]*['\"](.*)['\"]/\1/p" $(TOP)$(PACKAGE)/__init__.py)
 
 ARCHIVE_NAME = $(PACKAGE)-$(VERSION)
 WHL_NAME = $(PACKAGE)-$(VERSION)-py3-none-any
