@@ -65,6 +65,9 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
+      - name: Makefile selftest
+        run: make help
+
       - name: Get pip cache key
         id: pip-cache
         run: echo "::set-output name=dir::$(pip cache dir)"
