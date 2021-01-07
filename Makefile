@@ -81,20 +81,20 @@ clean:
 
 	$(RM) -r $(VENV_ROOT)
 	$(call rm-venv-link)
-	find $(TOP) -name '__pycache__' -delete -o -name '*.pyc' -delete
-	$(RM) -r $(TOP)build $(TOP)dist $(TOP)*.egg-info
-	$(RM) -r $(TOP).cache $(TOP).pytest_cache
-	$(RM) -r $(TOP)htmlcov
-	$(RM) $(TOP).coverage $(TOP)coverage.xml
+	find ./ -name '__pycache__' -delete -o -name '*.pyc' -delete
+	$(RM) -r ./build ./dist ./*.egg-info
+	$(RM) -r ./.cache ./.pytest_cache
+	$(RM) -r ./htmlcov
+	$(RM) ./.coverage ./coverage.xml
 
 .PHONY: check-dist
 check-dist: $(VENV_ROOT)
 	@echo $(CS)Check distribution files$(HEADER_EXTRA)$(CE)
-	$(VENV_BIN)/twine check $(TOP)dist/*
+	$(VENV_BIN)/twine check ./dist/*
 	@echo
 
 .PHONY: test-ccov
-test-ccov: COV=--cov=$(TOP)gstore --cov=$(TOP)tests --cov-report=xml --cov-report=html
+test-ccov: COV=--cov=./gstore --cov=./tests --cov-report=xml --cov-report=html
 test-ccov: HEADER_EXTRA=' (with coverage)'
 test-ccov: test
 
@@ -134,14 +134,14 @@ test-wheel: clean $(VENV_ROOT) wheel
 .PHONY: test
 test:
 	@echo $(CS)Running tests$(HEADER_EXTRA)$(CE)
-	$(VENV_BIN)/py.test $(PYTEST_FLAGS) $(COV) $(TOP)gstore $(TOP)tests
+	$(VENV_BIN)/py.test $(PYTEST_FLAGS) $(COV) ./gstore ./tests
 	@echo
 
 .PHONY: lint
 lint:
 	@echo $(CS)Running linters$(CE)
-	$(VENV_BIN)/flake8 $(FLAKE8_FLAGS) $(TOP)
-	$(VENV_BIN)/pylint $(TOP)gstore
+	$(VENV_BIN)/flake8 $(FLAKE8_FLAGS) ./
+	$(VENV_BIN)/pylint ./gstore
 
 .PHONY: publish
 publish: test-all upload
@@ -152,7 +152,7 @@ upload:
 	@echo "$(VERSION)" | grep -q "dav" && echo '!!! Not publishing dev version !!!' && exit 1 || echo ok
 	$(MAKE) build
 	$(MAKE) check-dst
-	$(VENV_BIN)/twine upload $(TOP)dist/*
+	$(VENV_BIN)/twine upload ./dist/*
 	@echo
 
 .PHONY: build
@@ -196,6 +196,5 @@ help:
 	@echo '  PYTEST_FLAGS: $(PYTEST_FLAGS)'
 	@echo '  SHELL:        $(shell echo $$SHELL)'
 	@echo '  TERM:         $(shell echo $$TERM)'
-	@echo '  TOP:          $(TOP)'
 	@echo '  ROOT_DIR:     $(ROOT_DIR)'
 	@echo
