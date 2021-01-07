@@ -104,7 +104,7 @@ check-dist: $(VENV_ROOT)
 	@echo
 
 .PHONY: test-ccov
-test-ccov: COV=--cov=$(TOP)$(PACKAGE) --cov=$(TOP)tests --cov-report=xml
+test-ccov: COV=--cov=$(TOP)$(PACKAGE) --cov=$(TOP)tests --cov-report=xml --cov-report=html
 test-ccov: HEADER_EXTRA=' (with coverage)'
 test-ccov: test
 
