@@ -18,6 +18,7 @@ Improvements
 * Gstore will exit with a status of one if there are critical errors during
   synchronization.
 * Gstore will handle situations with invalid API token or organization name.
+* Move all the documentation to `readthedocs <https://gstore.readthedocs.io>`_.
 
 
 Bug Fixes
