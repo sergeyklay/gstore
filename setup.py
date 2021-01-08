@@ -159,7 +159,6 @@ EXTRAS_REQUIRE = {
     # Dependencies that are required to run tests
     'testing': [
         'pytest',  # Our tests framework
-        'pytest-cov',  # Pytest plugin to produce coverage reports
     ],
     'docs': ['furo', 'sphinx']
 }

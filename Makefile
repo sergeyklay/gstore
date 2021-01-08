@@ -54,13 +54,15 @@ $(VENV_ROOT):
 	@echo
 	$(call mk-venv-link)
 
-.PHONY: install
-install: $(VENV_ROOT)
+.PHONY: init
+init: $(VENV_ROOT)
 	@echo $(CS)Installing dev requirements$(CE)
 	$(VENV_PYTHON) -m pip install --upgrade pip setuptools wheel
 	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS)
 	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS_DEV)
 
+.PHONY: install
+install: init
 	@echo $(CS)Installing Gstore$(CE)
 	$(VENV_PIP) install --upgrade --editable .
 
@@ -91,6 +93,7 @@ clean:
 check-dist: $(VENV_ROOT)
 	@echo $(CS)Check distribution files$(HEADER_EXTRA)$(CE)
 	$(VENV_BIN)/twine check ./dist/*
+	$(VENV_BIN)/check-wheel-contents ./dist/*.whl
 	@echo
 
 .PHONY: test-ccov
@@ -163,13 +166,14 @@ build: sdist wheel
 help:
 	@echo gstore
 	@echo
-	@echo 'Run "make venv" first to install and update all dev dependencies.'
+	@echo 'Run "make init" first to install and update all dev dependencies.'
 	@echo 'See "default.mk" for variables you might want to set.'
 	@echo
 	@echo 'Available targets:'
 	@echo
 	@echo '  help:         Show this help and exit'
 	@echo '  venv:         Creating a Python environment (has to be launched first)'
+	@echo '  init:         Installing dev requirements'
 	@echo '  install:      Install development version of gstore'
 	@echo '  uninstall:    Uninstall local version of gstore'
 	@echo '  build:        Build gstore distribution (sdist and wheel)'
