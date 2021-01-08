@@ -2,6 +2,8 @@
 Gstore: Synchronize GitHub repositories made easy
 =================================================
 
+Release v\ |release| (`What's new? <changelog>`).
+
 .. include:: ../README.rst
    :start-after: teaser-begin
    :end-before: teaser-end
@@ -56,3 +58,17 @@ Alternatively, you can install from the source as follows:
 .. code-block:: bash
 
    $ python -m gstore --help
+
+----
+
+
+Full Table of Contents
+======================
+
+.. toctree::
+   :maxdepth: 2
+
+.. toctree::
+   :maxdepth: 1
+
+    changelog
