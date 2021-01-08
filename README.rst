@@ -3,7 +3,14 @@ Gstore
 
 |pypi| |nbsp| |pyver| |nbsp| |build| |nbsp| |codecov|
 
+.. teaser-begin
+
 Gstore is a simple tool to synchronize GitHub repositories of your organizations.
+
+Its main goal is to help you make backups and sync your projects automatically
+and easily.
+
+.. teaser-end
 
 Overview
 --------
