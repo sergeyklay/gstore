@@ -24,7 +24,7 @@ found at gstore's PyPI URL: https://pypi.org/project/gstore/
 """
 
 __copyright__ = 'Copyright (C) 2020, 2021 Serghei Iakovlev'
-__version__ = '0.3.0.dev1'
+__version__ = '0.3.1.dev1'
 __license__ = 'GPLv3+'
 __author__ = 'Serghei Iakovlev'
 __author_email__ = 'egrep@protonmail.ch'
