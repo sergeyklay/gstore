@@ -2,6 +2,9 @@
 
     <h1 align="center">Gstore</h1>
     <p align="center">
+        <a href="https://gstore.readthedocs.io/en/latest/?badge=latest">
+            <img src="https://readthedocs.org/projects/gstore/badge/?version=latest" alt="Documentation Status" />
+        </a>
         <a href="https://github.com/sergeyklay/gstore/actions?workflow=CI">
             <img src="https://github.com/sergeyklay/gstore/workflows/CI/badge.svg?branch=master" alt="CI Status" />
         </a>
@@ -47,57 +50,6 @@ It will organize your repos into the following directory structure:
        ├── repo_2
        ├── ...
        └── repo_n
-
-Install
--------
-
-Requirements
-~~~~~~~~~~~~
-
-* Python_ >= 3.7
-* Git_ >= 1.7.0
-
-Installing Gstore
-~~~~~~~~~~~~~~~~~
-
-Installing Gstore is easily done using pip_. Assuming it is installed, just run
-the following from the command-line:
-
-.. code-block:: bash
-
-   $ pip install gstore
-
-The master of all the material is the Git repository at
-https://github.com/sergeyklay/gstore . So, you can install development version
-from the repo as follows:
-
-.. code-block:: bash
-
-   $ pip install -e git://github.com/sergeyklay/gstore.git#egg=gstore
-
-This command will download the latest version of Gstore from the
-`Python Package Index`_ and install it to your system. The command ``gstore``
-will be available to you from the command line.
-
-.. note::
-   The master branch will always contain the latest unstable version. If you
-   wish to check older versions or formal, tagged release, please switch to the
-   relevant tag_.
-
-More information about ``pip`` and PyPI can be found here:
-
-* `Install pip`_
-* `Python Packaging User Guide`_
-
-Alternatively, you can install from the source as follows:
-
-#. Clone `Gstore repository`_
-#. Run ``pip install -r requirements.txt``
-#. Run the ``gstore`` module (directory) as follows:
-
-.. code-block:: bash
-
-   $ python -m gstore --help
 
 Quick Start
 ---------------
@@ -323,13 +275,7 @@ License
 This project is open source software licensed under the
 `GNU General Public Licence version 3`_.  © 2020, 2021 `Serghei Iakovlev`_
 
-.. _tag: https://github.com/sergeyklay/gstore/tags
-.. _Python: https://www.python.org/
-.. _Git: https://git-scm.com/
 .. _pip: https://pip.pypa.io/en/latest/installing.html
-.. _Python Package Index: http://pypi.python.org/pypi/GitPython
-.. _Install pip: https://pip.pypa.io/en/latest/installing/
-.. _Python Packaging User Guide: https://packaging.python.org/
 .. _Personal Access Token: https://github.com/settings/tokens
 .. _gstore repository: https://github.com/sergeyklay/gstore
 .. _CHANGELOG.rst: https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst
