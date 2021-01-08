@@ -86,4 +86,4 @@ add_function_parentheses = True
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = "furo"
-html_theme_options = { }
+html_theme_options = {}

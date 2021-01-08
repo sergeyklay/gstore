@@ -116,5 +116,5 @@ jobs:
       - name: Install dependencies
         run: make install
 
-      - name: Lint with flake8
+      - name: Code linting
         run: make lint
