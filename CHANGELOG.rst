@@ -6,8 +6,10 @@ releases, in reverse chronological order.
 
 Versions follow `Semantic Versioning`_ (``<major>.<minor>.<patch>``).
 
-Backward incompatible (breaking) changes will only be introduced in major
-versions with advance notice in the **Deprecations** section of releases.
+.. note::
+
+   Backward incompatible (breaking) changes will only be introduced in major
+   versions with advance notice in the **Deprecations** section of releases.
 
 0.3.1 (XXXX-XX-XX)
 ------------------
@@ -18,6 +20,10 @@ Improvements
 * Gstore will exit with a status of one if there are critical errors during
   synchronization.
 * Gstore will handle situations with invalid API token or organization name.
+
+
+Improved Documentation
+~~~~~~~~~~~~~~~~~~~~~~
 * Move all the documentation to `readthedocs <https://gstore.readthedocs.io>`_.
 
 
