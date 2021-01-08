@@ -1,7 +1,14 @@
-Gstore
-======
+.. raw:: html
 
-|pypi| |nbsp| |pyver| |nbsp| |build| |nbsp| |codecov|
+    <h1 align="center">Gstore</h1>
+    <p align="center">
+        <a href="https://github.com/sergeyklay/gstore/actions?workflow=CI">
+            <img src="https://github.com/sergeyklay/gstore/workflows/CI/badge.svg?branch=master" alt="CI Status" />
+        </a>
+        <a href="https://codecov.io/github/sergeyklay/gstore">
+            <img src="https://codecov.io/github/sergeyklay/gstore/branch/master/graph/badge.svg" alt="Test Coverage" />
+        </a>
+    </p>
 
 .. teaser-begin
 
@@ -40,9 +47,6 @@ It will organize your repos into the following directory structure:
        ├── repo_2
        ├── ...
        └── repo_n
-
-Typical use case
-~~~~~~~~~~~~~~~~
 
 Install
 -------
@@ -332,17 +336,3 @@ This project is open source software licensed under the
 .. _open an issue: https://github.com/sergeyklay/gstore/issues
 .. _Serghei Iakovlev: https://github.com/sergeyklay
 .. _GNU General Public Licence version 3: https://github.com/sergeyklay/gstore/blob/master/LICENSE
-.. |pypi| image:: https://img.shields.io/pypi/v/gstore.svg
-   :target: https://pypi.org/project/gstore/
-   :alt: PyPI page
-.. |pyver| image:: https://img.shields.io/pypi/pyversions/gstore.svg
-   :target: https://pypi.org/project/gstore/
-   :alt: Python
-.. |build| image:: https://img.shields.io/github/workflow/status/sergeyklay/gstore/main
-   :target: https://github.com/sergeyklay/gstore/actions?query=workflow%3Amain
-   :alt: CI status
-.. |codecov| image:: https://codecov.io/gh/sergeyklay/gstore/branch/master/graph/badge.svg?token=41NCMH94LQ
-   :target: https://codecov.io/gh/sergeyklay/gstore
-   :alt: Codecov coverage report
-.. |nbsp| unicode:: 0xA0
-   :trim:
