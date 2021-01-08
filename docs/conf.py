@@ -82,3 +82,8 @@ default_role = "any"
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 add_function_parentheses = True
+
+# -- Options for HTML output ----------------------------------------------
+
+html_theme = "furo"
+html_theme_options = { }
