@@ -73,3 +73,9 @@ Full Table of Contents
 
     license
     changelog
+
+Indices and Tables
+==================
+
+* `genindex`
+* `search`
