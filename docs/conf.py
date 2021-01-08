@@ -88,8 +88,8 @@ add_function_parentheses = True
 html_theme = "furo"
 html_theme_options = {
     "sidebar_hide_name": True,
-    "light_logo": "gstore-logo-white.svg",
-    "dark_logo": "gstore-logo-white.svg",
+    "light_logo": "gstore-logo-white.png",
+    "dark_logo": "gstore-logo-white.png",
 }
 
 # The name of an image file (within the static path) to use as favicon of the
