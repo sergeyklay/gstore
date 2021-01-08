@@ -63,7 +63,7 @@ def load_long_description():
                 re.S,
             ).group(1)
             + "\n\n`Full changelog "
-            + "<https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst>`_.\n\n"  # noqa: E501
+            + f"<{find_meta('url')}/en/latest/changelog.html>`_.\n\n"
             + read_file(authors)
         )
 
@@ -166,6 +166,7 @@ EXTRAS_REQUIRE = {
 
 # Project's URLs
 PROJECT_URLS = {
+    'Documentation': 'https://gstore.readthedocs.io',
     'Bug Tracker': 'https://github.com/sergeyklay/gstore/issues',
     'Source Code': 'https://github.com/sergeyklay/gstore',
 }
