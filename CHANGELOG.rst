@@ -20,6 +20,12 @@ Improvements
   synchronization.
 * Gstore will handle situations with invalid API token or organization name.
 
+Bug Fixes
+~~~~~~~~~
+
+* Fix ``args.get_token_from_env()`` to properly get a token from environment
+  variables or None if variables are not set.
+
 Trivial/Internal Changes
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
