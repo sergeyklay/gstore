@@ -264,14 +264,5 @@ Support
 Should you have any question, any remark, or if you find a bug, or if there is
 something you can't do with the Gstore, please `open an issue`_.
 
-Changes
--------
-
-To see what has changed in recent versions of Gstore see `CHANGELOG.rst`_.
-
-
-.. _pip: https://pip.pypa.io/en/latest/installing.html
 .. _Personal Access Token: https://github.com/settings/tokens
-.. _gstore repository: https://github.com/sergeyklay/gstore
-.. _CHANGELOG.rst: https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst
 .. _open an issue: https://github.com/sergeyklay/gstore/issues
