@@ -254,7 +254,7 @@ the host and possible environment variables.:
 .. -support-
 
 Support
--------
+=======
 
 Should you have any question, any remark, or if you find a bug, or if there is
 something you can't do with the Gstore, please
@@ -264,7 +264,7 @@ something you can't do with the Gstore, please
 .. -project-information-
 
 Project Information
--------------------
+===================
 
 Gstore is released under the `GNU General Public Licence version 3 <https://choosealicense.com/licenses/gpl-3.0/>`_,
 its documentation lives at `Read the Docs <https://gstore.readthedocs.io/>`_,
@@ -277,7 +277,7 @@ If you'd like to contribute to Gstore you're most welcome!
 .. -similar-projects-
 
 Similar projects
-----------------
+================
 
 There are some projects similar to Gstore you may be interested in:
 

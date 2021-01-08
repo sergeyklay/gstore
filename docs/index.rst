@@ -40,7 +40,7 @@ This command will download the latest version of Gstore from the
 `Python Package Index <https://pypi.org/project/gstore/>`_ and install it to your system.
 
 .. note::
-   The master branch will always contain the latest unstable version. If you
+   The ``master`` branch will always contain the latest unstable version. If you
    wish to check older versions or formal, tagged release, please switch to the
    relevant `tag <https://github.com/sergeyklay/gstore/tags>`_.
 
@@ -76,13 +76,18 @@ Full Table of Contents
 .. toctree::
    :maxdepth: 2
 
+.. include:: ../README.rst
+   :start-after: -project-information-
+   :end-before: -similar-projects-
+
 .. toctree::
    :maxdepth: 1
 
-    license
-    changelog
+   license
+   changelog
 
-Indices and Tables
+
+Indices and tables
 ==================
 
 * `genindex`
