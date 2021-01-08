@@ -31,10 +31,7 @@ coverage:
     patch: no
     changes: no
 
-comment:
-  layout: diff
-  behavior: default
-  require_changes: false
+comment: false
 
 ignore:
 
