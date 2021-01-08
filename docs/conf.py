@@ -65,6 +65,7 @@ master_doc = "index"
 # General information about the project.
 project = u"gstore"
 copyright = u"2020, 2021 Serghei Iakovlev"
+author = u"Serghei Iakovlev"
 
 # The version info
 # The short X.Y version.
@@ -127,3 +128,35 @@ html_show_copyright = True
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = "gstoredoc"
+
+# -- Options for manual page output ---------------------------------------
+
+# One entry per manual page. List of tuples
+# (source start file, name, description, authors, manual section).
+man_pages = [
+    ("index", project, u"Gstore Documentation", [author], 1)
+]
+
+# -- Options for Texinfo output -------------------------------------------
+
+# Grouping the document tree into Texinfo files. List of tuples
+# (source start file, target name, title, author,
+#  dir menu entry, description, category)
+texinfo_documents = [
+    (
+        "index",
+        project,
+        u"Gstore Documentation",
+        author,
+        project,
+        "Synchronize GitHub repositories made easy.",
+        "Miscellaneous",
+    )
+]
+
+intersphinx_mapping = {
+    "https://docs.python.org/3": None,
+}
+
+# Allow non-local URIs so we can have images in CHANGELOG etc.
+suppress_warnings = ["image.nonlocal_uri"]
