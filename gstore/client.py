@@ -25,7 +25,7 @@ from github.GithubException import BadCredentialsException
 from github.GithubException import UnknownObjectException
 
 from gstore import __version__
-from gstore.exceptions import InvalidCredentialsError
+from gstore.exceptions import Error
 from gstore.models import Organization, Repository
 
 USER_AGENT = f'Gstore/{__version__}'
@@ -41,6 +41,18 @@ TOKEN_NAMES = (
 )
 
 
+class ValidationError(Error):
+    """Base validation error."""
+
+
+class InvalidCredentialsError(Error):
+    """An error resulting from the use of incorrect credentials."""
+
+    def __init__(self):
+        message = 'Bad token was used when accessing the GitHub API'
+        super().__init__(message)
+
+
 class Client:
     """
     This is a wrapper class around :class:`github.Github` to interact with
@@ -49,7 +61,7 @@ class Client:
     :param str token: Authentication token for github.com API requests
     :param str api_host: Default base URL for github.com API requests
     :param int timeout: Timeout for HTTP requests
-    :raise InvalidCredentialsError: in case of GitHub token is not provided.
+    :raises ValidationError: in case of GitHub token is not provided.
     """
 
     def __init__(
@@ -61,8 +73,8 @@ class Client:
         self.logger = logging.getLogger('gstore.client')
 
         if not token:
-            raise InvalidCredentialsError(
-                'GitHub token is not provided or it is empty')
+            raise ValidationError(
+                'Missing parameter: GitHub Token is required')
 
         api_url = 'https://{}'.format(api_host)
         self.logger.debug('Setting API URL to %s', api_url)
@@ -140,9 +152,7 @@ class Client:
                 self.logger.error('Invalid repository name "%s"', repo_name)
                 continue
             except BadCredentialsException as bad_credentials:
-                raise InvalidCredentialsError(
-                    'Bad token was used when accessing the GitHub API'
-                ) from bad_credentials
+                raise InvalidCredentialsError() from bad_credentials
 
         return retval
 
@@ -193,8 +203,6 @@ class Client:
                 self.logger.error('Invalid organization name "%s"', name)
                 continue
             except BadCredentialsException as bad_credentials:
-                raise InvalidCredentialsError(
-                    'Bad token was used when accessing the GitHub API'
-                ) from bad_credentials
+                raise InvalidCredentialsError() from bad_credentials
 
         return retval

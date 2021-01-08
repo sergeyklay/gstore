@@ -14,6 +14,14 @@ Versions follow `Semantic Versioning`_ (``<major>.<minor>.<patch>``).
 0.3.2.dev1 (2021-XX-XX)
 -----------------------
 
+Trivial/Internal Changes
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* ``Client.__init__()`` will raise now ``gstore.client.ValidationError`` when
+  in case of absent token.
+* ``Client.resolve_orgs()`` will raise now ``gstore.client.InvalidCredentialsError``
+  in case of invalid token.
+
 0.3.1 (2021-01-03)
 ------------------
 
