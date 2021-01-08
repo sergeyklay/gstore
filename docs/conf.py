@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+import codecs
 import os
 import re
-import codecs
 
 
 def read_file(filepath):
@@ -27,7 +27,7 @@ def read_file(filepath):
 def find_version(meta_file):
     """Extract ``__version__`` from meta_file."""
     here = os.path.abspath(os.path.dirname(__file__))
-    contents = os.path.join(here, meta_file)
+    contents = read_file(os.path.join(here, meta_file))
 
     meta_match = re.search(
         r"^__version__\s+=\s+['\"]([^'\"]*)['\"]",
@@ -71,3 +71,14 @@ copyright = u"2020, 2021 Serghei Iakovlev"
 release = find_version('../gstore/__init__.py')
 version = release.rsplit(u".", 1)[0]
 # The full version, including alpha/beta/rc tags.
+
+# List of patterns, relative to source directory, that match files and
+# directories to ignore when looking for source files.
+exclude_patterns = ["_build"]
+
+# The reST default role (used for this markup: `text`) to use for all
+# documents.
+default_role = "any"
+
+# If true, '()' will be appended to :func: etc. cross-reference text.
+add_function_parentheses = True
