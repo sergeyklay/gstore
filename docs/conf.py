@@ -13,6 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+#
+# -- Utils -----------------------------------------------------
+#
+
 import codecs
 import os
 import re
@@ -41,11 +45,19 @@ def find_version(meta_file):
         'Unable to find __version__ string in package meta file')
 
 
-# -- General configuration ------------------------------------------------
+#
+# -- Project information -----------------------------------------------------
+#
 
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
+# General information about the project.
+project = u"gstore"
+copyright = u"2020, 2021 Serghei Iakovlev"
+author = u"Serghei Iakovlev"
+
+#
+# -- General configuration ---------------------------------------------------
+#
+
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.doctest",
@@ -59,13 +71,11 @@ templates_path = ["_templates"]
 # The suffix of source filenames.
 source_suffix = ".rst"
 
+# Allow non-local URIs so we can have images in CHANGELOG etc.
+suppress_warnings = ["image.nonlocal_uri"]
+
 # The master toctree document.
 master_doc = "index"
-
-# General information about the project.
-project = u"gstore"
-copyright = u"2020, 2021 Serghei Iakovlev"
-author = u"Serghei Iakovlev"
 
 # The version info
 # The short X.Y version.
@@ -84,19 +94,34 @@ default_role = "any"
 # If true, '()' will be appended to :func: etc. cross-reference text.
 add_function_parentheses = True
 
-# -- Options for HTML output ----------------------------------------------
-
-html_theme = "furo"
-html_theme_options = {
-    "sidebar_hide_name": True,
-    "light_logo": "gstore-logo-white.png",
-    "dark_logo": "gstore-logo-white.png",
+#
+# -- Options for extlinks ----------------------------------------------------
+#
+extlinks = {
+    "pypi": ("https://pypi.org/project/%s/", ""),
 }
 
-# The name of an image file (within the static path) to use as favicon of the
-# docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
-# pixels large.
+#
+# -- Options for intersphinx -------------------------------------------------
+#
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master", None),
+}
+
+#
+# -- Options for TODOs -------------------------------------------------------
+#
+todo_include_todos = True
+
+# -- Options for HTML output ----------------------------------------------
+
 # html_favicon = None
+
+html_theme = "furo"
+html_title = "Gstore"
+
+html_theme_options = {}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -129,7 +154,9 @@ html_show_copyright = True
 # Output file base name for HTML help builder.
 htmlhelp_basename = "gstoredoc"
 
+#
 # -- Options for manual page output ---------------------------------------
+#
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
@@ -137,7 +164,9 @@ man_pages = [
     ("index", project, u"Gstore Documentation", [author], 1)
 ]
 
+#
 # -- Options for Texinfo output -------------------------------------------
+#
 
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
@@ -153,10 +182,3 @@ texinfo_documents = [
         "Miscellaneous",
     )
 ]
-
-intersphinx_mapping = {
-    "https://docs.python.org/3": None,
-}
-
-# Allow non-local URIs so we can have images in CHANGELOG etc.
-suppress_warnings = ["image.nonlocal_uri"]

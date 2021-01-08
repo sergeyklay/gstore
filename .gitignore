@@ -12,6 +12,7 @@
 /dist
 /*.egg-info
 /htmlcov
+/docs/_build
 
 # Python cache.
 __pycache__
