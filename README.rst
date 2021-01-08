@@ -269,16 +269,9 @@ Changes
 
 To see what has changed in recent versions of Gstore see `CHANGELOG.rst`_.
 
-License
--------
-
-This project is open source software licensed under the
-`GNU General Public Licence version 3`_.  © 2020, 2021 `Serghei Iakovlev`_
 
 .. _pip: https://pip.pypa.io/en/latest/installing.html
 .. _Personal Access Token: https://github.com/settings/tokens
 .. _gstore repository: https://github.com/sergeyklay/gstore
 .. _CHANGELOG.rst: https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst
 .. _open an issue: https://github.com/sergeyklay/gstore/issues
-.. _Serghei Iakovlev: https://github.com/sergeyklay
-.. _GNU General Public Licence version 3: https://github.com/sergeyklay/gstore/blob/master/LICENSE
