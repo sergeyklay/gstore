@@ -5,6 +5,14 @@ Usage
 Command Line Options
 ====================
 
+**Quick Start:**
+
+.. code-block:: bash
+
+   $ gstore --token "$TOKEN" ~/backup
+
+**Synopsis:**
+
 ::
 
    gstore [options] [[--] target]

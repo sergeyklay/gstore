@@ -8,56 +8,52 @@ Release v\ |release| (`What's new? <changelog>`).
    :start-after: teaser-begin
    :end-before: teaser-end
 
-Getting Started
-===============
+Overview
+========
 
-Requirements
-~~~~~~~~~~~~
+Gstore uses the GitHub API to get a list of all forked, mirrored, public,
+and private repos owned by your organizations. If the repo already exists
+locally, it will update it via git-pull. Otherwise, it will properly clone the
+repo.
 
-* `Python <https://www.python.org/>`_ >= 3.7
-* `Git <https://git-scm.com/>`_ >= 1.7.0
-
-Installing Gstore
-~~~~~~~~~~~~~~~~~
-
-Gstore is a Python-only package `hosted on PyPI <https://pypi.org/project/gstore/>`_.
-The recommended installation method is `pip <https://pip.pypa.io/en/stable/>`_-installing into a virtualenv:
-
-.. code-block:: console
-
-   $ python -m pip install gstore
-
-The command ``gstore`` will be available to you from the command line.
-
-The master of all the material is the Git repository at
-https://github.com/sergeyklay/gstore. So, you can install development version from the repo as follows:
+Gstore will organize your repos into the following directory structure:
 
 .. code-block:: bash
 
-   $ pip install -e git://github.com/sergeyklay/gstore.git#egg=gstore
+   + sync-dir
+   ├── organization_1
+   │   ├── repo_1
+   │   ├── repo_2
+   │   ├── ...
+   │   └── repo_n
+   ├── organization_2
+   │   ├── repo_1
+   │   ├── repo_2
+   │   ├── ...
+   │   └── repo_n
+   └── organization_n
+       ├── repo_1
+       ├── repo_2
+       ├── ...
+       └── repo_n
 
-This command will download the latest version of Gstore from the
-`Python Package Index <https://pypi.org/project/gstore/>`_ and install it to your system.
 
-.. note::
-   The ``master`` branch will always contain the latest unstable version. If you
-   wish to check older versions or formal, tagged release, please switch to the
-   relevant `tag <https://github.com/sergeyklay/gstore/tags>`_.
+Quick Start
+===========
 
-More information about ``pip`` and PyPI can be found here:
+#. Generate a GitHub `Personal Access Token <https://github.com/settings/tokens>`_ with the following permissions:
 
-* `Install pip <https://pip.pypa.io/en/latest/installing/>`_
-* `Python Packaging User Guide <https://packaging.python.org/>`_
+   * ``repo``: Full control of private repositories
 
-Alternatively, you can install from the source as follows:
+   * ``user:read``: Read all user profile data
 
-#. Clone `Gstore repository <https://github.com/sergeyklay/gstore>`_
-#. Run ``pip install -r requirements.txt``
-#. Run the ``gstore`` module (directory) as follows:
+#. Save the token in a safe place; you'll need it when use Gstore
+
+#. Sync your repos:
 
 .. code-block:: bash
 
-   $ python -m gstore --help
+   $ gstore --token "$TOKEN" ~/backup
 
 
 .. include:: ../README.rst
@@ -76,7 +72,7 @@ Full Table of Contents
 .. toctree::
    :maxdepth: 2
 
-   overview
+   installation
    usage
    logging
 
