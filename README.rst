@@ -54,7 +54,7 @@ It will organize your repos into the following directory structure:
 Quick Start
 ---------------
 
-#. Generate a GitHub `Personal Access Token`_ with the following permissions:
+#. Generate a GitHub `Personal Access Token <https://github.com/settings/tokens>`_ with the following permissions:
 
    * ``repo``: Full control of private repositories
 
@@ -250,6 +250,32 @@ the host and possible environment variables.:
    $ export GH_HOST="github.example.com"
    $ gstore ~/backup
 
+
+.. -support-
+
+Support
+-------
+
+Should you have any question, any remark, or if you find a bug, or if there is
+something you can't do with the Gstore, please
+`open an issue <https://github.com/sergeyklay/gstore/issues>`_.
+
+
+.. -project-information-
+
+Project Information
+-------------------
+
+Gstore is released under the `GNU General Public Licence version 3 <https://choosealicense.com/licenses/gpl-3.0/>`_,
+its documentation lives at `Read the Docs <https://gstore.readthedocs.io/>`_,
+the code on `GitHub <https://github.com/sergeyklay/gstore>`_,
+and the latest release on `PyPI <https://pypi.org/project/gstore/>`_.
+It’s rigorously tested on Python 3.7+.
+
+If you'd like to contribute to Gstore you're most welcome!
+
+.. -similar-projects-
+
 Similar projects
 ----------------
 
@@ -257,12 +283,3 @@ There are some projects similar to Gstore you may be interested in:
 
 * https://github.com/kennethreitz42/ghsync
 * https://github.com/lgg/simple-git-mirror-sync
-
-Support
--------
-
-Should you have any question, any remark, or if you find a bug, or if there is
-something you can't do with the Gstore, please `open an issue`_.
-
-.. _Personal Access Token: https://github.com/settings/tokens
-.. _open an issue: https://github.com/sergeyklay/gstore/issues

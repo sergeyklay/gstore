@@ -59,6 +59,14 @@ Alternatively, you can install from the source as follows:
 
    $ python -m gstore --help
 
+
+.. include:: ../README.rst
+   :start-after: -support-
+   :end-before: -project-information-
+
+.. include:: ../README.rst
+   :start-after: -similar-projects-
+
 ----
 
 
