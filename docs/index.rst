@@ -62,7 +62,7 @@ Alternatively, you can install from the source as follows:
 
 .. include:: ../README.rst
    :start-after: -support-
-   :end-before: -project-information-
+   :end-before: -similar-projects-
 
 .. include:: ../README.rst
    :start-after: -similar-projects-
@@ -82,7 +82,7 @@ Full Table of Contents
 
 .. include:: ../README.rst
    :start-after: -project-information-
-   :end-before: -similar-projects-
+   :end-before: -support-
 
 .. toctree::
    :maxdepth: 1

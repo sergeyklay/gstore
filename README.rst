@@ -22,16 +22,6 @@ and easily.
 
 .. teaser-end
 
-.. -support-
-
-Support
-=======
-
-Should you have any question, any remark, or if you find a bug, or if there is
-something you can't do with the Gstore, please
-`open an issue <https://github.com/sergeyklay/gstore/issues>`_.
-
-
 .. -project-information-
 
 Project Information
@@ -44,6 +34,15 @@ and the latest release on `PyPI <https://pypi.org/project/gstore/>`_.
 It’s rigorously tested on Python 3.7+.
 
 If you'd like to contribute to Gstore you're most welcome!
+
+.. -support-
+
+Support
+=======
+
+Should you have any question, any remark, or if you find a bug, or if there is
+something you can't do with the Gstore, please
+`open an issue <https://github.com/sergeyklay/gstore/issues>`_.
 
 .. -similar-projects-
 
