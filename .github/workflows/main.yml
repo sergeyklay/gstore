@@ -132,5 +132,8 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Install dependencies
+        run: make init
+
       - name: Testing package distribution and installation
         run: make test-dist
