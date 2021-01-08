@@ -160,7 +160,8 @@ EXTRAS_REQUIRE = {
     'testing': [
         'pytest',  # Our tests framework
         'pytest-cov',  # Pytest plugin to produce coverage reports
-    ]
+    ],
+    'docs': ['furo', 'sphinx']
 }
 
 # Project's URLs
