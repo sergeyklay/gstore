@@ -18,8 +18,7 @@ from unittest import mock
 import pytest
 from github.GithubException import UnknownObjectException
 
-from gstore.client import Client
-from gstore.exceptions import InvalidCredentialsError
+from gstore.client import Client, ValidationError, InvalidCredentialsError
 from gstore.models import Organization, Repository
 
 
@@ -27,8 +26,8 @@ from gstore.models import Organization, Repository
 def test_empty_token(token):
     """Call Client() with empty token should raise exception."""
     with pytest.raises(
-            InvalidCredentialsError,
-            match='GitHub token is not provided or it is empty'):
+            ValidationError,
+            match='Missing parameter: GitHub Token is required'):
         Client(token)
 
 

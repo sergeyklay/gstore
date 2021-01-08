@@ -19,9 +19,9 @@ import logging
 
 from gstore.args import argparse
 from gstore.client import Client
+from gstore.exceptions import Error
 from gstore.logger import setup_logger
 from gstore.repo import RepoManager
-from gstore.exceptions import BaseValidationError
 
 
 def main():
@@ -55,8 +55,8 @@ def main():
                     repos = client.resolve_repos(args.repo, org)
 
                 manager.sync(org, repos)
-        except BaseValidationError as gstore_exception:
-            logger.error(gstore_exception)
+        except Error as gstore_error:
+            logger.error(gstore_error)
             retval = 1
 
     return retval

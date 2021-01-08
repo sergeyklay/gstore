@@ -16,6 +16,7 @@
 """Exception classes raised by various operations within gstore."""
 
 import re
+
 import git
 
 
@@ -45,9 +46,5 @@ def parse_git_errors(ex: git.GitCommandError) -> list:
     return list(messages)
 
 
-class BaseValidationError(ValueError):
-    """Base validation error."""
-
-
-class InvalidCredentialsError(BaseValidationError):
-    """An error resulting from the use of incorrect credentials."""
+class Error(Exception):
+    """Base class for exceptions in gstore module."""
