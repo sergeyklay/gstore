@@ -154,7 +154,7 @@ upload:
 	@echo $(CS)Upload built distribution$(CE)
 	@$(VENV_PYTHON) setup.py --version | grep -q "dev" && echo '!!! Not publishing dev version !!!' && exit 1 || echo ok
 	$(MAKE) build
-	$(MAKE) check-dst
+	$(MAKE) check-dist
 	$(VENV_BIN)/twine upload ./dist/*
 	@echo
 
