@@ -102,7 +102,7 @@ test-ccov: HEADER_EXTRA=' (with coverage)'
 test-ccov: test
 
 .PHONY: test-all
-test-all: clean install test test-dist lint
+test-all: uninstall clean install test test-dist lint
 
 .PHONY: test-dist
 test-dist: test-sdist test-wheel
@@ -114,7 +114,7 @@ sdist:
 	$(VENV_PYTHON) setup.py sdist
 
 .PHONY: test-sdist
-test-sdist: clean $(VENV_ROOT) sdist
+test-sdist: $(VENV_ROOT) sdist
 	@echo $(CS)Testing source distribution and installation$(CE)
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.gz
 	@echo
@@ -127,7 +127,7 @@ wheel:
 	$(VENV_PYTHON) setup.py bdist_wheel
 
 .PHONY: test-wheel
-test-wheel: clean $(VENV_ROOT) wheel
+test-wheel: $(VENV_ROOT) wheel
 	@echo $(CS)Testing built distribution and installation$(CE)
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.whl
 	@echo
