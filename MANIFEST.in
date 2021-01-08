@@ -27,3 +27,11 @@ recursive-include tests *.py
 # All files in the sdist with a .pyc, .pyo, or .pyd extension will be removed
 # from the sdist.
 global-exclude *.py[cod]
+
+# Documentation
+include docs/Makefile docs/docutils.conf
+recursive-include docs *.png
+recursive-include docs *.svg
+recursive-include docs *.py
+recursive-include docs *.rst
+prune docs/_build
