@@ -11,11 +11,11 @@ Versions follow `Semantic Versioning`_ (``<major>.<minor>.<patch>``).
    Backward incompatible (breaking) changes will only be introduced in major
    versions with advance notice in the **Deprecations** section of releases.
 
-0.3.1 (XXXX-XX-XX)
-------------------
+0.3.1.dev1 (XXXX-XX-XX)
+-----------------------
 
 Improvements
-~~~~~~~~~~~~
+^^^^^^^^^^^^
 
 * Gstore will exit with a status of one if there are critical errors during
   synchronization.
@@ -23,19 +23,20 @@ Improvements
 
 
 Improved Documentation
-~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^
+
 * Move all the documentation to `readthedocs <https://gstore.readthedocs.io>`_.
 
 
 Bug Fixes
-~~~~~~~~~
+^^^^^^^^^
 
 * Fix ``args.get_token_from_env()`` to properly get a token from environment
   variables or None if variables are not set.
 
 
 Trivial/Internal Changes
-~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 * ``Client.__init__()``, as well as ``Client.resolve_orgs()`` will raise now
   ``gstore.exceptions.InvalidCredentialsError`` in case of incorrect
@@ -51,7 +52,7 @@ Trivial/Internal Changes
 ------------------
 
 Breaking Changes
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 * Python < 3.7 is no longer supported.
 * Changed the way to get repositories from specific organizations.
@@ -60,7 +61,7 @@ Breaking Changes
 
 
 Features
-~~~~~~~~
+^^^^^^^^
 
 * Added ``-o`` as a short form of ``--org`` argument.
 * Added ability to limit sync to the specified repositories using ``-r``,
@@ -68,14 +69,14 @@ Features
 
 
 Improvements
-~~~~~~~~~~~~
+^^^^^^^^^^^^
 
 * Improved logging and error reporting.
 * Improved local repo handling by checking the directory contents.
 
 
 Bug Fixes
-~~~~~~~~~
+^^^^^^^^^
 
 * Corrected log level on ``--quiet`` mode.
 * Fixed invalid local repo handling.
@@ -88,13 +89,13 @@ Bug Fixes
 ------------------
 
 Features
-~~~~~~~~
+^^^^^^^^
 
 * Added ability to specify host for Github Enterprise.
 
 
 Improvements
-~~~~~~~~~~~~
+^^^^^^^^^^^^
 
 * Show help message and exit when Gstore is called without any argument and
   there are not enough environment variables for normal operation.
@@ -107,7 +108,7 @@ Improvements
 ------------------
 
 Features
-~~~~~~~~
+^^^^^^^^
 
 * Added ``-V``, ``--version`` arguments to print program's version information.
 * Added ``-dumpversion`` argument to print the version of the program and don't
@@ -117,7 +118,7 @@ Features
 
 
 Improvements
-~~~~~~~~~~~~
+^^^^^^^^^^^^
 
 * Handling situations when the target for sync is a regular file or readonly.
 
@@ -129,7 +130,7 @@ Improvements
 ------------------
 
 Features
-~~~~~~~~
+^^^^^^^^
 
 * Provided ability to pass authentication token for github.com API requests via
   environment variables.
@@ -137,13 +138,13 @@ Features
 
 
 Breaking Changes
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 * The GitHub username is no longer used upon obtaining organizations list.
 
 
 Trivial/Internal Changes
-~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Changed the way to communicate with GitHub API. ``requests`` library no
   longer used thanks to ``PyGithub``.
@@ -156,13 +157,13 @@ Trivial/Internal Changes
 ------------------
 
 Features
-~~~~~~~~
+^^^^^^^^
 
 * Added better logging subsystem
 
 
 Trivial/Internal Changes
-~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Bump GitPython version to fix a crash for users with
   ``gitpython>=3.0.0, <3.0.6``. For more see:
@@ -176,7 +177,7 @@ Trivial/Internal Changes
 ------------------
 
 Breaking Changes
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 * Renamed ``GHS_DIR`` environment variable to ``GSTORE_DIR``.
 * Renamed package name from ``ghs`` to ``gstore`` to avoid collision with the
@@ -190,7 +191,7 @@ Breaking Changes
 ------------------
 
 Features
-~~~~~~~~
+^^^^^^^^
 
 * Added ability to use ``GHS_DIR`` as a sync base directory.
 * Added ability to omit target directory and use current working directory.
@@ -204,7 +205,7 @@ Features
 ------------------
 
 Breaking Changes
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 * Renamed package name from ``ghsync`` to ``ghs`` to avoid collision with the
   existing package with the same name.
