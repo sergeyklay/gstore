@@ -2,8 +2,8 @@
 
     <h1 align="center">Gstore</h1>
     <p align="center">
-        <a href="https://gstore.readthedocs.io/en/latest/?badge=latest">
-            <img src="https://readthedocs.org/projects/gstore/badge/?version=latest" alt="Documentation Status" />
+        <a href="https://gstore.readthedocs.io/en/stable/?badge=stable">
+            <img src="https://readthedocs.org/projects/gstore/badge/?version=stable" alt="Documentation Status" />
         </a>
         <a href="https://github.com/sergeyklay/gstore/actions?workflow=CI">
             <img src="https://github.com/sergeyklay/gstore/workflows/CI/badge.svg?branch=master" alt="CI Status" />
