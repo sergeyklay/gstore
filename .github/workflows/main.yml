@@ -114,7 +114,23 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        run: make install
+        run: make init
 
       - name: Code linting
         run: make lint
+
+  package:
+    runs-on: ubuntu-20.04
+    name: Build & verify package
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Testing package distribution and installation
+        run: make test-dist
