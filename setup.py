@@ -13,23 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+import codecs
 import re
-import sys
-
 from os import path
+
 from setuptools import setup, find_packages
-
-
-def check_python_version():
-    """Check Python's version."""
-    if sys.version_info >= (4, 0):
-        sys.stderr.write(
-            'ERROR: This module is not supported with Python >= 4.0\n')
-        sys.exit(1)
-
-    if sys.version_info < (3, 7):
-        sys.stderr.write('ERROR: This module requires at least Python 3.7\n')
-        sys.exit(1)
 
 
 def locate_package_directory():
@@ -39,27 +27,52 @@ def locate_package_directory():
     except Exception as path_error:
         message = ('The directory in which the package and its '
                    'associated files are stored could not be located.')
-        raise ValueError(message) from path_error
+        raise RuntimeError(message) from path_error
 
 
 def read_file(filepath):
     """Read content from a UTF-8 encoded text file."""
-    with open(filepath, 'r', encoding='utf-8') as file_handle:
-        text = file_handle.read()
-    return text
+    with codecs.open(filepath, 'rb', 'utf-8') as file_handle:
+        return file_handle.read()
 
 
-def load_long_description(pkg_dir):
+PKG_NAME = 'gstore'
+PKG_DIR = locate_package_directory()
+META_PATH = path.join(PKG_DIR, PKG_NAME, '__init__.py')
+META_CONTENTS = read_file(META_PATH)
+
+
+def load_long_description():
     """Load long description from file README.rst."""
     try:
-        filepath_readme = path.join(pkg_dir, 'README.rst')
-        return read_file(filepath_readme)
+        read_me = path.join(PKG_DIR, 'README.rst')
+        changes = path.join(PKG_DIR, 'CHANGELOG.rst')
+        authors = path.join(PKG_DIR, 'AUTHORS.rst')
+
+        contents = (
+            "=================================================\n"
+            "Gstore: Synchronize GitHub repositories made easy\n"
+            "=================================================\n"
+            + read_file(read_me).split('.. teaser-begin')[1]
+            + "\n\n"
+            + "Release Information\n"
+            + "===================\n\n"
+            + re.search(
+                r"(\d+.\d.\d \(.*?\)\r?\n.*?)\r?\n\r?\n\r?\n----\r?\n\r?\n\r?\n",  # noqa: E501
+                read_file(changes),
+                re.S,
+            ).group(1)
+            + "\n\n`Full changelog "
+            + "<https://github.com/sergeyklay/gstore/blob/master/CHANGELOG.rst>`_.\n\n"  # noqa: E501
+            + read_file(authors)
+        )
+
+        return contents
     except Exception as read_error:
         message = 'Long description could not be read from README.rst'
-        raise ValueError(message) from read_error
+        raise RuntimeError(message) from read_error
 
 
-# Source: https://www.python.org/dev/peps/pep-0440
 def is_canonical_version(version):
     """Check if a version string is in the canonical format of PEP 440."""
     pattern = (
@@ -69,25 +82,24 @@ def is_canonical_version(version):
     return re.match(pattern, version) is not None
 
 
-def get_version_string(pkg_dir, pkg_name):
-    """Return package version as listed in `__version__` in init file."""
-    try:
-        # Read init file contents
-        init_file = path.join(pkg_dir, pkg_name, '__init__.py')
-        init_contents = read_file(init_file)
+def find_meta(meta):
+    """Extract __*meta*__ from META_CONTENTS."""
+    meta_match = re.search(
+        r"^__{meta}__\s+=\s+['\"]([^'\"]*)['\"]".format(meta=meta),
+        META_CONTENTS,
+        re.M
+    )
 
-        # Parse version string
-        re_version = re.compile(r'''__version__\s+=\s+['"](.*)['"]''')
-        match = re_version.search(init_contents)
-        if not match:
-            message = ("Version couldn't be parsed from variable "
-                       '__version__ in file __init__.py')
-            raise ValueError(message)
-        version_string = match.group(1)
-    except Exception as version_error:
-        message = ("Version couldn't be read from variable "
-                   '__version__ in file __init__.py')
-        raise ValueError(message) from version_error
+    if meta_match:
+        return meta_match.group(1)
+    raise RuntimeError(
+        f'Unable to find __{meta}__ string in package meta file')
+
+
+def get_version_string():
+    """Return package version as listed in `__version__` in meta file."""
+    # Parse version string
+    version_string = find_meta('version')
 
     # Check validity
     if not is_canonical_version(version_string):
@@ -99,95 +111,92 @@ def get_version_string(pkg_dir, pkg_name):
     return version_string
 
 
-PKG_NAME = 'gstore'
-PKG_DIR = locate_package_directory()
-PKG_VERSION = get_version_string(PKG_DIR, PKG_NAME)
-PKG_GIT = f'https://github.com/sergeyklay/{PKG_NAME}'
+KEYWORDS = [
+    'git',
+    'github',
+    'backup',
+    'repo',
+    'sync',
+]
 
-check_python_version()
+# Classifiers: available ones listed at https://pypi.org/classifiers
+CLASSIFIERS = [
+    'Development Status :: 4 - Beta',
 
-setup(
-    # Basic package information
-    name=PKG_NAME,
-    version=PKG_VERSION,
-    author='Serghei Iakovlev',
-    author_email='egrep@protonmail.ch',
-    maintainer='Serghei Iakovlev',
-    maintainer_email='egrep@protonmail.ch',
-    license='GPLv3+',
-    description='Gstore is a simple tool to synchronize GitHub '
-                'repositories of your organizations.',
-    long_description=load_long_description(PKG_DIR),
-    long_description_content_type='text/x-rst',
-    keywords='git github backup repo sync',
+    'Environment :: Console',
 
-    # Project's URLs
-    url=PKG_GIT,
-    download_url=f'{PKG_GIT}/archive/{PKG_VERSION}.tar.gz',
-    project_urls={
-        'Tracker': f'{PKG_GIT}/issues',
-        'Source': PKG_GIT,
-    },
+    'Intended Audience :: Developers',
+    'Intended Audience :: System Administrators',
+    'Intended Audience :: Information Technology',
 
-    # Classifiers: available ones listed at https://pypi.org/classifiers
-    classifiers=[
-        'Development Status :: 4 - Beta',
+    'Natural Language :: English',
 
-        'Environment :: Console',
+    'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',  # noqa: E501
+    'Operating System :: OS Independent',
 
-        'Intended Audience :: Developers',
-        'Intended Audience :: System Administrators',
-        'Intended Audience :: Information Technology',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3 :: Only',
 
-        'Natural Language :: English',
+    'Topic :: System :: Archiving :: Backup',
+    'Topic :: System :: Software Distribution',
+    'Topic :: Software Development :: Build Tools',
+    'Topic :: Software Development :: Version Control',
+    'Topic :: Software Development :: Version Control :: Git',
+]
 
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',  # noqa: E501
-        'Operating System :: OS Independent',
+# Dependencies that are downloaded by pip on installation and why
+INSTALL_REQUIRES = [
+    'PyGithub>=1.54.1',  # Interact with GitHub objects
+    'gitpython>=3.0.6',  # Interact with Git repositories
+]
 
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3 :: Only',
-
-        'Topic :: System :: Archiving :: Backup',
-        'Topic :: System :: Software Distribution',
-        'Topic :: Software Development :: Build Tools',
-        'Topic :: Software Development :: Version Control',
-        'Topic :: Software Development :: Version Control :: Git',
-    ],
-
-    # Included files
-    # a) auto-detected Python packages
-    packages=find_packages(),
-    # b) data files that are specified in the MANIFEST.in file
-    include_package_data=True,
-
-    # Dependencies that need to be fulfilled
-    platforms='any',
-    python_requires='>=3.7, <4',
-
-    # Dependencies that are downloaded by pip on installation and why
-    install_requires=[
-        'PyGithub>=1.54.1',  # Interact with GitHub objects
-        'gitpython>=3.0.6',  # Interact with Git repositories
-    ],
-
+EXTRAS_REQUIRE = {
     # Dependencies that are required to run tests
-    tests_require=[
-        'pytest',            # Our tests framework
-        'pytest-cov',        # Pytest plugin to produce coverage reports
-    ],
+    'testing': [
+        'pytest',  # Our tests framework
+        'pytest-cov',  # Pytest plugin to produce coverage reports
+    ]
+}
 
-    # Entry points
-    entry_points={
-        'console_scripts': [
-            f'{PKG_NAME}={PKG_NAME}.cli:main'
-        ]
-    },
+# Project's URLs
+PROJECT_URLS = {
+    'Bug Tracker': 'https://github.com/sergeyklay/gstore/issues',
+    'Source Code': 'https://github.com/sergeyklay/gstore',
+}
 
-    # Capability of running in compressed form: yes
-    zip_safe=True,
-)
+ENTRY_POINTS = {
+    'console_scripts': [
+        f'{PKG_NAME}={PKG_NAME}.cli:main'
+    ]
+}
+
+if __name__ == '__main__':
+    setup(
+        name=PKG_NAME,
+        version=get_version_string(),
+        author=find_meta('author'),
+        author_email=find_meta('author_email'),
+        maintainer=find_meta('author'),
+        maintainer_email=find_meta('author_email'),
+        license=find_meta('license'),
+        description=find_meta('description'),
+        long_description=load_long_description(),
+        long_description_content_type='text/x-rst',
+        keywords=KEYWORDS,
+        url=find_meta('url'),
+        project_urls=PROJECT_URLS,
+        classifiers=CLASSIFIERS,
+        packages=find_packages(),
+        include_package_data=True,
+        platforms='any',
+        python_requires='>=3.7, <4',
+        install_requires=INSTALL_REQUIRES,
+        extras_require=EXTRAS_REQUIRE,
+        entry_points=ENTRY_POINTS,
+        zip_safe=False,
+    )
