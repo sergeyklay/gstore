@@ -11,8 +11,8 @@ Versions follow `Semantic Versioning`_ (``<major>.<minor>.<patch>``).
    Backward incompatible (breaking) changes will only be introduced in major
    versions with advance notice in the **Deprecations** section of releases.
 
-0.3.1.dev1 (XXXX-XX-XX)
------------------------
+0.3.1 (2021-01-03)
+------------------
 
 Improvements
 ^^^^^^^^^^^^
