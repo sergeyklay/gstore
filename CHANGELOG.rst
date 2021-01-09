@@ -14,6 +14,21 @@ Versions follow `Semantic Versioning`_ (``<major>.<minor>.<patch>``).
 0.4.0.dev1 (2021-XX-XX)
 -----------------------
 
+Features
+^^^^^^^^
+
+* Added ``gstore.env`` namespace. This namespace was introduced to provide a
+  convenient way to work with environment variables used by various functions
+  within Gstore.
+
+
+Breaking Changes
+^^^^^^^^^^^^^^^^
+
+* Moved ``gstore.Client.TOKEN_NAMES`` to ``gstore.env.TOKEN_NAMES``.
+* Moved ``gstore.args.get_token_from_env()`` to ``gstore.env.token_lookup()``.
+
+
 Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -36,13 +51,13 @@ Improvements
 Improved Documentation
 ^^^^^^^^^^^^^^^^^^^^^^
 
-* Move all the documentation to `readthedocs <https://gstore.readthedocs.io>`_.
+* Moved all the documentation to `readthedocs <https://gstore.readthedocs.io>`_.
 
 
 Bug Fixes
 ^^^^^^^^^
 
-* Fix ``gstore.args.get_token_from_env()`` to properly get a token from
+* Fixed ``gstore.args.get_token_from_env()`` to properly get a token from
   environment variables or None if variables are not set.
 
 
