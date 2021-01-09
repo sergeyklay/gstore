@@ -13,18 +13,40 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-"""Top-level module for gstore.
+"""The top-level module for Gstore.
 
-This module:
-- tracks the version of the package
-- tracks the base package info used by various function within gstore
+This module tracks the version of the package as well as the base
+package info used by various functions within Gstore.
 
-Please refer to the documentation provided in the README.rst, which can be
-found at gstore's PyPI URL: https://pypi.org/project/gstore/
+Modules:
+
+    __main__
+    args
+    cli
+    client
+    env
+    exceptions
+    logger
+    models
+    repo
+
+Misc variables:
+
+    __copyright__
+    __version__
+    __license__
+    __author__
+    __author_email__
+    __url__
+    __description__
+
+Refer to the `documentation <https://gstore.readthedocs.io/>`_ for
+details on the use of this package.
+
 """
 
 __copyright__ = 'Copyright (C) 2020, 2021 Serghei Iakovlev'
-__version__ = '0.3.2.dev1'
+__version__ = '0.4.0.dev1'
 __license__ = 'GPLv3+'
 __author__ = 'Serghei Iakovlev'
 __author_email__ = 'egrep@protonmail.ch'

@@ -9,18 +9,18 @@ Versions follow `Semantic Versioning`_ (``<major>.<minor>.<patch>``).
 .. note::
 
    Backward incompatible (breaking) changes will only be introduced in major
-   versions with advance notice in the **Deprecations** section of releases.
+   versions.
 
-0.3.2.dev1 (2021-XX-XX)
+0.4.0.dev1 (2021-XX-XX)
 -----------------------
 
 Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-* ``Client.__init__()`` will raise now ``gstore.client.ValidationError`` when
-  in case of absent token.
-* ``Client.resolve_orgs()`` will raise now ``gstore.client.InvalidCredentialsError``
-  in case of invalid token.
+* ``gstore.Client.__init__()`` will raise now ``gstore.client.ValidationError``
+  when in case of absent token.
+* ``gstore.Client.resolve_orgs()`` will raise now
+  ``gstore.client.InvalidCredentialsError`` in case of invalid token.
 
 0.3.1 (2021-01-03)
 ------------------
@@ -42,16 +42,16 @@ Improved Documentation
 Bug Fixes
 ^^^^^^^^^
 
-* Fix ``args.get_token_from_env()`` to properly get a token from environment
-  variables or None if variables are not set.
+* Fix ``gstore.args.get_token_from_env()`` to properly get a token from
+  environment variables or None if variables are not set.
 
 
 Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-* ``Client.__init__()``, as well as ``Client.resolve_orgs()`` will raise now
-  ``gstore.exceptions.InvalidCredentialsError`` in case of incorrect
-  credentials usage.
+* ``gstore.Client.__init__()``, as well as ``gstore.Client.resolve_orgs()``
+  will raise now ``gstore.exceptions.InvalidCredentialsError`` in case of
+  incorrect credentials usage.
 * ``gstore.models.Repository`` now holds ``gstore.models.Organization``.
 * Starting with v0.3.1 tests will be included in the PyPI package.
 
