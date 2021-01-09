@@ -33,13 +33,6 @@ USER_AGENT = f'Gstore/{__version__}'
 DEFAULT_HOST = 'api.github.com'
 DEFAULT_TIMEOUT = 15
 
-TOKEN_NAMES = (
-    'GH_TOKEN',
-    'GITHUB_TOKEN',
-    'GH_ENTERPRISE_TOKEN',
-    'GITHUB_ENTERPRISE_TOKEN',
-)
-
 
 class ValidationError(Error):
     """Base validation error."""
@@ -185,7 +178,7 @@ class Client:
         Resolve organizations from provided list.
 
         :param list orgs: A list of organizations names
-        :raise InvalidCredentialsError: in case of bad credentials.
+        :raises InvalidCredentialsError: in case of bad credentials.
         :return: A collection with organizations
         :rtype: list of :class:`gstore.models.Organization`
         """

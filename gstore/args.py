@@ -19,10 +19,11 @@ import os
 import sys
 import textwrap as _textwrap
 from argparse import SUPPRESS, ArgumentParser, HelpFormatter
-from os import environ as env
+from os import environ
 
+from gstore import env
 from gstore import __copyright__, __version__
-from gstore.client import DEFAULT_HOST, TOKEN_NAMES
+from gstore.client import DEFAULT_HOST
 
 
 class LineBreaksFormatter(HelpFormatter):
@@ -72,38 +73,20 @@ def get_version_str():
     return version
 
 
-def get_token_from_env():
-    """Get authentication token for GitHub API from environment variables.
-
-    The order of searching for a token in environment variables:
-    * GH_TOKEN, GITHUB_TOKEN (in order of precedence)
-    * GH_ENTERPRISE_TOKEN, GITHUB_ENTERPRISE_TOKEN (in order of precedence)
-
-    :returns: An authentication token for github.com API requests
-    :rtype: str or None
-    """
-    for name in TOKEN_NAMES:
-        token = env.get(name)
-        if token:
-            return token
-
-    return None
-
-
 def parser_add_positionals(parser: ArgumentParser):
-    """Adds positional parameters group to a parser."""
+    """Add positional parameters group to a parser."""
     pgroup = parser.add_argument_group('Positional parameters')
 
     pgroup.add_argument('target', nargs='?', type=str,
-                        default=env.get('GSTORE_DIR', os.getcwd()),
+                        default=environ.get('GSTORE_DIR', os.getcwd()),
                         help='Base target to sync repos (e.g. folder on disk)')
 
     return parser
 
 
 def parser_add_options(parser: ArgumentParser):
-    """Adds options group to a parser."""
-    token = get_token_from_env()
+    """Add options group to a parser."""
+    token = env.token_lookup()
 
     ogroup = parser.add_argument_group('Options')
 
@@ -114,7 +97,7 @@ def parser_add_options(parser: ArgumentParser):
                         help='An authentication token for GitHub API requests')
 
     ogroup.add_argument('--host', dest='host',
-                        default=env.get('GH_HOST', DEFAULT_HOST), type=str,
+                        default=environ.get('GH_HOST', DEFAULT_HOST), type=str,
                         help='The GitHub API hostname')
 
     ogroup.add_argument('-o', '--org', dest='org', action='append', type=str,
@@ -163,7 +146,7 @@ def argparse():
     parser_add_positionals(parser)
     parser_add_options(parser)
 
-    if len(sys.argv) == 1 and get_token_from_env() is None:
+    if len(sys.argv) == 1 and env.token_lookup() is None:
         parser.print_help(sys.stderr)
         return None
 
