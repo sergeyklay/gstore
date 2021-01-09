@@ -46,7 +46,7 @@ def test_resolve_orgs_empty_list():
 def test_resolve_orgs_unknown_org(monkeypatch):
     """
     Call Client.resolve_orgs() for a non existent organization will not stop
-    work but we'll see an error in the logs.
+    work, but we'll see an error in the logs.
     """
     def mock_get_organization(_):
         raise UnknownObjectException(401, 'Not found')
@@ -154,7 +154,7 @@ def test_get_orgs(mock_user, mock_orgs_iter):
 def test_resolve_repos_unknown_org(mock_organization, mock_repository):
     """
     Call Client.resolve_repos() for a non existent repository will not stop
-    work but we'll see an error in the logs.
+    work, but we'll see an error in the logs.
     """
     client = Client('secret')
 
@@ -171,7 +171,7 @@ def test_resolve_repos_unknown_org(mock_organization, mock_repository):
 
 def test_resolve_repos(mock_organization):
     """
-    Call Client.resolve_orgs() with a non empty list of repo patterns
+    Call Client.resolve_orgs() with a non-empty list of repo patterns
     will return a list of :class:`gstore.models.Repository`
     """
     org = Organization('Acme')
@@ -239,7 +239,7 @@ def test_get_repos_empty_list(mock_organization):
 def test_get_repos(mock_organization, mock_repos_iter):
     """
     Call Client.get_repos() for an organization will return a list of
-    :class:`gstore.models.Repository`
+    gstore.models.Repository.
     """
     client = Client('secret')
     repos = client.get_repos(Organization('awesome'))

@@ -26,7 +26,7 @@ def test_init():
     - Does not call main() otherwise
 
     The final line of the code, the init() call will run at the module import
-    time and, therefore, is run at testtime.
+    time and, therefore, is run at test time.
     """
     from gstore import __main__ as module
     with mock.patch.object(module, 'main', return_value=42):
