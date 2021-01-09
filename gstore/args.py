@@ -18,12 +18,11 @@
 import os
 import sys
 import textwrap as _textwrap
-from argparse import SUPPRESS, ArgumentParser, HelpFormatter
+from argparse import SUPPRESS, ArgumentParser, HelpFormatter, Namespace
 from os import environ
 
-from gstore import env
 from gstore import __copyright__, __version__
-from gstore.client import DEFAULT_HOST
+from gstore import env
 
 
 class LineBreaksFormatter(HelpFormatter):
@@ -38,8 +37,7 @@ class LineBreaksFormatter(HelpFormatter):
 
     This help formatter allows for you to optional enable/toggle raw text on
     individual menu items by prefixing the help string with 'n|'."""
-
-    def _fill_text(self, text, width, indent):
+    def _fill_text(self, text, width, indent) -> str:
         text = self._whitespace_matcher.sub(' ', text).strip()
         paragraphs = text.split('|n ')
 
@@ -58,7 +56,7 @@ class LineBreaksFormatter(HelpFormatter):
         return multiline_text
 
 
-def get_version_str():
+def get_version_str() -> str:
     """A helper function to format version info."""
     version = '''
     {prog}s {version}|n
@@ -73,7 +71,7 @@ def get_version_str():
     return version
 
 
-def parser_add_positionals(parser: ArgumentParser):
+def parser_add_positionals(parser: ArgumentParser) -> ArgumentParser:
     """Add positional parameters group to a parser."""
     pgroup = parser.add_argument_group('Positional parameters')
 
@@ -84,7 +82,7 @@ def parser_add_positionals(parser: ArgumentParser):
     return parser
 
 
-def parser_add_options(parser: ArgumentParser):
+def parser_add_options(parser: ArgumentParser) -> ArgumentParser:
     """Add options group to a parser."""
     token = env.token_lookup()
 
@@ -96,9 +94,8 @@ def parser_add_options(parser: ArgumentParser):
     ogroup.add_argument('--token', dest='token', default=token, type=str,
                         help='An authentication token for GitHub API requests')
 
-    ogroup.add_argument('--host', dest='host',
-                        default=environ.get('GH_HOST', DEFAULT_HOST), type=str,
-                        help='The GitHub API hostname')
+    ogroup.add_argument('--host', dest='host', default=environ.get('GH_HOST'),
+                        type=str, help='The GitHub API hostname')
 
     ogroup.add_argument('-o', '--org', dest='org', action='append', type=str,
                         help='Organization to sync (all if not provided)')
@@ -124,8 +121,10 @@ def parser_add_options(parser: ArgumentParser):
     ogroup.add_argument('-dumpversion', action='version',
                         help=dumpversion_help, version=__version__)
 
+    return parser
 
-def argparse():
+
+def argparse() -> Namespace or None:
     """
     The function initializes command line arguments parser.
 
