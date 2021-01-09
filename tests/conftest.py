@@ -89,9 +89,7 @@ def mock_organization(monkeypatch):
 
 @pytest.fixture
 def mock_orgs_iter(monkeypatch):
-    """
-    MicroMock.__iter__() mocked to return fake list of organizations.
-    """
+    """MicroMock.__iter__() mocked to return fake list of organizations."""
     def mock_iter(*args, **kwargs):
         return iter(
             [MicroMock(login='awesome'), MicroMock(login='company')]
@@ -106,9 +104,7 @@ def mock_orgs_iter(monkeypatch):
 
 @pytest.fixture
 def mock_repos_iter(monkeypatch):
-    """
-    MicroMock.__iter__() mocked to return fake list of repositories.
-    """
+    """MicroMock.__iter__() mocked to return fake list of repositories."""
     def mock_get_repos(*args, **kwargs):
         return iter(
             [MicroMock(name='repo1'), MicroMock(name='repo2')]
@@ -125,7 +121,7 @@ def mock_repos_iter(monkeypatch):
 def mock_repository(monkeypatch):
     """
     MockOrganization.get_repo() mocked to raise
-    :class:`github.GithubException.UnknownObjectException`.
+    github.GithubException.UnknownObjectException.
     """
     def mock_get_repo(*args, **kwargs):
         raise UnknownObjectException(401, 'Not found')
