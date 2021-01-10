@@ -19,6 +19,10 @@ Features
 
 * The ``gstore.env`` module was introduced to provide a convenient way to work
   with environment variables used by various functions within Gstore.
+* Added the following functions within ``gstore.env``:
+
+  * ``lookup_token()`` - lookup a personal access token
+  * ``get_host()`` - get GitHub API hostname
 
 
 Breaking Changes
