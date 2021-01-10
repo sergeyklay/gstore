@@ -43,7 +43,7 @@ from gstore import env
           {'k': 'GITHUB_ENTERPRISE_TOKEN', 'v': ''}], None),
     ]
 )
-def test_get_token(provided, expected, monkeypatch):
+def test_lookup_token(provided, expected, monkeypatch):
     """
     Call gstore.env.lookup_token() will return a token from environment
     variables (if any is set), taking into account the priority of these
@@ -53,3 +53,24 @@ def test_get_token(provided, expected, monkeypatch):
         monkeypatch.setenv(m['k'], m['v'])
 
     assert env.lookup_token() == expected
+
+
+@pytest.mark.parametrize(
+    'provided,expected',
+    [
+        (None, None),
+        ('', None),
+        ('secret', 'secret'),
+    ]
+)
+def test_get_host(provided, expected, monkeypatch):
+    """
+    Call gstore.env.get_host() will return a host if environment
+    variable is set and not empty string, otherwise None.
+    """
+    if provided is None:
+        monkeypatch.delenv('GH_HOST', raising=False)
+    else:
+        monkeypatch.setenv('GH_HOST', provided)
+
+    assert env.get_host() == expected
