@@ -47,8 +47,7 @@ class InvalidCredentialsError(Error):
 
 
 class Client:
-    """
-    This is a wrapper class around :class:`github.Github` to interact with
+    """A wrapper class around :class:`github.Github` to interact with
     GitHub API.
 
     :param str token: Authentication token for github.com API requests
@@ -85,8 +84,7 @@ class Client:
         )
 
     def get_repos(self, org: Organization):
-        """
-        Getting organization repositories.
+        """Get organization repositories.
 
         :param Organization org: User's organization
         :return: A collection with repositories
@@ -113,8 +111,7 @@ class Client:
         return retval
 
     def resolve_repos(self, repos: list, org: Organization):
-        """
-        Resolve repositories from provided list.
+        """Resolve repositories from provided list.
 
         :param list repos: A list of repositories in form 'org:repo'
         :param Organization org: User's organization
@@ -155,8 +152,7 @@ class Client:
         return retval
 
     def get_orgs(self):
-        """
-        Getting organizations for a user.
+        """Get organizations for a user.
 
         :returns: A collection with organizations
         :rtype: list of :class:`gstore.models.Organization`
@@ -179,8 +175,7 @@ class Client:
         return retval
 
     def resolve_orgs(self, orgs: list):
-        """
-        Resolve organizations from provided list.
+        """Resolve organizations from provided list.
 
         :param list orgs: A list of organizations names
         :raises InvalidCredentialsError: in case of bad credentials.

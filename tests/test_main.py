@@ -17,13 +17,12 @@ from unittest import mock
 
 
 def test_init():
-    """
-    This rather bulky test assures that our init function does everything it
-    should:
+    """This rather bulky test assures that our init function does everything
+    it should:
 
-    - Really calls main if we have '__name__' equals to '__main__'
-    - Returns it return value as exit code
-    - Does not call main() otherwise
+        - Really calls main if we have '__name__' equals to '__main__'
+        - Returns it return value as exit code
+        - Does not call main() otherwise
 
     The final line of the code, the init() call will run at the module import
     time and, therefore, is run at test time.

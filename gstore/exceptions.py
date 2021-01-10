@@ -21,9 +21,7 @@ import git
 
 
 def parse_git_errors(ex: git.GitCommandError) -> list:
-    """
-    A helper function to parse errors produced by :class:`git.GitCommandError`
-    subclasses.
+    """Parse errors produced by :class:`git.GitCommandError` subclasses.
 
     :param git.GitCommandError ex: An error instance
     :return: A list of error messages

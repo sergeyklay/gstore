@@ -44,8 +44,7 @@ from gstore import env
     ]
 )
 def test_lookup_token(provided, expected, monkeypatch):
-    """
-    Call gstore.env.lookup_token() will return a token from environment
+    """Call gstore.env.lookup_token() will return a token from environment
     variables (if any is set), taking into account the priority of these
     variables.
     """
@@ -64,8 +63,7 @@ def test_lookup_token(provided, expected, monkeypatch):
     ]
 )
 def test_get_host(provided, expected, monkeypatch):
-    """
-    Call gstore.env.get_host() will return a host if environment
+    """Call gstore.env.get_host() will return a host if environment
     variable is set and not empty string, otherwise None.
     """
     if provided is None:

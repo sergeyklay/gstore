@@ -60,9 +60,8 @@ def mock_user(monkeypatch):
 
 @pytest.fixture
 def mock_micro_organization(monkeypatch):
-    """
-    github.Github.get_organization() mocked to return fake organization object
-    without methods.
+    """github.Github.get_organization() mocked to return fake organization
+    object without methods.
     """
     def mock_get_organization(_, name):
         return MicroMock(login=name)
@@ -119,8 +118,7 @@ def mock_repos_iter(monkeypatch):
 
 @pytest.fixture
 def mock_repository(monkeypatch):
-    """
-    MockOrganization.get_repo() mocked to raise
+    """MockOrganization.get_repo() mocked to raise
     github.GithubException.UnknownObjectException.
     """
     def mock_get_repo(*args, **kwargs):

@@ -25,8 +25,7 @@ from gstore.repo import RepoManager
 
 
 def main():
-    """
-    The main function to call gstore from the command line.
+    """The main function to call gstore from the command line.
 
     :return: An exit code
     :rtype: int
