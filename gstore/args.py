@@ -19,7 +19,6 @@ import os
 import sys
 import textwrap as _textwrap
 from argparse import SUPPRESS, ArgumentParser, HelpFormatter, Namespace
-from os import environ
 
 from gstore import __copyright__, __version__
 from gstore import env
@@ -76,7 +75,7 @@ def parser_add_positionals(parser: ArgumentParser) -> ArgumentParser:
     pgroup = parser.add_argument_group('Positional parameters')
 
     pgroup.add_argument('target', nargs='?', type=str,
-                        default=environ.get('GSTORE_DIR', os.getcwd()),
+                        default=env.get_target() or os.getcwd(),
                         help='Base target to sync repos (e.g. folder on disk)')
 
     return parser

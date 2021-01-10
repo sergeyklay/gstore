@@ -64,7 +64,7 @@ def test_lookup_token(provided, expected, monkeypatch):
 )
 def test_get_host(provided, expected, monkeypatch):
     """Call gstore.env.get_host() will return a host if environment
-    variable is set and not empty string, otherwise None.
+    variable is set with not empty string, otherwise None.
     """
     if provided is None:
         monkeypatch.delenv('GH_HOST', raising=False)
@@ -72,3 +72,23 @@ def test_get_host(provided, expected, monkeypatch):
         monkeypatch.setenv('GH_HOST', provided)
 
     assert env.get_host() == expected
+
+
+@pytest.mark.parametrize(
+    'provided,expected',
+    [
+        (None, None),
+        ('', None),
+        ('~/backup', '~/backup'),
+    ]
+)
+def test_get_target(provided, expected, monkeypatch):
+    """Call gstore.env.get_target() will return a target if environment
+    variable is set with not empty string, otherwise None.
+    """
+    if provided is None:
+        monkeypatch.delenv('GSTORE_DIR', raising=False)
+    else:
+        monkeypatch.setenv('GSTORE_DIR', provided)
+
+    assert env.get_target() == expected

@@ -22,6 +22,7 @@ Functions:
 
     lookup_token() -> str or None
     get_host() -> str or None
+    get_target() -> str or None
 
 Data:
 
@@ -70,3 +71,15 @@ def get_host() -> str or None:
     :rtype: str or None
     """
     return os.environ.get('GH_HOST') or None
+
+
+def get_target() -> str or None:
+    """Get base target to sync repos.
+
+    This function may return None if there is no environment
+    variable, or it is empty.
+
+    :returns: The GitHub API hostname if any or None
+    :rtype: str or None
+    """
+    return os.environ.get('GSTORE_DIR') or None
