@@ -65,6 +65,11 @@ class Client:
     ):
         self.logger = logging.getLogger('gstore.client')
 
+        # The use case with Client(token='...', api_host=None)
+        if not api_host:
+            api_host = DEFAULT_HOST
+
+        # The use case with Client(token=None)
         if not token:
             raise ValidationError(
                 'Missing parameter: GitHub Token is required')
