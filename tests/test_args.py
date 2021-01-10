@@ -26,14 +26,14 @@ def test_none_args(monkeypatch):
     Show help message and return None if gstore was called without any argument
     and environment variables were not enough to start gstore.
     """
-    def mock_token_lookup():
+    def mock_lookup_token():
         return None
 
     monkeypatch.setattr('sys.argv', ['gstore'])
     monkeypatch.setattr(
         env,
-        'token_lookup',
-        mock_token_lookup
+        'lookup_token',
+        mock_lookup_token
     )
 
     with mock.patch.object(ArgumentParser, 'print_help') as mock_help:
@@ -43,14 +43,14 @@ def test_none_args(monkeypatch):
 
 def test_only_token(monkeypatch):
     """Token is enough to run gstore without arguments."""
-    def mock_mock_token_lookup():
+    def mock_lookup_token():
         return 'secret'
 
     monkeypatch.setattr('sys.argv', ['gstore'])
     monkeypatch.setattr(
         env,
-        'token_lookup',
-        mock_mock_token_lookup
+        'lookup_token',
+        mock_lookup_token
     )
 
     assert isinstance(args.argparse(), Namespace)
