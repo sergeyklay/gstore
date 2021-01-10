@@ -13,12 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+import logging
 from unittest import mock
 
 import pytest
 from github.GithubException import UnknownObjectException
 
 from gstore.client import Client, ValidationError, InvalidCredentialsError
+from gstore.client import DEFAULT_HOST
 from gstore.models import Organization, Repository
 
 
@@ -29,6 +31,22 @@ def test_empty_token(token):
             ValidationError,
             match='Missing parameter: GitHub Token is required'):
         Client(token)
+
+
+@pytest.mark.parametrize(
+    'provided,expected',
+    [
+        (None, f'https://{DEFAULT_HOST}'),
+        ('', f'https://{DEFAULT_HOST}'),
+        ('github.example.com', 'https://github.example.com'),
+    ]
+)
+def test_setting_host(provided, expected, monkeypatch):
+    """Call Client() with empty api_host will use default host."""
+    with mock.patch.object(logging.Logger, 'debug') as mock_logger:
+        Client(token='secret', api_host=provided)
+        mock_logger.assert_called_once_with(
+            'Setting API URL to %s', expected)
 
 
 def test_resolve_orgs_empty_list():
