@@ -28,6 +28,7 @@ def parse_git_errors(ex: git.GitCommandError) -> list:
     :rtype: list of str
     """
     def replace(msg):
+        """Replace multiline messages to a single-line form."""
         wrp_regex = re.compile(r"(?:(?:std(?:out|err)|error):[ ]*'?|\n)")
         spc_regex = re.compile(r'[\s]{2,}')
         return spc_regex.sub(' ', wrp_regex.sub('', msg)).strip(" .'")

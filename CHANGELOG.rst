@@ -21,8 +21,9 @@ Features
   with environment variables used by various functions within Gstore.
 * Added the following functions within ``gstore.env``:
 
-  * ``lookup_token()`` - lookup a personal access token
-  * ``get_host()`` - get GitHub API hostname
+  * ``lookup_token()`` - lookup a personal access token in environment variables
+  * ``get_host()`` - get GitHub API hostname from environment variable
+  * ``get_target()`` - get base target to sync repos from environment variable
 
 
 Breaking Changes
