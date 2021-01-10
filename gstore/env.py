@@ -20,7 +20,12 @@ used by various functions within Gstore.
 
 Functions:
 
-    token_lookup() -> None or str
+    lookup_token() -> str or None
+    get_host() -> str or None
+
+Data:
+
+    TOKEN_NAMES
 
 """
 
@@ -34,7 +39,7 @@ TOKEN_NAMES = (
 )
 
 
-def token_lookup() -> None or str:
+def lookup_token() -> str or None:
     """Lookup a personal access token from environment variables.
 
     This function looks for token variable in the following order:
@@ -53,3 +58,15 @@ def token_lookup() -> None or str:
             return token
 
     return None
+
+
+def get_host() -> str or None:
+    """Get GitHub API hostname from GH_HOST environment variable.
+
+    This function may return None if there is no environment
+    variable, or it is empty.
+
+    :returns: The GitHub API hostname if any or None
+    :rtype: str or None
+    """
+    return os.environ.get('GH_HOST') or None

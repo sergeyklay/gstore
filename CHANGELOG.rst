@@ -17,16 +17,15 @@ Versions follow `Semantic Versioning`_ (``<major>.<minor>.<patch>``).
 Features
 ^^^^^^^^
 
-* Added ``gstore.env`` namespace. This namespace was introduced to provide a
-  convenient way to work with environment variables used by various functions
-  within Gstore.
+* The ``gstore.env`` module was introduced to provide a convenient way to work
+  with environment variables used by various functions within Gstore.
 
 
 Breaking Changes
 ^^^^^^^^^^^^^^^^
 
 * Moved ``gstore.Client.TOKEN_NAMES`` to ``gstore.env.TOKEN_NAMES``.
-* Moved ``gstore.args.get_token_from_env()`` to ``gstore.env.token_lookup()``.
+* Moved ``gstore.args.get_token_from_env()`` to ``gstore.env.lookup_token()``.
 
 
 Trivial/Internal Changes

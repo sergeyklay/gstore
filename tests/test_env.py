@@ -45,11 +45,11 @@ from gstore import env
 )
 def test_get_token(provided, expected, monkeypatch):
     """
-    Call gstore.env.token_lookup() will return a token from environment
+    Call gstore.env.lookup_token() will return a token from environment
     variables (if any is set), taking into account the priority of these
     variables.
     """
     for m in provided:
         monkeypatch.setenv(m['k'], m['v'])
 
-    assert env.token_lookup() == expected
+    assert env.lookup_token() == expected

@@ -84,7 +84,7 @@ def parser_add_positionals(parser: ArgumentParser) -> ArgumentParser:
 
 def parser_add_options(parser: ArgumentParser) -> ArgumentParser:
     """Add options group to a parser."""
-    token = env.token_lookup()
+    token = env.lookup_token()
 
     ogroup = parser.add_argument_group('Options')
 
@@ -94,7 +94,7 @@ def parser_add_options(parser: ArgumentParser) -> ArgumentParser:
     ogroup.add_argument('--token', dest='token', default=token, type=str,
                         help='An authentication token for GitHub API requests')
 
-    ogroup.add_argument('--host', dest='host', default=environ.get('GH_HOST'),
+    ogroup.add_argument('--host', dest='host', default=env.lookup_token(),
                         type=str, help='The GitHub API hostname')
 
     ogroup.add_argument('-o', '--org', dest='org', action='append', type=str,
@@ -145,7 +145,7 @@ def argparse() -> Namespace or None:
     parser_add_positionals(parser)
     parser_add_options(parser)
 
-    if len(sys.argv) == 1 and env.token_lookup() is None:
+    if len(sys.argv) == 1 and env.lookup_token() is None:
         parser.print_help(sys.stderr)
         return None
 
