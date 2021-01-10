@@ -22,9 +22,8 @@ from gstore import env
 
 
 def test_none_args(monkeypatch):
-    """
-    Show help message and return None if gstore was called without any argument
-    and environment variables were not enough to start gstore.
+    """Show help message and return None if gstore was called without any
+    argument and environment variables were not enough to start gstore.
     """
     def mock_lookup_token():
         return None

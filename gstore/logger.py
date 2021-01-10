@@ -50,8 +50,7 @@ class InfoFilter(logging.Filter):  # pylint: disable=too-few-public-methods
 
 
 def setup_logger(verbose=False, quiet=False) -> logging.Logger:
-    """
-    Setup and return the root logger object for the application.
+    """Setup and return the root logger object for the application.
 
     :param bool verbose: Enable debug logging
     :param bool quiet: Disable info logging
