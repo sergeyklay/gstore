@@ -33,6 +33,12 @@ Breaking Changes
 * Moved ``gstore.args.get_token_from_env()`` to ``gstore.env.lookup_token()``.
 
 
+Improvements
+^^^^^^^^^^^^
+
+* Improved ``git.GitCommandError`` message formatting for more accurate logging.
+
+
 Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -40,6 +46,10 @@ Trivial/Internal Changes
   when in case of absent token.
 * ``gstore.Client.resolve_orgs()`` will raise now
   ``gstore.client.InvalidCredentialsError`` in case of invalid token.
+
+
+----
+
 
 0.3.1 (2021-01-03)
 ------------------
