@@ -13,14 +13,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-"""Exception classes raised by various operations within gstore."""
+"""Helper routines and classes to work exceptions.
+
+Classes:
+
+    Error
+
+Functions:
+
+    parse_git_errors() -> list
+
+"""
 
 import re
 
 import git
 
 
-def parse_git_errors(ex: git.GitCommandError) -> list:
+def parse_git_errors(ex: git.CommandError) -> list:
     """Parse errors produced by :class:`git.GitCommandError` subclasses.
 
     :param git.GitCommandError ex: An error instance
@@ -29,9 +39,10 @@ def parse_git_errors(ex: git.GitCommandError) -> list:
     """
     def replace(msg):
         """Replace multiline messages to a single-line form."""
-        wrp_regex = re.compile(r"(?:(?:std(?:out|err)|error):[ ]*'?|\n)")
-        spc_regex = re.compile(r'[\s]{2,}')
-        return spc_regex.sub(' ', wrp_regex.sub('', msg)).strip(" .'")
+        oneliner = re.compile(r'[\s]{2,}|\n')
+        cleaner = re.compile(r"(?:(?:std(?:out|err)|error):[ ]*'?)")
+
+        return cleaner.sub('', oneliner.sub(' ', msg)).strip(" .'")
 
     holders = []
 
