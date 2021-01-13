@@ -154,25 +154,29 @@ class Client:
     def get_orgs(self):
         """Get organizations for a user.
 
+        :raises InvalidCredentialsError: in case of bad credentials.
         :returns: A collection with organizations
         :rtype: list of :class:`gstore.models.Organization`
         """
         self.logger.info('Getting organizations for user')
 
-        user = self.github.get_user()
-        orgs = user.get_orgs()
+        try:
+            user = self.github.get_user()
+            orgs = user.get_orgs()
 
-        self.logger.info(
-            'Number of available organizations for %s user: %s',
-            user.login,
-            orgs.totalCount
-        )
+            self.logger.info(
+                'Number of available organizations for %s user: %s',
+                user.login,
+                orgs.totalCount
+            )
 
-        retval = []
-        for org in orgs:
-            retval.append(Organization(org.login))
+            retval = []
+            for org in orgs:
+                retval.append(Organization(org.login))
 
-        return retval
+            return retval
+        except BadCredentialsException as bad_credentials:
+            raise InvalidCredentialsError() from bad_credentials
 
     def resolve_orgs(self, orgs: list):
         """Resolve organizations from provided list.
