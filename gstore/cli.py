@@ -16,6 +16,8 @@
 """The CLI entry point. Invoke as `gstore' or `python -m gstore'."""
 
 import logging
+import signal
+import sys
 
 from gstore.args import argparse
 from gstore.client import Client
@@ -54,6 +56,12 @@ def main():
                     repos = client.resolve_repos(args.repo, org)
 
                 manager.sync(org, repos)
+        except KeyboardInterrupt as interrupted:  # the user hit control-C
+            sys.stderr.write('Received keyboard interrupt, terminating.\n')
+            sys.stderr.flush()
+            # Control-C is fatal error signal 2, for more see
+            # https://tldp.org/LDP/abs/html/exitcodes.html
+            retval = 128 + signal.SIGINT
         except Error as gstore_error:
             logger.error(gstore_error)
             retval = 1
