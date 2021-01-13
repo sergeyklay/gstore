@@ -49,10 +49,8 @@ def test_setting_host(provided, expected, monkeypatch):
             'Setting API URL to %s', expected)
 
 
-def test_resolve_orgs_empty_list():
+def test_resolve_orgs_empty_list(client):
     """Call Client.resolve_orgs() with empty list should return empty list."""
-    client = Client('secret')
-
     with mock.patch.object(client.logger, 'info') as mock_logger:
         orgs = client.resolve_orgs([])
 
@@ -61,14 +59,12 @@ def test_resolve_orgs_empty_list():
             'Resolve organizations from provided configuration')
 
 
-def test_resolve_orgs_unknown_org(monkeypatch):
+def test_resolve_orgs_unknown_org(monkeypatch, client):
     """Call Client.resolve_orgs() for a non-existent organization will not stop
     work, but we'll see an error in the logs.
     """
     def mock_get_organization(_):
         raise UnknownObjectException(401, 'Not found')
-
-    client = Client('secret')
 
     monkeypatch.setattr(
         client.github,
@@ -84,12 +80,10 @@ def test_resolve_orgs_unknown_org(monkeypatch):
             'Invalid organization name "%s"', 'foo-bar-baz')
 
 
-def test_resolve_orgs(mock_micro_organization):
+def test_resolve_orgs(mock_micro_organization, client):
     """Call Client.resolve_orgs() with a non-empty list of organization names
     will return a list of :class:`gstore.models.Organization`
     """
-    client = Client('secret')
-
     orgs = client.resolve_orgs(['awesome', 'company'])
 
     assert len(orgs) == 2
@@ -99,28 +93,23 @@ def test_resolve_orgs(mock_micro_organization):
     assert orgs[1].login == 'company'
 
 
-def test_resolve_orgs_invalid_token():
+def test_resolve_orgs_invalid_token(client):
     """Call Client.resolve_orgs() with invalid token."""
-    client = Client('secret')
-
     with pytest.raises(
             InvalidCredentialsError,
             match='Bad token was used when accessing the GitHub API'):
         client.resolve_orgs(['github'])
 
 
-def test_resolve_repos_empty_list():
+def test_resolve_repos_empty_list(client, organization):
     """Call Client.resolve_repos() with empty repo list or not expected org
     should return empty list.
     """
-    client = Client('secret')
-    fake_org = Organization('fake_org')
-
     with mock.patch.object(client.logger, 'info') as mock_logger:
-        repos = client.resolve_repos([], fake_org)
+        repos = client.resolve_repos([], organization)
         assert len(repos) == 0
 
-        repos = client.resolve_repos(['foo:bar'], fake_org)
+        repos = client.resolve_repos(['foo:bar'], organization)
         assert len(repos) == 0
 
         mock_logger.assert_called_with(
@@ -128,12 +117,10 @@ def test_resolve_repos_empty_list():
         )
 
 
-def test_get_orgs_empty_list(mock_user):
+def test_get_orgs_empty_list(mock_user, client):
     """Call Client.get_orgs() for a user without organizations will return an
     empty list.
     """
-    client = Client('secret')
-
     with mock.patch.object(client.logger, 'info') as mock_logger:
         orgs = client.get_orgs()
         assert len(orgs) == 0
@@ -150,11 +137,10 @@ def test_get_orgs_empty_list(mock_user):
         mock_logger.assert_has_calls(calls)
 
 
-def test_get_orgs(mock_user, mock_orgs_iter):
+def test_get_orgs(mock_user, mock_orgs_iter, client):
     """Call Client.get_orgs() for a user will return a list of
     :class:`gstore.models.Organization`
     """
-    client = Client('secret')
     orgs = client.get_orgs()
 
     assert len(orgs) == 2
@@ -164,12 +150,10 @@ def test_get_orgs(mock_user, mock_orgs_iter):
     assert orgs[1].login == 'company'
 
 
-def test_resolve_repos_unknown_org(mock_organization, mock_repository):
+def test_resolve_repos_unknown_org(mock_organization, mock_repository, client):
     """Call Client.resolve_repos() for a non-existent repository will not stop
     work, but we'll see an error in the logs.
     """
-    client = Client('secret')
-
     with mock.patch.object(client.logger, 'error') as mock_logger:
         repos = client.resolve_repos(
             ['Acme:secret-repo'],
@@ -181,14 +165,11 @@ def test_resolve_repos_unknown_org(mock_organization, mock_repository):
             'Invalid repository name "%s"', 'secret-repo')
 
 
-def test_resolve_repos(mock_organization):
+def test_resolve_repos(mock_organization, client, organization):
     """Call Client.resolve_orgs() with a non-empty list of repo patterns
     will return a list of :class:`gstore.models.Repository`
     """
-    org = Organization('Acme')
-    client = Client('secret')
-
-    repos = client.resolve_repos(['Acme:awesome', 'Acme:repo'], org)
+    repos = client.resolve_repos(['Acme:awesome', 'Acme:repo'], organization)
 
     assert len(repos) == 2
     assert isinstance(repos[0], Repository)
@@ -197,10 +178,8 @@ def test_resolve_repos(mock_organization):
     assert repos[1].name == 'repo'
 
 
-def test_resolve_repos_invalid_token():
+def test_resolve_repos_invalid_token(client):
     """Call Client.resolve_repos() with invalid token."""
-    client = Client('secret')
-
     with pytest.raises(
             InvalidCredentialsError,
             match='Bad token was used when accessing the GitHub API'):
@@ -208,36 +187,31 @@ def test_resolve_repos_invalid_token():
 
 
 @pytest.mark.parametrize('repo', ['', ':', 'a', 'a:', 'a:b:', 'a:b:c'])
-def test_resolve_repos_invalid_repo_pattern(repo):
+def test_resolve_repos_invalid_repo_pattern(repo, client, organization):
     """Call Client.resolve_repos() with invalid repo pattern
     should return empty list and log error.
     """
-    client = Client('secret')
-    fake_org = Organization('fake_org')
-
     with mock.patch.object(client.logger, 'error') as mock_logger:
-        repos = client.resolve_repos([repo], fake_org)
+        repos = client.resolve_repos([repo], organization)
 
         assert len(repos) == 0
         mock_logger.assert_called_once_with(
             'Invalid repo pattern: "%s", skip resolving', repo)
 
 
-def test_get_repos_empty_list(mock_organization):
+def test_get_repos_empty_list(mock_organization, client, organization):
     """Call Client.get_repos() for an organization without repositories will
     return an empty list.
     """
-    client = Client('secret')
-
     with mock.patch.object(client.logger, 'info') as mock_logger:
-        repos = client.get_repos(Organization('awesome'))
+        repos = client.get_repos(organization)
         assert len(repos) == 0
 
         calls = [
             mock.call('Getting repositories for organization'),
             mock.call(
                 'Number of available repositories for %s organization: %s',
-                'awesome',
+                'Acme',
                 0
             ),
         ]
@@ -245,11 +219,10 @@ def test_get_repos_empty_list(mock_organization):
         mock_logger.assert_has_calls(calls)
 
 
-def test_get_repos(mock_organization, mock_repos_iter):
+def test_get_repos(mock_organization, mock_repos_iter, client):
     """Call Client.get_repos() for an organization will return a list of
     gstore.models.Repository.
     """
-    client = Client('secret')
     repos = client.get_repos(Organization('awesome'))
 
     assert len(repos) == 2
