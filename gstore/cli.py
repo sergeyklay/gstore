@@ -56,7 +56,7 @@ def main():
                     repos = client.resolve_repos(args.repo, org)
 
                 manager.sync(org, repos)
-        except KeyboardInterrupt as interrupted:  # the user hit control-C
+        except KeyboardInterrupt:  # the user hit control-C
             sys.stderr.write('Received keyboard interrupt, terminating.\n')
             sys.stderr.flush()
             # Control-C is fatal error signal 2, for more see
