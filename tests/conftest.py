@@ -14,9 +14,11 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
-
 from github import Github
 from github.GithubException import UnknownObjectException
+
+from gstore.client import Client
+from gstore.repo import Organization
 
 
 class MicroMock:
@@ -129,3 +131,15 @@ def mock_repository(monkeypatch):
         'get_repo',
         mock_get_repo
     )
+
+
+@pytest.fixture
+def client():
+    """Return a Client instance."""
+    return Client('secret')
+
+
+@pytest.fixture
+def organization():
+    """Return an Organization instance."""
+    return Organization('Acme')
