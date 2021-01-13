@@ -38,6 +38,8 @@ Improvements
 
 * Improved ``git.GitCommandError`` message formatting for more accurate logging.
 * The program now correctly handle Control-C keyboard event and gracefully terminates.
+* Gstore will exit with a status of one when its is called without any argument
+  and there are not enough environment variables for normal operation.
 
 
 Trivial/Internal Changes

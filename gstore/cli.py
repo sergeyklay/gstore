@@ -33,7 +33,7 @@ def main():
     :rtype: int
     """
     args = argparse()
-    retval = 0
+    retval = int(args is None)
 
     if args:
         setup_logger(verbose=args.verbose, quiet=args.quiet)
