@@ -37,6 +37,7 @@ Improvements
 ^^^^^^^^^^^^
 
 * Improved ``git.GitCommandError`` message formatting for more accurate logging.
+* The program now correctly handle Control-C keyboard event and gracefully terminates.
 
 
 Trivial/Internal Changes
