@@ -21,9 +21,9 @@ Features
   with environment variables used by various functions within Gstore.
 * Added the following functions within ``gstore.env``:
 
-  * ``lookup_token()`` - lookup a personal access token in environment variables
-  * ``get_host()`` - get GitHub API hostname from environment variable
-  * ``get_target()`` - get base target to sync repos from environment variable
+  * ``lookup_token()`` - lookup a personal access token in environment variables,
+  * ``get_host()`` - get GitHub API hostname from environment variable,
+  * ``get_target()`` - get base target to sync repos from environment variable.
 
 
 Breaking Changes
@@ -40,7 +40,7 @@ Improvements
 * The program now correctly handle Control-C keyboard event and gracefully terminates.
 * Gstore will exit with a status of one when its is called without any argument
   and there are not enough environment variables for normal operation.
-* Calling program with an invalid token and without `--org` option no longer leads
+* Calling program with an invalid token and without ``--org`` option no longer leads
   to abnormal program termination.
 
 
@@ -48,9 +48,9 @@ Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 * ``gstore.Client.__init__()`` will raise now ``gstore.client.ValidationError``
-  when in case of absent token.
+  when no token is provided.
 * ``gstore.Client.resolve_orgs()`` will raise now
-  ``gstore.client.InvalidCredentialsError`` in case of invalid token.
+  ``gstore.client.InvalidCredentialsError`` when provided token is invalid.
 
 
 ----
