@@ -42,7 +42,7 @@ class InvalidCredentialsError(Error):
     """An error resulting from the use of incorrect credentials."""
 
     def __init__(self):
-        message = 'Bad token was used when accessing the GitHub API'
+        message = 'The token provided to access the GitHub API is invalid'
         super().__init__(message)
 
 

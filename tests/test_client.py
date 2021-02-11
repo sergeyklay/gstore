@@ -97,7 +97,7 @@ def test_resolve_orgs_invalid_token(client):
     """Call Client.resolve_orgs() with invalid token."""
     with pytest.raises(
             InvalidCredentialsError,
-            match='Bad token was used when accessing the GitHub API'):
+            match='The token provided to access the GitHub API is invalid'):
         client.resolve_orgs(['github'])
 
 
@@ -182,7 +182,7 @@ def test_resolve_repos_invalid_token(client):
     """Call Client.resolve_repos() with invalid token."""
     with pytest.raises(
             InvalidCredentialsError,
-            match='Bad token was used when accessing the GitHub API'):
+            match='The token provided to access the GitHub API is invalid'):
         client.resolve_repos(['Acme:github'], Organization('Acme'))
 
 
