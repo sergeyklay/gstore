@@ -111,6 +111,14 @@ class RepoManager:
         self.logger.debug('Initialize repository instance')
         local_repo = git.Repo(target)
 
+        if len(local_repo.heads) == 0:
+            self.logger.info(
+                'There are no remote branches for %s/%s, skip updating',
+                repo.org.login,
+                repo.name
+            )
+            return
+
         try:
             self.logger.debug('Download objects and refs from repository')
             local_repo.git.fetch(['--prune', '--quiet'])
