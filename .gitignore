@@ -15,6 +15,7 @@
 /docs/_build
 
 # Python cache.
+*.py[cod]
 __pycache__
 
 # Ignore codecoverage stuff.
