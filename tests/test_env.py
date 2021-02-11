@@ -14,42 +14,40 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
-
 from gstore import env
 
 
 @pytest.mark.parametrize(
     'provided,expected',
     [
-        ([{'k': 'GH_TOKEN', 'v': 'secret1'}], 'secret1'),
-        ([{'k': 'GITHUB_TOKEN', 'v': 'secret2'}], 'secret2'),
-        ([{'k': 'GITHUB_TOKEN', 'v': 'secret3'},
-          {'k': 'GH_TOKEN', 'v': 'secret4'}], 'secret4'),
-        ([{'k': 'GH_TOKEN', 'v': 'secret5'},
-          {'k': 'GITHUB_TOKEN', 'v': 'secret6'}], 'secret5'),
-        ([{'k': 'GH_ENTERPRISE_TOKEN', 'v': 'secret7'}], 'secret7'),
-        ([{'k': 'GITHUB_ENTERPRISE_TOKEN', 'v': 'secret8'}], 'secret8'),
-        ([{'k': 'GITHUB_ENTERPRISE_TOKEN', 'v': 'secret9'},
-          {'k': 'GH_ENTERPRISE_TOKEN', 'v': 'secret10'}], 'secret10'),
-        ([{'k': 'GH_ENTERPRISE_TOKEN', 'v': 'secret11'},
-          {'k': 'GITHUB_ENTERPRISE_TOKEN', 'v': 'secret12'}], 'secret11'),
-        ([{'k': 'GH_TOKEN', 'v': ''}], None),
-        ([{'k': 'GITHUB_TOKEN', 'v': ''}], None),
-        ([{'k': 'GH_ENTERPRISE_TOKEN', 'v': ''}], None),
-        ([{'k': 'GITHUB_ENTERPRISE_TOKEN', 'v': ''}], None),
-        ([{'k': 'GH_TOKEN', 'v': ''},
-          {'k': 'GITHUB_TOKEN', 'v': ''},
-          {'k': 'GH_ENTERPRISE_TOKEN', 'v': ''},
-          {'k': 'GITHUB_ENTERPRISE_TOKEN', 'v': ''}], None),
-    ]
-)
+        ([('GH_TOKEN', 'secret1')], 'secret1'),
+        ([('GITHUB_TOKEN', 'secret2')], 'secret2'),
+        ([('GITHUB_TOKEN', 'secret3'),
+          ('GH_TOKEN', 'secret4')], 'secret4'),
+        ([('GH_TOKEN', 'secret5'),
+          ('GITHUB_TOKEN', 'secret6')], 'secret5'),
+        ([('GH_ENTERPRISE_TOKEN', 'secret7')], 'secret7'),
+        ([('GITHUB_ENTERPRISE_TOKEN', 'secret8')], 'secret8'),
+        ([('GITHUB_ENTERPRISE_TOKEN', 'secret9'),
+          ('GH_ENTERPRISE_TOKEN', 'secret10')], 'secret10'),
+        ([('GH_ENTERPRISE_TOKEN', 'secret11'),
+          ('GITHUB_ENTERPRISE_TOKEN', 'secret12')], 'secret11'),
+        ([('GH_TOKEN', '')], None),
+        ([('GITHUB_TOKEN', '')], None),
+        ([('GH_ENTERPRISE_TOKEN', '')], None),
+        ([('GITHUB_ENTERPRISE_TOKEN', '')], None),
+        ([('GH_TOKEN', ''),
+          ('GITHUB_TOKEN', ''),
+          ('GH_ENTERPRISE_TOKEN', ''),
+          ('GITHUB_ENTERPRISE_TOKEN', '')], None),
+    ])
 def test_lookup_token(provided, expected, monkeypatch):
     """Call gstore.env.lookup_token() will return a token from environment
     variables (if any is set), taking into account the priority of these
     variables.
     """
-    for m in provided:
-        monkeypatch.setenv(m['k'], m['v'])
+    for k, v in provided:
+        monkeypatch.setenv(k, v)
 
     assert env.lookup_token() == expected
 
