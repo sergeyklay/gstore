@@ -172,8 +172,7 @@ help:
 	@echo 'Available targets:'
 	@echo
 	@echo '  help:         Show this help and exit'
-	@echo '  venv:         Creating a Python environment (has to be launched first)'
-	@echo '  init:         Installing dev requirements'
+	@echo '  init:         Installing dev requirements (has to be launched first)'
 	@echo '  install:      Install development version of gstore'
 	@echo '  uninstall:    Uninstall local version of gstore'
 	@echo '  build:        Build gstore distribution (sdist and wheel)'
