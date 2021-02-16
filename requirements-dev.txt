@@ -1,6 +1,7 @@
+-r requirements.txt
 check-wheel-contents
 flake8
-pylint
+pylint==2.6.0
 pytest
 pytest-cov
 twine

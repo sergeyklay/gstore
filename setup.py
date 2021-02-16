@@ -44,24 +44,32 @@ META_CONTENTS = read_file(META_PATH)
 
 def load_long_description():
     """Load long description from file README.rst."""
+    def changes():
+        changelog = path.join(PKG_DIR, 'CHANGELOG.rst')
+        pat = r"(\d+.\d.\d \(.*?\)\r?\n.*?)\r?\n\r?\n\r?\n----\r?\n\r?\n\r?\n"
+        result = re.search(pat, read_file(changelog), re.S)
+
+        if result:
+            return result.group(1)
+        else:
+            return ''
+
     try:
         read_me = path.join(PKG_DIR, 'README.rst')
-        changes = path.join(PKG_DIR, 'CHANGELOG.rst')
         authors = path.join(PKG_DIR, 'AUTHORS.rst')
 
+        title = f"{PKG_NAME}: {find_meta('description')}\n"
+        head = '=' * len(title) + '\n'
+
         contents = (
-            "=================================================\n"
-            "Gstore: Synchronize GitHub repositories made easy\n"
-            "=================================================\n"
+            head
+            + format(title.strip(' .'))
+            + head
             + read_file(read_me).split('.. teaser-begin')[1]
             + "\n\n"
             + "Release Information\n"
             + "===================\n\n"
-            + re.search(
-                r"(\d+.\d.\d \(.*?\)\r?\n.*?)\r?\n\r?\n\r?\n----\r?\n\r?\n\r?\n",  # noqa: E501
-                read_file(changes),
-                re.S,
-            ).group(1)
+            + changes()
             + "\n\n`Full changelog "
             + f"<{find_meta('url')}/en/latest/changelog.html>`_.\n\n"
             + read_file(authors)
@@ -149,18 +157,35 @@ CLASSIFIERS = [
     'Topic :: Software Development :: Version Control :: Git',
 ]
 
-# Dependencies that are downloaded by pip on installation and why
+# Dependencies that are downloaded by pip on installation and why.
 INSTALL_REQUIRES = [
     'PyGithub>=1.54.1',  # Interact with GitHub objects
     'gitpython>=3.0.6',  # Interact with Git repositories
 ]
 
+# List additional groups of dependencies here (e.g. testing dependencies).
+# You can install these using the following syntax, for example:
+#
+#    $ pip install -e .[develop,testing]
+#
 EXTRAS_REQUIRE = {
     # Dependencies that are required to run tests
     'testing': [
-        'pytest',  # Our tests framework
+        'pytest>=6.2.2',  # Our tests framework
+        'pytest-cov>=2.11.1',  # Pytest plugin for measuring coverage
+        'pylint==2.6.0',  # Python code static checker
+        'flake8>=3.8.4',  # The modular source code checker
     ],
-    'docs': ['furo', 'sphinx']
+    'develop': [
+        'twine>=3.3.0',  # Publishing packages on PyPI
+        'setuptools>=53.0.0',  # Build and install packages
+        'wheel>=0.36.2',  # A built-package format for Python
+        'check-wheel-contents>=0.2.0',  # Check wheels have the right contents
+    ],
+    'docs': [
+        'furo>=2020.12.30b24,==2020.12.*',  # Sphinx documentation theme
+        'sphinx>=3.5.0',  # Python documentation generator
+    ],
 }
 
 # Project's URLs
@@ -193,11 +218,11 @@ if __name__ == '__main__':
         project_urls=PROJECT_URLS,
         classifiers=CLASSIFIERS,
         packages=find_packages(),
-        include_package_data=True,
         platforms='any',
+        include_package_data=True,
+        zip_safe=False,
         python_requires='>=3.7, <4',
         install_requires=INSTALL_REQUIRES,
         extras_require=EXTRAS_REQUIRE,
         entry_points=ENTRY_POINTS,
-        zip_safe=False,
     )
