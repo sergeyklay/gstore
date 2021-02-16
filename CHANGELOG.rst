@@ -4,12 +4,6 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
-Versions follow `Semantic Versioning`_ (``<major>.<minor>.<patch>``).
-
-.. note::
-
-   Backward incompatible (breaking) changes will only be introduced in major
-   versions.
 
 0.4.0.dev1 (2021-XX-XX)
 -----------------------
