@@ -17,6 +17,7 @@
 .DEFAULT_GOAL = build
 
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+PKG_NAME = gstore
 
 ifneq (,$(findstring xterm,${TERM}))
 	GREEN := $(shell tput -Txterm setaf 2)
@@ -31,8 +32,7 @@ endif
 COV          =
 HEADER_EXTRA =
 
-REQUIREMENTS     = requirements.txt
-REQUIREMENTS_DEV = requirements-dev.txt
+REQUIREMENTS = requirements-dev.txt
 
 PYTEST_FLAGS ?= --color=yes -v
 FLAKE8_FLAGS ?= --show-source --statistics

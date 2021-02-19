@@ -18,12 +18,12 @@ include default.mk
 define mk-venv-link
 	@if [ -n "$(WORKON_HOME)" ]; then \
 		echo $(ROOT_DIR) >  $(VENV_ROOT)/.project; \
-		if [ ! -d $(WORKON_HOME)/gstore -a ! -L $(WORKON_HOME)/gstore ]; \
+		if [ ! -d $(WORKON_HOME)/$(PKG_NAME) -a ! -L $(WORKON_HOME)/$(PKG_NAME) ]; \
 		then \
-			ln -s $(ROOT_DIR)/$(VENV_ROOT) $(WORKON_HOME)/gstore; \
+			ln -s $(ROOT_DIR)/$(VENV_ROOT) $(WORKON_HOME)/$(PKG_NAME); \
 			echo ; \
 			echo Since you use virtualenvwrapper, we created a symlink; \
-			echo "so you can also use "workon gstore" to activate the venv."; \
+			echo "so you can also use "workon $(PKG_NAME)" to activate the venv."; \
 			echo ; \
 		fi; \
 	fi
@@ -31,18 +31,21 @@ endef
 
 define rm-venv-link
 	@if [ -n "$(WORKON_HOME)" ]; then \
-		if [ -L "$(WORKON_HOME)/gstore" -a -f "$(WORKON_HOME)/gstore" ]; \
+		if [ -L "$(WORKON_HOME)/$(PKG_NAME)" -a -f "$(WORKON_HOME)/$(PKG_NAME)" ]; \
 		then \
-			$(RM) $(WORKON_HOME)/gstore; \
+			$(RM) $(WORKON_HOME)/$(PKG_NAME); \
 		fi; \
 	fi
 endef
 
 ## Public targets
 
+$(VENV_PYTHON): $(VENV_ROOT)
+	@echo
+
 $(VENV_ROOT):
 	@echo $(CS)Creating a Python environment $(VENV_ROOT)$(CE)
-	$(PYTHON) -m venv --prompt gstore $(VENV_ROOT)
+	$(PYTHON) -m venv --prompt $(PKG_NAME) $(VENV_ROOT)
 	@echo
 	@echo Done.
 	@echo
@@ -55,24 +58,23 @@ $(VENV_ROOT):
 	$(call mk-venv-link)
 
 .PHONY: init
-init: $(VENV_ROOT)
+init: $(VENV_PYTHON)
 	@echo $(CS)Installing dev requirements$(CE)
 	$(VENV_PYTHON) -m pip install --upgrade pip setuptools wheel
 	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS)
-	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS_DEV)
 
 .PHONY: install
 install: init
-	@echo $(CS)Installing Gstore$(CE)
+	@echo $(CS)Installing $(PKG_NAME)$(CE)
 	$(VENV_PIP) install --upgrade --editable .
 
 .PHONY: uninstall
 uninstall:
-	@echo $(CS)Uninstalling gstore$(CE)
-	- $(VENV_PIP) uninstall --yes gstore &2>/dev/null
+	@echo $(CS)Uninstalling $(PKG_NAME)$(CE)
+	- $(VENV_PIP) uninstall --yes $(PKG_NAME) &2>/dev/null
 
 	@echo Verifying...
-	cd .. && ! $(VENV_PYTHON) -m gstore --version &2>/dev/null
+	cd .. && ! $(VENV_PYTHON) -m $(PKG_NAME) --version &2>/dev/null
 
 	@echo Done.
 	@echo
@@ -90,14 +92,14 @@ clean:
 	$(RM) ./.coverage ./coverage.xml
 
 .PHONY: check-dist
-check-dist: $(VENV_ROOT)
+check-dist: $(VENV_PYTHON)
 	@echo $(CS)Check distribution files$(HEADER_EXTRA)$(CE)
 	$(VENV_BIN)/twine check ./dist/*
 	$(VENV_BIN)/check-wheel-contents ./dist/*.whl
 	@echo
 
 .PHONY: test-ccov
-test-ccov: COV=--cov=./gstore --cov=./tests --cov-report=xml --cov-report=html
+test-ccov: COV=--cov=./$(PKG_NAME) --cov=./tests --cov-report=xml --cov-report=html
 test-ccov: HEADER_EXTRA=' (with coverage)'
 test-ccov: test
 
@@ -114,43 +116,43 @@ sdist:
 	$(VENV_PYTHON) setup.py sdist
 
 .PHONY: test-sdist
-test-sdist: $(VENV_ROOT) sdist
+test-sdist: $(VENV_PYTHON) sdist
 	@echo $(CS)Testing source distribution and installation$(CE)
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.gz
 	@echo
-	$(VENV_BIN)/gstore --version
+	$(VENV_BIN)/$(PKG_NAME) --version
 	@echo
 
 .PHONY: wheel
-wheel:
+wheel: $(VENV_PYTHON)
 	@echo $(CS)Creating wheel distribution$(CE)
 	$(VENV_PYTHON) setup.py bdist_wheel
 
 .PHONY: test-wheel
-test-wheel: $(VENV_ROOT) wheel
+test-wheel: $(VENV_PYTHON) wheel
 	@echo $(CS)Testing built distribution and installation$(CE)
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.whl
 	@echo
-	$(VENV_BIN)/gstore --version
+	$(VENV_BIN)/$(PKG_NAME) --version
 	@echo
 
 .PHONY: test
-test:
+test: $(VENV_PYTHON)
 	@echo $(CS)Running tests$(HEADER_EXTRA)$(CE)
-	$(VENV_BIN)/py.test $(PYTEST_FLAGS) $(COV) ./gstore ./tests
+	$(VENV_BIN)/py.test $(PYTEST_FLAGS) $(COV) ./$(PKG_NAME) ./tests
 	@echo
 
 .PHONY: lint
-lint:
+lint: $(VENV_PYTHON)
 	@echo $(CS)Running linters$(CE)
 	$(VENV_BIN)/flake8 $(FLAKE8_FLAGS) ./
-	$(VENV_BIN)/pylint ./gstore
+	$(VENV_BIN)/pylint ./$(PKG_NAME)
 
 .PHONY: publish
 publish: test-all upload
 
 .PHONY: upload
-upload:
+upload: $(VENV_PYTHON)
 	@echo $(CS)Upload built distribution$(CE)
 	@$(VENV_PYTHON) setup.py --version | grep -q "dev" && echo '!!! Not publishing dev version !!!' && exit 1 || echo ok
 	$(MAKE) build
@@ -164,7 +166,7 @@ build: sdist wheel
 
 .PHONY: help
 help:
-	@echo gstore
+	@echo $(PKG_NAME)
 	@echo
 	@echo 'Run "make init" first to install and update all dev dependencies.'
 	@echo 'See "default.mk" for variables you might want to set.'
@@ -173,13 +175,13 @@ help:
 	@echo
 	@echo '  help:         Show this help and exit'
 	@echo '  init:         Installing dev requirements (has to be launched first)'
-	@echo '  install:      Install development version of gstore'
-	@echo '  uninstall:    Uninstall local version of gstore'
-	@echo '  build:        Build gstore distribution (sdist and wheel)'
+	@echo '  install:      Install development version of $(PKG_NAME)'
+	@echo '  uninstall:    Uninstall local version of $(PKG_NAME)'
+	@echo '  build:        Build $(PKG_NAME) distribution (sdist and wheel)'
 	@echo '  sdist:        Create a source distribution'
 	@echo '  wheel:        Create a wheel distribution'
-	@echo '  publish:      Publish gstore distribution to the repository'
-	@echo '  upload:       Upload gstore distribution to the repository (w/o tests)'
+	@echo '  publish:      Publish $(PKG_NAME) distribution to the repository'
+	@echo '  upload:       Upload $(PKG_NAME) distribution to the repository (w/o tests)'
 	@echo '  clean:        Remove build and tests artefacts and directories'
 	@echo '  check-dist:   Check integrity of the distribution files and validate package'
 	@echo '  test:         Run unit tests'
