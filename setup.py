@@ -159,7 +159,7 @@ CLASSIFIERS = [
 
 # Dependencies that are downloaded by pip on installation and why.
 INSTALL_REQUIRES = [
-    'PyGithub>=1.54.1',  # Interact with GitHub objects
+    'pygithub>=1.54.1',  # Interact with GitHub objects
     'gitpython>=3.0.6',  # Interact with Git repositories
 ]
 
