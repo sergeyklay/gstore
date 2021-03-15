@@ -60,7 +60,7 @@ More information about ``pip`` and PyPI can be found here:
 Alternatively, you can install from the source as follows:
 
 #. Clone `Gstore repository <https://github.com/sergeyklay/gstore>`_
-#. Run ``pip install -r requirements.txt``
+#. Run ``pip install -r requirements/requirements.txt``
 #. Run the ``gstore`` module (directory) as follows:
 
 .. code-block:: bash
