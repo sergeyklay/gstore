@@ -94,6 +94,7 @@ def fetch(repo: Repository, target: str):
 
 
 def do_sync(params: tuple):
+    """Perform repos synchronisation. Intended for internal usage."""
     repos_list, base_path = params
 
     for repo in repos_list:
@@ -153,6 +154,5 @@ def sync(org: Organization, repos: list, base_path: str):
 
     tasks = zip_longest(chunks(repos, num_proc), [], fillvalue=base_path)
 
-    with multiprocessing.Pool(processes=num_proc) as p:
-        p.map(do_sync, tasks)
-
+    with multiprocessing.Pool(processes=num_proc) as pool:
+        pool.map(do_sync, tasks)
