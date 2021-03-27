@@ -94,13 +94,6 @@ def fetch(repo: Repository, target: str):
             logger.error(msg)
 
 
-def do_sync_fake(params: tuple):
-    repos_list, base_path = params
-
-    logger.error(f'''PID={os.getpid()}''')
-    logger.error(f'''{repos_list}''')
-
-
 def do_sync(params: tuple):
     repos_list, base_path = params
 
@@ -141,6 +134,30 @@ def do_sync(params: tuple):
             clone(repo, repo_path)
 
 
+def sync(org: Organization, repos: list, base_path: str):
+    """Sync repositories for an organization."""
+    logger.info('Sync repos for %s', org.login)
+
+    org_path = os.path.join(base_path, org.login)
+
+    # Just in case create directories recursively
+    if not os.path.exists(org_path):
+        logger.debug('Creating directory %s', org_path)
+        os.makedirs(org_path)
+
+    num_proc = multiprocessing.cpu_count()
+
+    def chunks(lst, n):
+        """Yield successive n-sized chunks from lst."""
+        for i in range(0, len(lst), n):
+            yield lst[i:i + n]
+
+    tasks = zip_longest(chunks(repos, num_proc), [], fillvalue=base_path)
+
+    with multiprocessing.Pool(processes=num_proc) as p:
+        p.map(do_sync, tasks)
+
+
 class RepoProgressPrinter(git.RemoteProgress):
     """
     Extended progress printer.
@@ -179,37 +196,3 @@ class RepoProgressPrinter(git.RemoteProgress):
             cur_count / (max_count or 100.0),
             message or '',
         )
-
-
-class RepoManager:
-    """Repository manager used to clone and sync repos."""
-
-    def __init__(self, base_path: str):
-        self.base_path = os.path.expanduser(base_path).rstrip('/\\')
-
-    def sync(self, org: Organization, repos: list):
-        """Sync repositories for an organization."""
-        logger.info('Sync repos for %s', org.login)
-
-        org_path = os.path.join(self.base_path, org.login)
-
-        # Just in case create directories recursively
-        if not os.path.exists(org_path):
-            logger.debug('Creating directory %s', org_path)
-            os.makedirs(org_path)
-
-        num_proc = multiprocessing.cpu_count()
-
-        def chunks(lst, n):
-            """Yield successive n-sized chunks from lst."""
-            for i in range(0, len(lst), n):
-                yield lst[i:i + n]
-
-        tasks = zip_longest(
-            chunks(repos, num_proc),
-            [],
-            fillvalue=self.base_path,
-        )
-
-        with multiprocessing.Pool(processes=num_proc) as p:
-            p.map(do_sync, tasks)

@@ -16,6 +16,7 @@
 """The CLI entry point. Invoke as `gstore' or `python -m gstore'."""
 
 import logging
+import os
 import signal
 import sys
 
@@ -23,7 +24,7 @@ from gstore.args import argparse
 from gstore.client import Client
 from gstore.exceptions import Error
 from gstore.logger import setup_logger
-from gstore.repo import RepoManager
+from gstore.repo import sync
 
 
 def main():
@@ -47,7 +48,7 @@ def main():
             else:
                 orgs = client.resolve_orgs(args.org)
 
-            manager = RepoManager(args.target)
+            base_path = os.path.expanduser(args.target).rstrip('/\\')
 
             for org in orgs:
                 if args.repo is None:
@@ -55,7 +56,7 @@ def main():
                 else:
                     repos = client.resolve_repos(args.repo, org)
 
-                manager.sync(org, repos)
+                sync(org, repos, base_path)
         except KeyboardInterrupt:  # the user hit control-C
             sys.stderr.write('Received keyboard interrupt, terminating.\n')
             sys.stderr.flush()
