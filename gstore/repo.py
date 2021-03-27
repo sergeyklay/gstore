@@ -46,7 +46,6 @@ def clone(repo: Repository, target: str):
         git.Repo.clone_from(
             git_url,
             target,
-            progress=RepoProgressPrinter()
         )
     except git.GitCommandError as exception:
         logger.error(
@@ -157,42 +156,3 @@ def sync(org: Organization, repos: list, base_path: str):
     with multiprocessing.Pool(processes=num_proc) as p:
         p.map(do_sync, tasks)
 
-
-class RepoProgressPrinter(git.RemoteProgress):
-    """
-    Extended progress printer.
-    """
-
-    def update(self, op_code, cur_count, max_count=None, message=''):
-        """Called whenever the progress changes.
-
-        :param op_code:
-            Integer allowing to be compared against Operation IDs and stage
-            IDs.
-
-            Stage IDs are BEGIN and END. BEGIN will only be set once for each
-            Operation ID as well as END. It may be that BEGIN and END are set
-            at once in case only one progress message was emitted due to the
-            speed of the operation. Between BEGIN and END, none of these flags
-            will be set
-
-            Operation IDs are all held within the OP_MASK. Only one Operation
-            ID will be active per call.
-        :param cur_count: Current absolute count of items
-
-        :param max_count:
-            The maximum count of items we expect. It may be None in case there
-            is no maximum number of items or if it is (yet) unknown.
-
-        :param message:
-            In case of the 'WRITING' operation, it contains the amount of bytes
-            transferred. It may, possibly be used for other purposes as well.
-        """
-        logger.debug(
-            '%s %s %s %s %s',
-            op_code,
-            cur_count,
-            max_count,
-            cur_count / (max_count or 100.0),
-            message or '',
-        )
