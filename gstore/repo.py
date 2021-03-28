@@ -26,6 +26,7 @@ import git
 from gstore.exceptions import parse_git_errors
 from gstore.models import Organization, Repository
 
+# pylint: disable=invalid-name
 logger = logging.getLogger('gstore.repo_manager')
 
 
