@@ -23,8 +23,9 @@ from itertools import zip_longest
 
 import git
 
-from gstore.exceptions import parse_git_errors
-from gstore.models import Organization, Repository
+from .exceptions import parse_git_errors
+from .logger import setup_logger
+from .models import Organization, Repository
 
 # pylint: disable=invalid-name
 logger = logging.getLogger('gstore.repo_manager')
@@ -96,7 +97,13 @@ def fetch(repo: Repository, target: str):
 
 def do_sync(params: tuple):
     """Perform repos synchronisation. Intended for internal usage."""
-    repos_list, base_path = params
+    repos_list, ctx = params  # type: list, dict
+    base_path = ctx.get('base_path')
+
+    setup_logger(ctx.get('verbose', False), ctx.get('quiet', False))
+
+    global logger
+    logger = logging.getLogger('gstore.repo_manager')
 
     for repo in repos_list:
         org_path = os.path.join(base_path, repo.org.login)
@@ -135,7 +142,7 @@ def do_sync(params: tuple):
             clone(repo, repo_path)
 
 
-def sync(org: Organization, repos: list, base_path: str):
+def sync(org: Organization, repos: list, base_path: str, ctx=None):
     """Sync repositories for an organization."""
     logger.info('Sync repos for %s', org.login)
 
@@ -153,7 +160,11 @@ def sync(org: Organization, repos: list, base_path: str):
         for i in range(0, len(lst), n):
             yield lst[i:i + n]
 
-    tasks = zip_longest(chunks(repos, num_proc), [], fillvalue=base_path)
+    if ctx is None:
+        ctx = {}
+
+    ctx['base_path'] = base_path
+    tasks = zip_longest(chunks(repos, num_proc), [], fillvalue=ctx)
 
     with multiprocessing.Pool(processes=num_proc) as pool:
         pool.map(do_sync, tasks)
