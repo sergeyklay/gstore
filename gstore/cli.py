@@ -20,11 +20,11 @@ import os
 import signal
 import sys
 
-from gstore.args import argparse
-from gstore.client import Client
-from gstore.exceptions import Error
-from gstore.logger import setup_logger
-from gstore.repo import sync
+from .args import argparse
+from .client import Client
+from .exceptions import Error
+from .logger import setup_logger
+from .repo import sync
 
 
 def main():
@@ -49,6 +49,10 @@ def main():
                 orgs = client.resolve_orgs(args.org)
 
             base_path = os.path.expanduser(args.target).rstrip('/\\')
+            ctx = {
+                'verbose': args.verbose,
+                'quiet': args.quiet,
+            }
 
             for org in orgs:
                 if args.repo is None:
@@ -56,7 +60,7 @@ def main():
                 else:
                     repos = client.resolve_repos(args.repo, org)
 
-                sync(org, repos, base_path)
+                sync(org=org, repos=repos, base_path=base_path, ctx=ctx)
         except KeyboardInterrupt:  # the user hit control-C
             sys.stderr.write('Received keyboard interrupt, terminating.\n')
             sys.stderr.flush()
