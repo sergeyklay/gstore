@@ -61,7 +61,8 @@ def setup_logger(verbose=False, quiet=False) -> logging.Logger:
     root.setLevel(logging.ERROR if quiet else logging.DEBUG)
 
     formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        '%(asctime)s %(name)s[%(process)d]: %(levelname)s: %(message)s',
+        '%b %d %X',
     )
 
     specs = (
