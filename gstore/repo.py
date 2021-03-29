@@ -63,12 +63,10 @@ def clone(repo: Repository, target: str):
 def fetch(repo: Repository, target: str):
     """Sync a repository in the target directory."""
     logger.info(
-        'Update repository in %s/%s',
+        'Update %s/%s repository',
         repo.org.login,
         repo.name
     )
-
-    logger.debug('Initialize repository instance')
     local_repo = git.Repo(target)
 
     if len(local_repo.heads) == 0:
@@ -80,10 +78,18 @@ def fetch(repo: Repository, target: str):
         return
 
     try:
-        logger.debug('Download objects and refs from repository')
+        logger.debug(
+            'Download objects and refs from %s/%s repository',
+            repo.org.login,
+            repo.name
+        )
         local_repo.git.fetch(['--prune', '--quiet'])
 
-        logger.debug('Fetch from and integrate with repository')
+        logger.debug(
+            'Fetch from and integrate with %s/%s repository',
+            repo.org.login,
+            repo.name
+        )
         local_repo.git.pull(['--all', '--quiet'])
     except git.GitCommandError as exception:
         logger.error(
