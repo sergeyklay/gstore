@@ -20,7 +20,6 @@ import multiprocessing
 import os
 import shutil
 from dataclasses import dataclass
-from itertools import zip_longest
 
 import git
 
@@ -33,22 +32,17 @@ from .models import Organization, Repository
 class _Context:
     """Class for passing a context to parallel processes."""
 
-    verbose: bool = False
-    quiet: bool = False
     base_path: str = ''
     logger: logging.Logger = None
 
 
 _ctx = _Context(
-    logger=logging.getLogger('gstore.repo_manager')
+    logger=logging.getLogger('gstore.repo_manager'),
 )
 
 
 def clone(repo: Repository, target: str):
     """Clone a repository to the target directory."""
-    if _ctx.logger is None:
-        _ctx.logger = logging.getLogger('gstore.repo_manager')
-
     _ctx.logger.info(
         'Clone repository to %s/%s',
         repo.org.login,
@@ -77,9 +71,6 @@ def clone(repo: Repository, target: str):
 
 def fetch(repo: Repository, target: str):
     """Sync a repository in the target directory."""
-    if _ctx.logger is None:
-        _ctx.logger = logging.getLogger('gstore.repo_manager')
-
     _ctx.logger.info(
         'Update %s/%s repository',
         repo.org.login,
@@ -119,20 +110,12 @@ def fetch(repo: Repository, target: str):
             _ctx.logger.error(msg)
 
 
-def do_sync(params: tuple):
+def _do_sync(repos_list):
     """Perform repos synchronisation. Intended for internal usage."""
-    repos_list, ctx = params  # type: list, _Context
-    assert isinstance(ctx, _Context)
-
-    base_path = ctx.base_path
-    setup_logger(ctx.verbose, ctx.quiet)
-
-    # This is initialized on a per-process basis due to 'spawn'
-    # process strategy (at least on Windows and macOs)
-    _ctx.logger = logging.getLogger('gstore.repo_manager')
+    assert isinstance(_ctx.base_path, str) and len(_ctx.base_path) > 0
 
     for repo in repos_list:
-        org_path = os.path.join(base_path, repo.org.login)
+        org_path = os.path.join(_ctx.base_path, repo.org.login)
         repo_path = os.path.join(org_path, repo.name)
         git_path = os.path.join(repo_path, '.git')
 
@@ -168,6 +151,20 @@ def do_sync(params: tuple):
             clone(repo, repo_path)
 
 
+def _init_process(verbose=False, quiet=False, base_path=None):
+    """Call when new processes start.
+
+    This function is used as a initializer on a per-process basis due
+    to 'spawn' process strategy (at least on Windows and macOs).
+    """
+    assert isinstance(base_path, str) and len(base_path) > 0
+    setup_logger(verbose, quiet)
+
+    _ctx.base_path = base_path
+    _ctx.logger = logging.getLogger('gstore.repo_manager')
+    _ctx.logger.info('Initializing process')
+
+
 def sync(org: Organization, repos: list, base_path: str, ctx=None):
     """Sync repositories for an organization."""
     _ctx.logger.info('Sync repos for %s', org.login)
@@ -189,11 +186,15 @@ def sync(org: Organization, repos: list, base_path: str, ctx=None):
     if ctx is None:
         ctx = {}
 
-    _ctx.verbose = ctx.get('verbose', False)
-    _ctx.quiet = ctx.get('quiet', False)
-    _ctx.base_path = base_path
-
-    tasks = zip_longest(chunks(repos, num_proc), [], fillvalue=_ctx)
-
-    with multiprocessing.Pool(processes=num_proc) as pool:
-        pool.map(do_sync, tasks)
+    # 'processes' is the number of worker processes to use.
+    # If 'processes' is None then the number returned by os.cpu_count() is used
+    with multiprocessing.Pool(
+            processes=num_proc,
+            initializer=_init_process,
+            initargs=(
+                ctx.get('verbose', False),
+                ctx.get('quiet', False),
+                base_path,
+            )
+    ) as pool:
+        pool.map(_do_sync, chunks(repos, num_proc))
