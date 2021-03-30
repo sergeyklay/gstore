@@ -157,7 +157,16 @@ def _init_process(verbose=False, quiet=False, base_path=None):
 
 
 def sync(org: Organization, repos: list, base_path: str, **kwargs):
-    """Sync repositories for an organization."""
+    """
+    Sync repositories for an organization.
+
+    :param Organization org: Organization to sync
+    :param list repos: Repository list to sync
+    :param string base_path: Base target to sync repos
+    :keyword bool verbose: Enable debug logging
+    :keyword bool quiet: Disable info logging
+    :keyword int jobs: the number of worker processes to use
+    """
     _ctx.logger.info(f'Sync repos for {org.login}')
 
     org_path = os.path.join(base_path, org.login)
@@ -167,17 +176,18 @@ def sync(org: Organization, repos: list, base_path: str, **kwargs):
         _ctx.logger.debug(f'Creating directory {org_path}')
         os.makedirs(org_path)
 
-    num_proc = multiprocessing.cpu_count()
+    jobs = kwargs.get('jobs')
+    if not jobs:
+        jobs = multiprocessing.cpu_count()
 
     def chunks(lst, n):
         """Yield successive n-sized chunks from lst."""
         for i in range(0, len(lst), n):
             yield lst[i:i + n]
 
-    # 'processes' is the number of worker processes to use.
-    # If 'processes' is None then the number returned by os.cpu_count() is used
+    _ctx.logger.info(f'Processes to be spawned: {jobs}')
     with multiprocessing.Pool(
-            processes=num_proc,
+            processes=jobs,
             initializer=_init_process,
             initargs=(
                 kwargs.get('verbose', False),
@@ -185,4 +195,4 @@ def sync(org: Organization, repos: list, base_path: str, **kwargs):
                 base_path,
             )
     ) as pool:
-        pool.map(_do_sync, chunks(repos, num_proc))
+        pool.map(_do_sync, chunks(repos, jobs))
