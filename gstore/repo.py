@@ -29,12 +29,16 @@ from .models import Organization, Repository
 
 
 class _Context:
-    pass
+    """Will be used as context in parallel processes."""
+
+    def __init__(self):
+        self.verbose = False
+        self.quiet = False
+        self.base_path = None
+        self.logger = None
 
 
-# Will be used as context in parallel processes
 _ctx = _Context()
-_ctx.logger = None
 
 
 def clone(repo: Repository, target: str):
@@ -115,12 +119,10 @@ def fetch(repo: Repository, target: str):
 def do_sync(params: tuple):
     """Perform repos synchronisation. Intended for internal usage."""
     repos_list, ctx = params  # type: list, _Context
-    base_path = getattr(ctx, 'base_path')
+    assert isinstance(ctx, _Context)
 
-    setup_logger(
-        getattr(ctx, 'verbose', False),
-        getattr(ctx, 'quiet', False),
-    )
+    base_path = ctx.base_path
+    setup_logger(ctx.verbose, ctx.quiet)
 
     # This is initialized on a per-process basis due to 'spawn'
     # process strategy (at least on Windows and macOs)
