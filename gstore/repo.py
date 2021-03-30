@@ -28,12 +28,12 @@ from .logger import setup_logger
 from .models import Organization, Repository
 
 
-class Context():
+class _Context:
     pass
 
 
 # Will be used as context in parallel processes
-_ctx = Context()
+_ctx = _Context()
 _ctx.logger = None
 
 
@@ -114,7 +114,7 @@ def fetch(repo: Repository, target: str):
 
 def do_sync(params: tuple):
     """Perform repos synchronisation. Intended for internal usage."""
-    repos_list, ctx = params  # type: list, Context
+    repos_list, ctx = params  # type: list, _Context
     base_path = getattr(ctx, 'base_path')
 
     setup_logger(
@@ -122,7 +122,9 @@ def do_sync(params: tuple):
         getattr(ctx, 'quiet', False),
     )
 
-    ctx.logger = logging.getLogger('gstore.repo_manager')
+    # This is initialized on a per-process basis due to 'spawn'
+    # process strategy (at least on Windows and macOs)
+    _ctx.logger = logging.getLogger('gstore.repo_manager')
 
     for repo in repos_list:
         org_path = os.path.join(base_path, repo.org.login)
@@ -131,7 +133,7 @@ def do_sync(params: tuple):
 
         if os.path.exists(repo_path):
             if os.path.isfile(repo_path):
-                ctx.logger.error(
+                _ctx.logger.error(
                     'Unable to sync %s. The path %s is a regular file',
                     repo.name,
                     repo_path,
@@ -139,7 +141,7 @@ def do_sync(params: tuple):
                 continue
 
             if not os.access(repo_path, os.W_OK | os.X_OK):
-                ctx.logger.error(
+                _ctx.logger.error(
                     'Unable to sync %s. The path %s is not writeable',
                     repo.name,
                     repo_path,
@@ -149,7 +151,7 @@ def do_sync(params: tuple):
             # We're going to run a Git command, but weren't inside a
             # local Git repository.
             if not os.path.exists(git_path):
-                ctx.logger.debug(
+                _ctx.logger.debug(
                     'Remove wrong formed local repo from %s',
                     repo_path
                 )
