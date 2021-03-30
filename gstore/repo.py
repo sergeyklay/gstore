@@ -37,7 +37,7 @@ class _Context:
 
 
 _ctx = _Context(
-    logger=logging.getLogger('gstore.repo_manager'),
+    logger=logging.getLogger(f'{__name__}'),
 )
 
 
@@ -52,7 +52,7 @@ def clone(repo: Repository, target: str):
     if os.path.exists(target):
         os.removedirs(target)
 
-    git_url = 'git@github.com:%s/%s.git' % (repo.org.login, repo.name)
+    git_url = f'git@github.com:{repo.org.login}/{repo.name}.git'
 
     try:
         git.Repo.clone_from(
@@ -60,22 +60,14 @@ def clone(repo: Repository, target: str):
             target,
         )
     except git.GitCommandError as exception:
-        _ctx.logger.error(
-            'Failed to clone %s/%s',
-            repo.org.login,
-            repo.name
-        )
+        _ctx.logger.error(f'Failed to clone {repo.org.login}/{repo.name}')
         for msg in parse_git_errors(exception):
             _ctx.logger.error(msg)
 
 
 def fetch(repo: Repository, target: str):
     """Sync a repository in the target directory."""
-    _ctx.logger.info(
-        'Update %s/%s repository',
-        repo.org.login,
-        repo.name
-    )
+    _ctx.logger.info(f'Update {repo.org.login}/{repo.name} repository')
     local_repo = git.Repo(target)
 
     if len(local_repo.heads) == 0:
@@ -101,11 +93,7 @@ def fetch(repo: Repository, target: str):
         )
         local_repo.git.pull(['--all', '--quiet'])
     except git.GitCommandError as exception:
-        _ctx.logger.error(
-            'Failed to update %s/%s',
-            repo.org.login,
-            repo.name
-        )
+        _ctx.logger.error(f'Failed to update {repo.org.login}/{repo.name}')
         for msg in parse_git_errors(exception):
             _ctx.logger.error(msg)
 
@@ -140,8 +128,7 @@ def _do_sync(repos_list):
             # local Git repository.
             if not os.path.exists(git_path):
                 _ctx.logger.debug(
-                    'Remove wrong formed local repo from %s',
-                    repo_path
+                    f'Remove wrong formed local repo from {repo_path}'
                 )
                 shutil.rmtree(repo_path, ignore_errors=True)
 
@@ -158,22 +145,26 @@ def _init_process(verbose=False, quiet=False, base_path=None):
     to 'spawn' process strategy (at least on Windows and macOs).
     """
     assert isinstance(base_path, str) and len(base_path) > 0
+
+    # Setup logger for use within multiprocessing pool
     setup_logger(verbose, quiet)
 
+    # Setup git base path for use within multiprocessing pool
     _ctx.base_path = base_path
-    _ctx.logger = logging.getLogger('gstore.repo_manager')
+
+    _ctx.logger = logging.getLogger(f'{__name__}')
     _ctx.logger.info('Initializing process')
 
 
-def sync(org: Organization, repos: list, base_path: str, ctx=None):
+def sync(org: Organization, repos: list, base_path: str, **kwargs):
     """Sync repositories for an organization."""
-    _ctx.logger.info('Sync repos for %s', org.login)
+    _ctx.logger.info(f'Sync repos for {org.login}')
 
     org_path = os.path.join(base_path, org.login)
 
     # Just in case create directories recursively
     if not os.path.exists(org_path):
-        _ctx.logger.debug('Creating directory %s', org_path)
+        _ctx.logger.debug(f'Creating directory {org_path}')
         os.makedirs(org_path)
 
     num_proc = multiprocessing.cpu_count()
@@ -183,17 +174,14 @@ def sync(org: Organization, repos: list, base_path: str, ctx=None):
         for i in range(0, len(lst), n):
             yield lst[i:i + n]
 
-    if ctx is None:
-        ctx = {}
-
     # 'processes' is the number of worker processes to use.
     # If 'processes' is None then the number returned by os.cpu_count() is used
     with multiprocessing.Pool(
             processes=num_proc,
             initializer=_init_process,
             initargs=(
-                ctx.get('verbose', False),
-                ctx.get('quiet', False),
+                kwargs.get('verbose', False),
+                kwargs.get('quiet', False),
                 base_path,
             )
     ) as pool:

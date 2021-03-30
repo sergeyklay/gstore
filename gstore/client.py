@@ -62,7 +62,7 @@ class Client:
             api_host=DEFAULT_HOST,
             timeout=DEFAULT_TIMEOUT,
     ):
-        self.logger = logging.getLogger('gstore.client')
+        self.logger = logging.getLogger(f'{__name__}')
 
         # The use case with Client(token='...', api_host=None)
         if not api_host:
