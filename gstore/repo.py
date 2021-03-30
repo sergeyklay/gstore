@@ -107,6 +107,11 @@ def do_sync(params: tuple):
     base_path = ctx.get('base_path')
 
     setup_logger(ctx.get('verbose', False), ctx.get('quiet', False))
+
+    # Is it OK to have global variable here because we're use
+    # 'spawn' strategy for new processes.
+    # pylint: disable=global-statement
+    global logger
     logger = logging.getLogger('gstore.repo_manager')
 
     for repo in repos_list:
