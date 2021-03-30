@@ -19,6 +19,7 @@ import logging
 import multiprocessing
 import os
 import shutil
+from dataclasses import dataclass
 from itertools import zip_longest
 
 import git
@@ -28,17 +29,19 @@ from .logger import setup_logger
 from .models import Organization, Repository
 
 
+@dataclass
 class _Context:
-    """Will be used as context in parallel processes."""
+    """Class for passing a context to parallel processes."""
 
-    def __init__(self):
-        self.verbose = False
-        self.quiet = False
-        self.base_path = None
-        self.logger = None
+    verbose: bool = False
+    quiet: bool = False
+    base_path: str = ''
+    logger: logging.Logger = None
 
 
-_ctx = _Context()
+_ctx = _Context(
+    logger=logging.getLogger('gstore.repo_manager')
+)
 
 
 def clone(repo: Repository, target: str):
@@ -167,9 +170,6 @@ def do_sync(params: tuple):
 
 def sync(org: Organization, repos: list, base_path: str, ctx=None):
     """Sync repositories for an organization."""
-    if _ctx.logger is None:
-        _ctx.logger = logging.getLogger('gstore.repo_manager')
-
     _ctx.logger.info('Sync repos for %s', org.login)
 
     org_path = os.path.join(base_path, org.login)
