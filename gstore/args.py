@@ -107,6 +107,11 @@ def parser_add_options(parser: ArgumentParser) -> ArgumentParser:
     ogroup.add_argument('-v', '--verbose', dest='verbose', action='store_true',
                         help='Increase output verbosity')
 
+    jobs_help = ('specifies the number of jobs (sync processes) ' +
+                 'to run simultaneously')
+    ogroup.add_argument('-j', '--jobs', dest='jobs', default=None, type=int,
+                        action='store', nargs='?', help=jobs_help)
+
     quiet_help = 'Silence any informational messages, but not error ones'
     ogroup.add_argument('-q', '--quiet', dest='quiet', action='store_true',
                         help=quiet_help)

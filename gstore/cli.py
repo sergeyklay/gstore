@@ -62,6 +62,7 @@ def main():
                     base_path=base_path,
                     verbose=args.verbose,
                     quiet=args.quiet,
+                    jobs=args.jobs,
                 )
         except KeyboardInterrupt:  # the user hit control-C
             sys.stderr.write('Received keyboard interrupt, terminating.\n')
