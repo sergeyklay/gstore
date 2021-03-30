@@ -27,13 +27,22 @@ from .exceptions import parse_git_errors
 from .logger import setup_logger
 from .models import Organization, Repository
 
-# pylint: disable=invalid-name
-logger = logging.getLogger('gstore.repo_manager')
+
+class Context():
+    pass
+
+
+# Will be used as context in parallel processes
+_ctx = Context()
+_ctx.logger = None
 
 
 def clone(repo: Repository, target: str):
     """Clone a repository to the target directory."""
-    logger.info(
+    if _ctx.logger is None:
+        _ctx.logger = logging.getLogger('gstore.repo_manager')
+
+    _ctx.logger.info(
         'Clone repository to %s/%s',
         repo.org.login,
         repo.name
@@ -50,19 +59,21 @@ def clone(repo: Repository, target: str):
             target,
         )
     except git.GitCommandError as exception:
-        logger.error(
+        _ctx.logger.error(
             'Failed to clone %s/%s',
             repo.org.login,
             repo.name
         )
-        logger.error(exception)
         for msg in parse_git_errors(exception):
-            logger.error(msg)
+            _ctx.logger.error(msg)
 
 
 def fetch(repo: Repository, target: str):
     """Sync a repository in the target directory."""
-    logger.info(
+    if _ctx.logger is None:
+        _ctx.logger = logging.getLogger('gstore.repo_manager')
+
+    _ctx.logger.info(
         'Update %s/%s repository',
         repo.org.login,
         repo.name
@@ -70,7 +81,7 @@ def fetch(repo: Repository, target: str):
     local_repo = git.Repo(target)
 
     if len(local_repo.heads) == 0:
-        logger.info(
+        _ctx.logger.info(
             'There are no remote branches for %s/%s, skip updating',
             repo.org.login,
             repo.name
@@ -78,41 +89,40 @@ def fetch(repo: Repository, target: str):
         return
 
     try:
-        logger.debug(
+        _ctx.logger.debug(
             'Download objects and refs from %s/%s repository',
             repo.org.login,
             repo.name
         )
         local_repo.git.fetch(['--prune', '--quiet'])
 
-        logger.debug(
+        _ctx.logger.debug(
             'Fetch from and integrate with %s/%s repository',
             repo.org.login,
             repo.name
         )
         local_repo.git.pull(['--all', '--quiet'])
     except git.GitCommandError as exception:
-        logger.error(
+        _ctx.logger.error(
             'Failed to update %s/%s',
             repo.org.login,
             repo.name
         )
         for msg in parse_git_errors(exception):
-            logger.error(msg)
+            _ctx.logger.error(msg)
 
 
 def do_sync(params: tuple):
     """Perform repos synchronisation. Intended for internal usage."""
-    repos_list, ctx = params  # type: list, dict
-    base_path = ctx.get('base_path')
+    repos_list, ctx = params  # type: list, Context
+    base_path = getattr(ctx, 'base_path')
 
-    setup_logger(ctx.get('verbose', False), ctx.get('quiet', False))
+    setup_logger(
+        getattr(ctx, 'verbose', False),
+        getattr(ctx, 'quiet', False),
+    )
 
-    # Is it OK to have global variable here because we're use
-    # 'spawn' strategy for new processes.
-    # pylint: disable=global-statement
-    global logger
-    logger = logging.getLogger('gstore.repo_manager')
+    ctx.logger = logging.getLogger('gstore.repo_manager')
 
     for repo in repos_list:
         org_path = os.path.join(base_path, repo.org.login)
@@ -121,7 +131,7 @@ def do_sync(params: tuple):
 
         if os.path.exists(repo_path):
             if os.path.isfile(repo_path):
-                logger.error(
+                ctx.logger.error(
                     'Unable to sync %s. The path %s is a regular file',
                     repo.name,
                     repo_path,
@@ -129,7 +139,7 @@ def do_sync(params: tuple):
                 continue
 
             if not os.access(repo_path, os.W_OK | os.X_OK):
-                logger.error(
+                ctx.logger.error(
                     'Unable to sync %s. The path %s is not writeable',
                     repo.name,
                     repo_path,
@@ -139,7 +149,7 @@ def do_sync(params: tuple):
             # We're going to run a Git command, but weren't inside a
             # local Git repository.
             if not os.path.exists(git_path):
-                logger.debug(
+                ctx.logger.debug(
                     'Remove wrong formed local repo from %s',
                     repo_path
                 )
@@ -153,13 +163,16 @@ def do_sync(params: tuple):
 
 def sync(org: Organization, repos: list, base_path: str, ctx=None):
     """Sync repositories for an organization."""
-    logger.info('Sync repos for %s', org.login)
+    if _ctx.logger is None:
+        _ctx.logger = logging.getLogger('gstore.repo_manager')
+
+    _ctx.logger.info('Sync repos for %s', org.login)
 
     org_path = os.path.join(base_path, org.login)
 
     # Just in case create directories recursively
     if not os.path.exists(org_path):
-        logger.debug('Creating directory %s', org_path)
+        _ctx.logger.debug('Creating directory %s', org_path)
         os.makedirs(org_path)
 
     num_proc = multiprocessing.cpu_count()
@@ -172,8 +185,11 @@ def sync(org: Organization, repos: list, base_path: str, ctx=None):
     if ctx is None:
         ctx = {}
 
-    ctx['base_path'] = base_path
-    tasks = zip_longest(chunks(repos, num_proc), [], fillvalue=ctx)
+    _ctx.verbose = ctx.get('verbose', False)
+    _ctx.quiet = ctx.get('quiet', False)
+    _ctx.base_path = base_path
+
+    tasks = zip_longest(chunks(repos, num_proc), [], fillvalue=_ctx)
 
     with multiprocessing.Pool(processes=num_proc) as pool:
         pool.map(do_sync, tasks)
