@@ -38,7 +38,7 @@ def main():
 
     if args:
         setup_logger(verbose=args.verbose, quiet=args.quiet)
-        logger = logging.getLogger('gstore.cli')
+        logger = logging.getLogger(f'{__name__}')
 
         try:
             client = Client(token=args.token, api_host=args.host)
@@ -49,10 +49,6 @@ def main():
                 orgs = client.resolve_orgs(args.org)
 
             base_path = os.path.expanduser(args.target).rstrip('/\\')
-            ctx = {
-                'verbose': args.verbose,
-                'quiet': args.quiet,
-            }
 
             for org in orgs:
                 if args.repo is None:
@@ -60,7 +56,13 @@ def main():
                 else:
                     repos = client.resolve_repos(args.repo, org)
 
-                sync(org=org, repos=repos, base_path=base_path, ctx=ctx)
+                sync(
+                    org=org,
+                    repos=repos,
+                    base_path=base_path,
+                    verbose=args.verbose,
+                    quiet=args.quiet,
+                )
         except KeyboardInterrupt:  # the user hit control-C
             sys.stderr.write('Received keyboard interrupt, terminating.\n')
             sys.stderr.flush()
