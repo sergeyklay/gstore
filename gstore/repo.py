@@ -70,7 +70,7 @@ def fetch(repo: Repository, target: str):
     _ctx.logger.info(f'Update {repo.org.login}/{repo.name} repository')
     local_repo = git.Repo(target)
 
-    if len(local_repo.heads) == 0:
+    if not local_repo.heads:
         _ctx.logger.info(
             'There are no remote branches for %s/%s, skip updating',
             repo.org.login,
@@ -100,7 +100,7 @@ def fetch(repo: Repository, target: str):
 
 def _do_sync(repos_list):
     """Perform repos synchronisation. Intended for internal usage."""
-    assert isinstance(_ctx.base_path, str) and len(_ctx.base_path) > 0
+    assert isinstance(_ctx.base_path, str) and _ctx.base_path
 
     for repo in repos_list:
         org_path = os.path.join(_ctx.base_path, repo.org.login)
@@ -144,7 +144,7 @@ def _init_process(verbose=False, quiet=False, base_path=None):
     This function is used as a initializer on a per-process basis due
     to 'spawn' process strategy (at least on Windows and macOs).
     """
-    assert isinstance(base_path, str) and len(base_path) > 0
+    assert isinstance(base_path, str) and base_path
 
     # Setup logger for use within multiprocessing pool
     setup_logger(verbose, quiet)
@@ -187,12 +187,12 @@ def sync(org: Organization, repos: list, base_path: str, **kwargs):
 
     _ctx.logger.info(f'Processes to be spawned: {jobs}')
     with multiprocessing.Pool(
-            processes=jobs,
-            initializer=_init_process,
-            initargs=(
-                kwargs.get('verbose', False),
-                kwargs.get('quiet', False),
-                base_path,
-            )
+        processes=jobs,
+        initializer=_init_process,
+        initargs=(
+            kwargs.get('verbose', False),
+            kwargs.get('quiet', False),
+            base_path,
+        )
     ) as pool:
         pool.map(_do_sync, chunks(repos, jobs))
