@@ -29,13 +29,14 @@ from .models import Organization, Repository
 
 
 @dataclass
-class _Context:
+class _Context:  # pylint: disable=too-few-public-methods
     """Class for passing a context to parallel processes."""
 
     base_path: str = ''
     logger: logging.Logger = None
 
 
+# pylint: disable=invalid-name
 _ctx = _Context(
     logger=logging.getLogger(f'{__name__}'),
 )
@@ -186,13 +187,8 @@ def sync(org: Organization, repos: list, base_path: str, **kwargs):
             yield lst[i:i + n]
 
     _ctx.logger.info(f'Processes to be spawned: {jobs}')
-    with multiprocessing.Pool(
-        processes=jobs,
-        initializer=_init_process,
-        initargs=(
-            kwargs.get('verbose', False),
-            kwargs.get('quiet', False),
-            base_path,
-        )
-    ) as pool:
+    with multiprocessing.Pool(processes=jobs, initializer=_init_process,
+                              initargs=(kwargs.get('verbose', False),
+                                        kwargs.get('quiet', False),
+                                        base_path)) as pool:
         pool.map(_do_sync, chunks(repos, jobs))
