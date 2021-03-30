@@ -107,8 +107,6 @@ def do_sync(params: tuple):
     base_path = ctx.get('base_path')
 
     setup_logger(ctx.get('verbose', False), ctx.get('quiet', False))
-
-    global logger
     logger = logging.getLogger('gstore.repo_manager')
 
     for repo in repos_list:
