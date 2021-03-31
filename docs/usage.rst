@@ -50,6 +50,12 @@ Command Line Options
     Enable verbose mode. Causes Gstore to print debugging messages about its
     progress in some cases.
 
+  ``-j [JOBS]``, ``--jobs [JOBS]``
+    The maximum number of concurrent processes to use when building. If
+    ``JOBS`` is omitted the maximum number of available CPU cores will be used
+    as a number of jobs. The use of ``JOBS`` value of 1 can be used to limit to
+    a single job.
+
   ``-q``, ``--quiet``
     Silence any informational messages, but not error ones.
 
