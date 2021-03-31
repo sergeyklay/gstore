@@ -5,6 +5,27 @@ This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
 
+0.5.0 (2021-XX-XX)
+------------------
+
+Features
+^^^^^^^^
+
+* Introduced ability to specify the maximum number of concurrent processes to
+  use when syncing.
+
+
+Improvements
+^^^^^^^^^^^^
+
+* Reformat log entries to provide logs in a bit more readable format as well
+  as process id (PID).
+
+
+----
+
+
+
 0.4.0 (2021-02-19)
 ------------------
 
