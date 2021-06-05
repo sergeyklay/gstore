@@ -19,7 +19,7 @@ import logging
 import sys
 
 
-class DebugFilter(logging.Filter):  # pylint: disable=too-few-public-methods
+class DebugFilter(logging.Filter):
     """Extended standard logging Filter to filer only DEBUG messages."""
 
     def filter(self, record: logging.LogRecord) -> bool:
@@ -34,7 +34,7 @@ class DebugFilter(logging.Filter):  # pylint: disable=too-few-public-methods
         return record.levelno == logging.DEBUG
 
 
-class InfoFilter(logging.Filter):  # pylint: disable=too-few-public-methods
+class InfoFilter(logging.Filter):
     """Extended standard logging Filter to filer only INFO messages."""
 
     def filter(self, record: logging.LogRecord) -> bool:

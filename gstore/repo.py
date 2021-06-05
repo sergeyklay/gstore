@@ -29,7 +29,7 @@ from .models import Organization, Repository
 
 
 @dataclass
-class _Context:  # pylint: disable=too-few-public-methods
+class _Context:
     """Class for passing a context to parallel processes."""
 
     base_path: str = ''
