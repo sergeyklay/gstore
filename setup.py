@@ -217,7 +217,7 @@ if __name__ == '__main__':
         url=find_meta('url'),
         project_urls=PROJECT_URLS,
         classifiers=CLASSIFIERS,
-        packages=find_packages(),
+        packages=find_packages(exclude=['tests.*', 'tests']),
         platforms='any',
         include_package_data=True,
         zip_safe=False,
