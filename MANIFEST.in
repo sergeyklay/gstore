@@ -17,7 +17,8 @@
 # or remove some set of files from the sdist.
 
 # Include all files matching any of the listed patterns.
-include AUTHORS.rst README.rst CHANGELOG.rst LICENSE
+include AUTHORS.rst CHANGELOG.rst CONTRIBUTING.rst LICENSE README.rst SECURITY.rst *.yml
+graft .github
 
 # The contents of the directory tree tests will first be added to the sdist.
 # Many OS distributions prefers provide an ability run the tests
@@ -29,7 +30,7 @@ recursive-include tests *.py
 global-exclude *.py[cod]
 
 # Documentation
-include docs/Makefile docs/docutils.conf
+include docs/docutils.conf docs/Makefile
 recursive-include docs *.png
 recursive-include docs *.svg
 recursive-include docs *.py

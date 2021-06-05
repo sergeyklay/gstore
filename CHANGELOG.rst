@@ -22,6 +22,14 @@ Improvements
   as process id (PID).
 
 
+Bug Fixes
+^^^^^^^^^
+
+* Added missed files to the package contents.
+* Don't include ``tests`` package in wheel. Previously ``pip install gstore``
+  used to install a top-level package ``tests``. This was fixed.
+
+
 ----
 
 
