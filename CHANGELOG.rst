@@ -20,6 +20,8 @@ Improvements
 
 * Reformat log entries to provide logs in a bit more readable format as well
   as process id (PID).
+* Changed additional groups of dependencies declared in ``setup.py`` so that
+  ``develop`` is superset now for ``testing`` and ``docs``.
 
 
 Bug Fixes
