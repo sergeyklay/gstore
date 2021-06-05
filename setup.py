@@ -171,7 +171,7 @@ INSTALL_REQUIRES = [
 EXTRAS_REQUIRE = {
     # Dependencies that are required to run tests
     'testing': [
-        'pytest>=6.2.2',  # Our tests framework
+        'pytest>=6.2.4',  # Our tests framework
         'pytest-cov>=2.11.1',  # Pytest plugin for measuring coverage
         'pylint>=2.6.0,!=2.6.1',  # Python code static checker
         'flake8>=3.8.4',  # The modular source code checker

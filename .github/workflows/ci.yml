@@ -83,28 +83,6 @@ jobs:
       - name: Install dependencies
         run: make install
 
-      - name: Workaround pytest
-        if: ${{ matrix.python == '3.10.0-beta - 3.10' }}
-        run: |
-          case ${{ runner.os }} in
-            Windows*)
-              source .venv/Scripts/activate ;;
-            *)
-              source .venv/bin/activate ;;
-          esac
-
-          currentver="$(python -m pytest --version 2>&1)"
-          echo "$currentver"
-
-          currentver="${currentver##* }"
-          fixedver="6.2.4"
-
-          if [ "$(printf '%s\n' "$fixedver" "$currentver" | sort -V | head -n1)" = "$fixedver" ]; then
-            echo "pytest of the required minimum version for Python 3.10 is already installed"
-          else
-            python -m pip install pytest==6.2.4
-          fi
-
       - name: Minimal load test
         run: |
           case ${{ runner.os }} in
