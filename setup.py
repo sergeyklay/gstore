@@ -71,7 +71,7 @@ def load_long_description():
             '===================\n',
             changes(),
             '',
-            f"`Full changelog <{find_meta('url')}/en/latest/changelog.html>`_.",
+            f"`Full changelog <{find_meta('url')}/en/latest/changelog.html>`_.",  # noqa
             '',
             read_file(path.join(PKG_DIR, 'SECURITY.rst')),
             '',

@@ -4,6 +4,12 @@
 # number of processors available to use.
 jobs=0
 
+[MESSAGES CONTROL]
+
+# Disable the message, report, category or checker with the given id(s).
+disable=
+    too-few-public-methods
+
 [LOGGING]
 
 # The type of string formatting that logging methods do. `old` means using %
