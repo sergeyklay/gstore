@@ -84,7 +84,7 @@ jobs:
         run: make install
 
       - name: Workaround pytest
-        if: ${{ matrix.python != '3.10.0-beta - 3.10' }}
+        if: ${{ matrix.python == '3.10.0-beta - 3.10' }}
         run: |
           case ${{ runner.os }} in
             Windows*)
