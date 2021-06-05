@@ -2,11 +2,13 @@ astroid==2.5.1
 attrs==20.3.0
 bleach==3.3.0
 certifi==2020.12.5
+cffi==1.14.5
 chardet==4.0.0
 check-wheel-contents==0.2.0
 click==7.1.2
 colorama==0.4.4
 coverage==5.5
+cryptography==3.4.7
 deprecated==1.2.12
 docutils==0.16
 flake8==3.9.0
@@ -17,6 +19,7 @@ idna==2.10
 importlib-metadata==3.7.3
 iniconfig==1.1.1
 isort==5.7.0
+jeepney==0.6.0
 keyring==23.0.0
 lazy-object-proxy==1.5.2
 mccabe==0.6.1
@@ -26,11 +29,13 @@ pluggy==0.13.1
 property-manager==3.0
 py==1.10.0
 pycodestyle==2.7.0
+pycparser==2.20
 pyflakes==2.3.0
-pygithub==1.54.1
+pygithub==1.55
 pygments==2.8.1
-pyjwt==1.7.1
+pyjwt==2.1.0
 pylint==2.7.2
+pynacl==1.4.0
 pyparsing==2.4.7
 pytest-cov==2.11.1
 pytest==6.2.2
@@ -38,6 +43,7 @@ readme-renderer==29.0
 requests-toolbelt==0.9.1
 requests==2.25.1
 rfc3986==1.4.0
+secretstorage==3.3.1
 six==1.15.0
 smmap==3.0.5
 toml==0.10.2
