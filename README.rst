@@ -8,6 +8,9 @@
         <a href="https://github.com/sergeyklay/gstore/actions?workflow=CI">
             <img src="https://github.com/sergeyklay/gstore/workflows/CI/badge.svg?branch=master" alt="CI Status" />
         </a>
+        <a href="https://coveralls.io/github/sergeyklay/gstore">
+            <img src="https://coveralls.io/repos/github/sergeyklay/gstore/badge.svg" alt="Coverage Status" />
+        </a>
     </p>
 
 .. teaser-begin

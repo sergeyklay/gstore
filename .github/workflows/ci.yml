@@ -136,14 +136,13 @@ jobs:
       - name: Combine coverage reports
         run: tox -e coverage-report
 
-# TODO:
-#      - name: Upload coverage report
-#        if: success()
-#        env:
-#          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-#        run: |
-#          pip --use-feature=in-tree-build install coveralls
-#          coveralls
+      - name: Upload coverage report
+        if: success()
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: |
+          pip --use-feature=in-tree-build install coveralls
+          coveralls
 
       - name: Success Reporting
         if: success()
