@@ -1,8 +1,0 @@
--r requirements.in
-check-wheel-contents
-flake8
-pylint>=2.6.0,!=2.6.1
-pytest
-pytest-cov
-twine
-wheel

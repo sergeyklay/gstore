@@ -19,7 +19,7 @@ from unittest import mock
 import pytest
 from github.GithubException import UnknownObjectException
 
-from gstore.client import Client, ValidationError, InvalidCredentialsError
+from gstore.client import Client, InvalidCredentialsError, ValidationError
 from gstore.client import DEFAULT_HOST
 from gstore.models import Organization, Repository
 
@@ -64,7 +64,12 @@ def test_resolve_orgs_unknown_org(monkeypatch, client):
     work, but we'll see an error in the logs.
     """
     def mock_get_organization(_):
-        raise UnknownObjectException(401, 'Not found')
+        # status, data, headers
+        raise UnknownObjectException(
+            status=401,
+            data='Not found',
+            headers={}
+        )
 
     monkeypatch.setattr(
         client.github,

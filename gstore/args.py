@@ -18,7 +18,7 @@
 import os
 import sys
 import textwrap as _textwrap
-from argparse import SUPPRESS, ArgumentParser, HelpFormatter, Namespace
+from argparse import ArgumentParser, HelpFormatter, Namespace, SUPPRESS
 
 from gstore import __copyright__, __version__
 from gstore import env

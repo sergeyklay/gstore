@@ -29,14 +29,6 @@ else
 	CE = " ~~~"
 endif
 
-COV          =
-HEADER_EXTRA =
-
-REQUIREMENTS = requirements/requirements-dev.txt
-
-PYTEST_FLAGS ?= --color=yes -v
-FLAKE8_FLAGS ?= --show-source --statistics
-
 VENV_ROOT = .venv
 
 # PYTHON will used to create venv
@@ -48,8 +40,8 @@ else
 	VENV_BIN = $(VENV_ROOT)/bin
 endif
 
-VENV_PIP    = $(VENV_BIN)/pip
 VENV_PYTHON = $(VENV_BIN)/python
+VENV_PIP    = $(VENV_PYTHON) -m pip
 
 export PATH := $(VENV_BIN):$(PATH)
 

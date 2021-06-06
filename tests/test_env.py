@@ -14,6 +14,7 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 import pytest
+
 from gstore import env
 
 

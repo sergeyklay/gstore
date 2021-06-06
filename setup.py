@@ -19,17 +19,7 @@ import codecs
 import re
 from os import path
 
-from setuptools import setup, find_packages
-
-
-def locate_package_directory():
-    """Identify a directory of the package and its associated files."""
-    try:
-        return path.abspath(path.dirname(__file__))
-    except Exception as path_error:
-        message = ('The directory in which the package and its '
-                   'associated files are stored could not be located.')
-        raise RuntimeError(message) from path_error
+from setuptools import find_packages, setup
 
 
 def read_file(filepath):
@@ -39,7 +29,7 @@ def read_file(filepath):
 
 
 PKG_NAME = 'gstore'
-PKG_DIR = locate_package_directory()
+PKG_DIR = path.abspath(path.dirname(__file__))
 META_PATH = path.join(PKG_DIR, PKG_NAME, '__init__.py')
 META_CONTENTS = read_file(META_PATH)
 
@@ -54,8 +44,8 @@ def load_long_description():
         return result.group(1) if result else ''
 
     try:
-        title = f"{PKG_NAME}: {find_meta('description')}\n"
-        head = '=' * len(title) + '\n'
+        title = f"{PKG_NAME}: {find_meta('description')}"
+        head = '=' * (len(title) - 1)
 
         contents = (
             head,
@@ -162,7 +152,7 @@ CLASSIFIERS = [
 
 # Dependencies that are downloaded by pip on installation and why.
 INSTALL_REQUIRES = [
-    'pygithub>=1.54.1',  # Interact with GitHub objects
+    'pygithub>=1.55',  # Interact with GitHub objects
     'gitpython>=3.0.6',  # Interact with Git repositories
 ]
 
@@ -176,10 +166,8 @@ DEPENDENCY_LINKS = []
 EXTRAS_REQUIRE = {
     # Dependencies that are required to run tests
     'testing': [
+        'coverage[toml]>=5.0.2',  # Code coverage measurement for Python
         'pytest>=6.2.4',  # Our tests framework
-        'pytest-cov>=2.11.1',  # Pytest plugin for measuring coverage
-        'pylint>=2.6.0,!=2.6.1',  # Python code static checker
-        'flake8>=3.8.4',  # The modular source code checker
     ],
     'docs': [
         'furo>=2020.12.30b24,==2020.12.*',  # Sphinx documentation theme
@@ -187,16 +175,7 @@ EXTRAS_REQUIRE = {
     ],
 }
 
-# Dependencies that are required to develop package
-DEVELOP_REQUIRE = [
-    'twine>=3.3.0',  # Publishing packages on PyPI
-    'setuptools>=53.0.0',  # Build and install packages
-    'wheel>=0.36.2',  # A built-package format for Python
-    'check-wheel-contents>=0.2.0',  # Check wheels have the right contents
-]
-
-EXTRAS_REQUIRE['develop'] = \
-    DEVELOP_REQUIRE + EXTRAS_REQUIRE['testing'] + EXTRAS_REQUIRE['docs']
+EXTRAS_REQUIRE['develop'] = EXTRAS_REQUIRE['testing'] + EXTRAS_REQUIRE['docs']
 
 # Project's URLs
 PROJECT_URLS = {

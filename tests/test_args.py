@@ -17,8 +17,7 @@ import sys
 from argparse import ArgumentParser, Namespace
 from unittest import mock
 
-from gstore import args
-from gstore import env
+from gstore import args, env
 
 
 def test_none_args(monkeypatch):
