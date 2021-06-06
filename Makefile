@@ -122,6 +122,11 @@ manifest:
 	@echo $(CS)Check MANIFEST.in for completeness$(CE)
 	tox -e manifest
 
+.PHONY: docs
+docs:
+	@echo $(CS)Build package documentation$(CE)
+	tox -e docs
+
 .PHONY: build
 build: manifest sdist wheel
 	@echo
@@ -195,6 +200,7 @@ help:
 	@echo '  upload:       Upload $(PKG_NAME) distribution to the repository (w/o tests)'
 	@echo '  check-dist:   Check integrity of the distribution files and validate package'
 	@echo '  manifest:     Check MANIFEST.in in a source package'
+	@echo '  docs:         Build package documentation (HTML)'
 	@echo '  lint:         Lint the code'
 	@echo '  test:         Run unit tests with coverage'
 	@echo '  test-dist:    Testing package distribution and installation'
