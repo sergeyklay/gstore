@@ -29,10 +29,19 @@ recursive-include tests *.py
 # from the sdist.
 global-exclude *.py[cod]
 
+# Exclude stuff for local development
+exclude .pylintrc Makefile default.mk tox.ini requirements.in
+
+# Include requirements.txt for reproducible tests
+include requirements.txt
+
 # Documentation
 include docs/docutils.conf docs/Makefile
 recursive-include docs *.png
 recursive-include docs *.svg
 recursive-include docs *.py
 recursive-include docs *.rst
+
 prune docs/_build
+
+exclude docs/_static/.gitkeep

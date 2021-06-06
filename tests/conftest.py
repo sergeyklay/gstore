@@ -124,7 +124,11 @@ def mock_repository(monkeypatch):
     github.GithubException.UnknownObjectException.
     """
     def mock_get_repo(*args, **kwargs):
-        raise UnknownObjectException(401, 'Not found')
+        raise UnknownObjectException(
+            status=401,
+            data='Not found',
+            headers={}
+        )
 
     monkeypatch.setattr(
         MockOrganization,

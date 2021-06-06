@@ -22,6 +22,11 @@ Improvements
   as process id (PID).
 * Changed additional groups of dependencies declared in ``setup.py`` so that
   ``develop`` is superset now for ``testing`` and ``docs``.
+* Remove dependencies from ``develop`` group which are not necessary for developing
+  the package.
+* Used single ``requirements.txt`` file to declare project dependencies.
+  Additional dependencies from ``develop``, ``testing`` and ``docs`` groups
+  lives now in ``setup.py`` or ``tox.ini``.
 
 
 Bug Fixes
@@ -30,6 +35,14 @@ Bug Fixes
 * Added missed files to the package contents.
 * Don't include ``tests`` package in wheel. Previously ``pip install gstore``
   used to install a top-level package ``tests``. This was fixed.
+* Fixed package description.
+
+
+Trivial/Internal Changes
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Replaced ``pytest-cov`` by ``coverage[toml]`` for code coverage measurement.
+* Bumped ``pygithub`` from 1.54.1 to 1.55.
 
 
 ----

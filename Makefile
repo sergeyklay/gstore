@@ -38,6 +38,11 @@ define rm-venv-link
 	fi
 endef
 
+# '--generate-hashes' is disabled untill we support Python 3.7
+# and depend on 'typing_extensions'
+requirements.txt: requirements.in $(VENV_BIN)
+	$(VENV_BIN)/pip-compile --output-file=$@ $<
+
 ## Public targets
 
 $(VENV_PYTHON): $(VENV_ROOT)
@@ -59,14 +64,15 @@ $(VENV_ROOT):
 
 .PHONY: init
 init: $(VENV_PYTHON)
-	@echo $(CS)Installing dev requirements$(CE)
-	$(VENV_PYTHON) -m pip install --upgrade pip pip-tools setuptools wheel
-	$(VENV_PIP) install --upgrade -r $(REQUIREMENTS)
+	@echo $(CS)Set up virtualenv$(CE)
+	$(VENV_PIP) install --upgrade pip
+	$(VENV_PIP) install --upgrade --use-feature=in-tree-build pip-tools wheel setuptools
 
 .PHONY: install
-install: init
-	@echo $(CS)Installing $(PKG_NAME)$(CE)
-	$(VENV_PIP) install --upgrade --editable .
+install: requirements.txt
+	@echo $(CS)Installing $(PKG_NAME) and all its dependencies$(CE)
+	$(VENV_BIN)/pip-sync requirements.txt
+	$(VENV_PIP) install --upgrade --editable .[develop]
 
 .PHONY: uninstall
 uninstall:
@@ -82,33 +88,57 @@ uninstall:
 .PHONY: clean
 clean:
 	@echo $(CS)Remove build and tests artefacts and directories$(CE)
-
-	$(RM) -r $(VENV_ROOT)
-	$(call rm-venv-link)
 	find ./ -name '__pycache__' -delete -o -name '*.pyc' -delete
 	$(RM) -r ./build ./dist ./*.egg-info
-	$(RM) -r ./.cache ./.pytest_cache
-	$(RM) -r ./htmlcov
-	$(RM) ./.coverage ./coverage.xml
+	$(RM) -r ./.tox/reports
+	@echo
+
+.PHONY: maintainer-clean
+maintainer-clean: clean
+	@echo $(CS)Performing full clean$(CE)
+	$(RM) -r $(VENV_ROOT)
+	$(call rm-venv-link)
+	$(RM) -r ./.tox
+	$(RM) requirements.txt
+	@echo
+
+.PHONY: lint
+lint: $(VENV_PYTHON)
+	@echo $(CS)Running linters$(CE)
+	tox -e lint
+
+.PHONY: test
+test: $(VENV_PYTHON)
+	@echo $(CS)Running tests$(CE)
+	tox -e py39
+
+.PHONY: ccov
+ccov:
+	@echo $(CS)Combine coverage reports$(CE)
+	tox -e coverage-report
+
+.PHONY: manifest
+manifest:
+	@echo $(CS)Check MANIFEST.in for completeness$(CE)
+	tox -e manifest
+
+.PHONY: build
+build: manifest sdist wheel
+	@echo
 
 .PHONY: check-dist
 check-dist: $(VENV_PYTHON)
-	@echo $(CS)Check distribution files$(HEADER_EXTRA)$(CE)
+	@echo $(CS)Check distribution files$(CE)
+	$(VENV_PIP) install twine check-wheel-contents
 	$(VENV_BIN)/twine check ./dist/*
 	$(VENV_BIN)/check-wheel-contents ./dist/*.whl
-	@echo
-
-.PHONY: test-ccov
-test-ccov: COV=--cov=./$(PKG_NAME) --cov=./tests --cov-report=xml --cov-report=html
-test-ccov: HEADER_EXTRA=' (with coverage)'
-test-ccov: test
 
 .PHONY: test-all
 test-all: uninstall clean install test test-dist lint
+	@echo
 
 .PHONY: test-dist
 test-dist: test-sdist test-wheel
-	@echo
 
 .PHONY: sdist
 sdist:
@@ -121,7 +151,6 @@ test-sdist: $(VENV_PYTHON) sdist
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.gz
 	@echo
 	$(VENV_BIN)/$(PKG_NAME) --version
-	@echo
 
 .PHONY: wheel
 wheel: $(VENV_PYTHON)
@@ -134,19 +163,6 @@ test-wheel: $(VENV_PYTHON) wheel
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.whl
 	@echo
 	$(VENV_BIN)/$(PKG_NAME) --version
-	@echo
-
-.PHONY: test
-test: $(VENV_PYTHON)
-	@echo $(CS)Running tests$(HEADER_EXTRA)$(CE)
-	$(VENV_BIN)/py.test $(PYTEST_FLAGS) $(COV) ./$(PKG_NAME) ./tests
-	@echo
-
-.PHONY: lint
-lint: $(VENV_PYTHON)
-	@echo $(CS)Running linters$(CE)
-	-$(VENV_BIN)/flake8 $(FLAKE8_FLAGS) ./
-	$(VENV_BIN)/pylint ./$(PKG_NAME)
 
 .PHONY: publish
 publish: test-all upload
@@ -158,11 +174,6 @@ upload: $(VENV_PYTHON)
 	$(MAKE) build
 	$(MAKE) check-dist
 	$(VENV_BIN)/twine upload ./dist/*
-	@echo
-
-.PHONY: build
-build: sdist wheel
-	@echo
 
 .PHONY: help
 help:
@@ -174,33 +185,32 @@ help:
 	@echo 'Available targets:'
 	@echo
 	@echo '  help:         Show this help and exit'
-	@echo '  init:         Installing dev requirements (has to be launched first)'
-	@echo '  install:      Install development version of $(PKG_NAME)'
-	@echo '  uninstall:    Uninstall local version of $(PKG_NAME)'
+	@echo '  init:         Set up virtualenv (has to be launched first)'
+	@echo '  install:      Install project and all its dependencies'
+	@echo '  uninstall:    Uninstall local version of the project'
 	@echo '  build:        Build $(PKG_NAME) distribution (sdist and wheel)'
-	@echo '  sdist:        Create a source distribution'
-	@echo '  wheel:        Create a wheel distribution'
+	@echo '  sdist:        Creating source distribution'
+	@echo '  wheel:        Creating wheel distribution'
 	@echo '  publish:      Publish $(PKG_NAME) distribution to the repository'
 	@echo '  upload:       Upload $(PKG_NAME) distribution to the repository (w/o tests)'
-	@echo '  clean:        Remove build and tests artefacts and directories'
 	@echo '  check-dist:   Check integrity of the distribution files and validate package'
-	@echo '  test:         Run unit tests'
+	@echo '  manifest:     Check MANIFEST.in in a source package'
+	@echo '  lint:         Lint the code'
+	@echo '  test:         Run unit tests with coverage'
 	@echo '  test-dist:    Testing package distribution and installation'
 	@echo '  test-sdist:   Testing source distribution and installation'
 	@echo '  test-wheel:   Testing built distribution and installation'
 	@echo '  test-all:     Test everything'
-	@echo '  test-ccov:    Run unit tests with coverage'
-	@echo '  lint:         Lint the code'
+	@echo '  ccov:         Combine coverage reports'
+	@echo '  clean:        Remove build and tests artefacts and directories'
+	@echo '  maintainer-clean:'
+	@echo '                Delete almost everything that can be reconstructed'
+	@echo '                with this Makefile'
 	@echo
 	@echo 'Virtualenv:'
 	@echo
 	@echo '  Python:       $(VENV_PYTHON)'
 	@echo '  pip:          $(VENV_PIP)'
-	@echo
-	@echo 'Flags:'
-	@echo
-	@echo '  FLAKE8_FLAGS: $(FLAKE8_FLAGS)'
-	@echo '  PYTEST_FLAGS: $(PYTEST_FLAGS)'
 	@echo
 	@echo 'Environment variables:'
 	@echo

@@ -44,7 +44,15 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip --use-feature=in-tree-build install tox tox-gh-actions
+
+      - name: Set up virtualenv
         run: make init
+
+      - name: Build gstore distribution (sdist and wheel)
+        run: make build
 
       - name: Testing package distribution and installation
         run: make test-dist
