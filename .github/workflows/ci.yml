@@ -62,6 +62,7 @@ jobs:
           - '3.7'
           - '3.8'
           - '3.9'
+          - '3.10.0-beta - 3.10'
         os:
           - ubuntu-latest
           - macos-latest
@@ -74,13 +75,6 @@ jobs:
           # Disabled until https://github.com/pyca/pynacl/issues/672 will be resolved
           # - python: 'pypy-3.7'
           #   os: macos-latest
-          - python: '3.10.0-beta - 3.10'
-            os: ubuntu-latest
-          - python: '3.10.0-beta - 3.10'
-            os: macos-latest
-          # Disabled until https://github.com/pytest-dev/pytest/issues/8733 will be resolved
-          # - python: '3.10.0-beta - 3.10'
-          #   os: windows-latest
 
     steps:
       - name: Checkout code
