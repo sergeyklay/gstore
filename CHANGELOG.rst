@@ -4,6 +4,17 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
+0.6.0 (2021-XX-XX)
+------------------
+
+Trivial/Internal Changes
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Bumped ``gitpython`` from 3.1.17 to 3.1.18.
+
+
+----
+
 
 0.5.0 (2021-05-07)
 ------------------
