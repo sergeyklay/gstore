@@ -16,8 +16,8 @@
 include default.mk
 
 define mk-venv-link
-	@if [ -n "$(WORKON_HOME)" ] && [ -z "$(PYENV_VIRTUALENV_INIT)" ] ; then \
-		echo $(ROOT_DIR) >  $(VENV_ROOT)/.project; \
+	@if [ -n "$(WORKON_HOME)" ] ; then \
+		echo $(ROOT_DIR) > $(VENV_ROOT)/.project; \
 		if [ ! -d $(WORKON_HOME)/$(PKG_NAME) -a ! -L $(WORKON_HOME)/$(PKG_NAME) ]; \
 		then \
 			ln -s $(ROOT_DIR)/$(VENV_ROOT) $(WORKON_HOME)/$(PKG_NAME); \
@@ -38,7 +38,7 @@ define rm-venv-link
 	fi
 endef
 
-# '--generate-hashes' is disabled untill we support Python 3.7
+# '--generate-hashes' is disabled until we support Python 3.7
 # and depend on 'typing_extensions'
 requirements.txt: requirements.in $(VENV_BIN)
 	$(VENV_BIN)/pip-compile --output-file=$@ $<
@@ -49,7 +49,6 @@ $(VENV_PYTHON): $(VENV_ROOT)
 	@echo
 
 $(VENV_ROOT):
-ifndef PYENV_VIRTUALENV_INIT
 	@echo $(CS)Creating a Python environment $(VENV_ROOT)$(CE)
 	$(PYTHON) -m venv --prompt $(PKG_NAME) $(VENV_ROOT)
 	@echo
@@ -62,17 +61,6 @@ ifndef PYENV_VIRTUALENV_INIT
 	@echo See https://docs.python.org/3/library/venv.html for more.
 	@echo
 	$(call mk-venv-link)
-else
-	pyenv virtualenv $(PKG_NAME)
-	@echo
-	@echo Done.
-	@echo
-	@echo To active it manually, run:
-	@echo
-	@echo "    pyenv activate $(PKG_NAME)"
-	@echo
-	@echo See https://github.com/pyenv/pyenv-virtualenv for more.
-endif
 
 .PHONY: init
 init: $(VENV_PYTHON)
@@ -108,12 +96,8 @@ clean:
 .PHONY: maintainer-clean
 maintainer-clean: clean
 	@echo $(CS)Performing full clean$(CE)
-ifndef PYENV_VIRTUALENV_INIT
 	$(RM) -r $(VENV_ROOT)
 	$(call rm-venv-link)
-else
-	pyenv virtualenv-delete -f $(PKG_NAME)
-endif
 	$(RM) -r ./.tox
 	$(RM) requirements.txt
 	@echo
@@ -236,9 +220,8 @@ help:
 	@echo
 	@echo 'Environment variables:'
 	@echo
-	@echo '  PYTHON:                 $(PYTHON)'
-	@echo '  WORKON_HOME:            ${WORKON_HOME}'
-	@echo '  PYENV_VIRTUALENV_INIT:  ${PYENV_VIRTUALENV_INIT}'
-	@echo '  SHELL:                  $(shell echo $$SHELL)'
-	@echo '  TERM:                   $(shell echo $$TERM)'
+	@echo '  PYTHON:       $(PYTHON)'
+	@echo '  WORKON_HOME:  ${WORKON_HOME}'
+	@echo '  SHELL:        $(shell echo $$SHELL)'
+	@echo '  TERM:         $(shell echo $$TERM)'
 	@echo
