@@ -29,12 +29,7 @@ else
 	CE = " ~~~"
 endif
 
-# Check for pyenv-virtualenv
-ifndef PYENV_VIRTUALENV_INIT
 VENV_ROOT = .venv
-else
-VENV_ROOT = $(shell sh -c "echo $$(pyenv root)/versions/$(PKG_NAME)")
-endif
 
 # PYTHON will used to create venv
 ifeq ($(OS),Windows_NT)
