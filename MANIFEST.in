@@ -30,10 +30,10 @@ recursive-include tests *.py
 global-exclude *.py[cod]
 
 # Exclude stuff for local development
-exclude .pylintrc Makefile default.mk requirements.in
+exclude .coveragerc .pylintrc Makefile default.mk requirements/*.in
 
 # Include requirements.txt for reproducible tests
-include requirements.txt
+include requirements/*.txt
 
 # Documentation
 include docs/docutils.conf docs/Makefile
