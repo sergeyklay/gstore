@@ -30,7 +30,7 @@ recursive-include tests *.py
 global-exclude *.py[cod]
 
 # Exclude stuff for local development
-exclude .pylintrc Makefile default.mk tox.ini requirements.in
+exclude .pylintrc Makefile default.mk requirements.in
 
 # Include requirements.txt for reproducible tests
 include requirements.txt

@@ -29,6 +29,12 @@ else
 	CE = " ~~~"
 endif
 
+COV          =
+REQUIREMENTS = requirements/requirements-dev.txt
+
+PYTEST_FLAGS ?= --color=yes -v
+FLAKE8_FLAGS ?= --show-source --statistics
+
 VENV_ROOT = .venv
 
 # PYTHON will used to create venv

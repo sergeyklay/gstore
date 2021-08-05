@@ -13,26 +13,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-# Please do not use this ignore file to define platform specific files.
-#
-# For these purposes create a global .gitignore file, which is a list of rules
-# for ignoring files in every Git repository on your computer.
-#
-# https://help.github.com/articles/ignoring-files/#create-a-global-gitignore
+[report]
+precision = 2
+show_missing = True
 
-# Directories to ignore (do not add trailing '/'s, they skip symlinks).
-/.pytest_cache
-/.venv
-/build
-/dist
-/*.egg-info
-/htmlcov
-/docs/_build
+[html]
+directory = htmlcov
 
-# Python cache.
-*.py[cod]
-__pycache__
+[xml]
+output = coverage.xml
 
-# Ignore codecoverage stuff.
-coverage.db
-coverage.xml
+[run]
+branch = True
+parallel = True
+data_file = coverage.db
+# A list of file name patterns, the files to leave
+# out of measurement or reporting.
+omit =
+    tests/*
+    .venv/*
+     */__pycache__/*
