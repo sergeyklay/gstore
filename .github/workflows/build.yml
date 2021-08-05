@@ -51,6 +51,9 @@ jobs:
       - name: Set up virtualenv
         run: make init
 
+      - name: Install dependencies
+        run: make install
+
       - name: Build gstore distribution (sdist and wheel)
         run: make build
 

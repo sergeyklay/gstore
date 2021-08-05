@@ -13,26 +13,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-# Please do not use this ignore file to define platform specific files.
-#
-# For these purposes create a global .gitignore file, which is a list of rules
-# for ignoring files in every Git repository on your computer.
-#
-# https://help.github.com/articles/ignoring-files/#create-a-global-gitignore
+-r requirements.in
 
-# Directories to ignore (do not add trailing '/'s, they skip symlinks).
-/.pytest_cache
-/.venv
-/build
-/dist
-/*.egg-info
-/htmlcov
-/docs/_build
+# testing
+coverage[toml]
+pylint>=2.6.0,!=2.6.1
+pytest
+flake8
+flake8-import-order
+flake8-blind-except
+check-manifest
 
-# Python cache.
-*.py[cod]
-__pycache__
+# docs
+furo
+sphinx
 
-# Ignore codecoverage stuff.
-coverage.db
-coverage.xml
+# develop
+twine
+wheel
+check-wheel-contents

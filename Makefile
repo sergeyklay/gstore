@@ -23,7 +23,7 @@ define mk-venv-link
 			ln -s $(ROOT_DIR)/$(VENV_ROOT) $(WORKON_HOME)/$(PKG_NAME); \
 			echo ; \
 			echo Since you use virtualenvwrapper, we created a symlink; \
-			echo "so you can also use "workon $(PKG_NAME)" to activate the venv."; \
+			echo "so you can also use \"workon $(PKG_NAME)\" to activate the venv."; \
 			echo ; \
 		fi; \
 	fi
@@ -40,7 +40,7 @@ endef
 
 # '--generate-hashes' is disabled until we support Python 3.7
 # and depend on 'typing_extensions'
-requirements.txt: requirements.in $(VENV_BIN)
+requirements/%.txt: requirements/%.in $(VENV_BIN)
 	$(VENV_BIN)/pip-compile --output-file=$@ $<
 
 ## Public targets
@@ -65,14 +65,15 @@ $(VENV_ROOT):
 .PHONY: init
 init: $(VENV_PYTHON)
 	@echo $(CS)Set up virtualenv$(CE)
-	$(VENV_PIP) install --upgrade pip
-	$(VENV_PIP) install --upgrade --use-feature=in-tree-build pip-tools wheel setuptools
+	$(VENV_PIP) install --upgrade pip pip-tools setuptools wheel
+	@echo
 
 .PHONY: install
-install: requirements.txt
-	@echo $(CS)Installing $(PKG_NAME) and all its dependencies$(CE)
-	$(VENV_BIN)/pip-sync requirements.txt
+install: $(REQUIREMENTS)
+	@echo $(CS)Installing $(PKG_NAME)$(CE)
+	$(VENV_BIN)/pip-sync $(REQUIREMENTS)
 	$(VENV_PIP) install --upgrade --editable .[develop]
+	@echo
 
 .PHONY: uninstall
 uninstall:
@@ -90,7 +91,9 @@ clean:
 	@echo $(CS)Remove build and tests artefacts and directories$(CE)
 	find ./ -name '__pycache__' -delete -o -name '*.pyc' -delete
 	$(RM) -r ./build ./dist ./*.egg-info
-	$(RM) -r ./.tox/reports
+	$(RM) -r ./.cache ./.pytest_cache
+	$(RM) -r ./htmlcov
+	$(RM) ./coverage.*
 	@echo
 
 .PHONY: maintainer-clean
@@ -98,38 +101,49 @@ maintainer-clean: clean
 	@echo $(CS)Performing full clean$(CE)
 	$(RM) -r $(VENV_ROOT)
 	$(call rm-venv-link)
-	$(RM) -r ./.tox
-	$(RM) requirements.txt
+	$(RM) requirements/*.txt
 	@echo
 
 .PHONY: lint
 lint: $(VENV_PYTHON)
 	@echo $(CS)Running linters$(CE)
-	tox -e lint
+	-$(VENV_BIN)/flake8 $(FLAKE8_FLAGS) ./
+	$(VENV_BIN)/pylint ./$(PKG_NAME)
+	@echo
 
 .PHONY: test
 test: $(VENV_PYTHON)
 	@echo $(CS)Running tests$(CE)
-	tox -e py39
+	$(VENV_BIN)/coverage erase
+	$(VENV_BIN)/coverage run -m pytest $(PYTEST_FLAGS) ./$(PKG_NAME) ./tests
+	@echo
 
 .PHONY: ccov
 ccov:
 	@echo $(CS)Combine coverage reports$(CE)
-	tox -e coverage-report
+	$(VENV_BIN)/coverage combine
+	$(VENV_BIN)/coverage report
+	$(VENV_BIN)/coverage html
+	$(VENV_BIN)/coverage xml
+	@echo
 
 .PHONY: manifest
 manifest:
 	@echo $(CS)Check MANIFEST.in for completeness$(CE)
-	tox -e manifest
+	$(VENV_BIN)/check-manifest -v
+	@echo
 
 .PHONY: docs
 docs:
 	@echo $(CS)Build package documentation$(CE)
-	tox -e docs
+	$(VENV_BIN)/sphinx-build -n -T -W -b html -d ./doctrees docs docs/_build/html
+	$(VENV_BIN)/sphinx-build -n -T -W -b doctest -d ./doctrees docs docs/_build/html
+	$(VENV_PYTHON) -m doctest README.rst
+	$(RM) -r ./doctrees
+	@echo
 
 .PHONY: build
 build: manifest sdist wheel
-	@echo
 
 .PHONY: check-dist
 check-dist: $(VENV_PYTHON)
@@ -137,10 +151,10 @@ check-dist: $(VENV_PYTHON)
 	$(VENV_PIP) install twine check-wheel-contents
 	$(VENV_BIN)/twine check ./dist/*
 	$(VENV_BIN)/check-wheel-contents ./dist/*.whl
+	@echo
 
 .PHONY: test-all
 test-all: uninstall clean install test test-dist lint
-	@echo
 
 .PHONY: test-dist
 test-dist: test-sdist test-wheel
@@ -149,6 +163,7 @@ test-dist: test-sdist test-wheel
 sdist:
 	@echo $(CS)Creating source distribution$(CE)
 	$(VENV_PYTHON) setup.py sdist
+	@echo
 
 .PHONY: test-sdist
 test-sdist: $(VENV_PYTHON) sdist
@@ -156,11 +171,13 @@ test-sdist: $(VENV_PYTHON) sdist
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.gz
 	@echo
 	$(VENV_BIN)/$(PKG_NAME) --version
+	@echo
 
 .PHONY: wheel
 wheel: $(VENV_PYTHON)
 	@echo $(CS)Creating wheel distribution$(CE)
 	$(VENV_PYTHON) setup.py bdist_wheel
+	@echo
 
 .PHONY: test-wheel
 test-wheel: $(VENV_PYTHON) wheel
@@ -168,6 +185,8 @@ test-wheel: $(VENV_PYTHON) wheel
 	$(VENV_PIP) install --force-reinstall --upgrade dist/*.whl
 	@echo
 	$(VENV_BIN)/$(PKG_NAME) --version
+	@echo
+
 
 .PHONY: publish
 publish: test-all upload
@@ -179,6 +198,7 @@ upload: $(VENV_PYTHON)
 	$(MAKE) build
 	$(MAKE) check-dist
 	$(VENV_BIN)/twine upload ./dist/*
+	@echo
 
 .PHONY: help
 help:
@@ -217,6 +237,11 @@ help:
 	@echo
 	@echo '  Python:       $(VENV_PYTHON)'
 	@echo '  pip:          $(VENV_PIP)'
+	@echo
+	@echo 'Flags:'
+	@echo
+	@echo '  FLAKE8_FLAGS: $(FLAKE8_FLAGS)'
+	@echo '  PYTEST_FLAGS: $(PYTEST_FLAGS)'
 	@echo
 	@echo 'Environment variables:'
 	@echo
