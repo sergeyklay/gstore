@@ -41,7 +41,7 @@ endef
 # '--generate-hashes' is disabled until we support Python 3.7
 # and depend on 'typing_extensions'
 requirements/%.txt: requirements/%.in $(VENV_BIN)
-	$(VENV_BIN)/pip-compile --output-file=$@ $<
+	$(VENV_BIN)/pip-compile --allow-unsafe --output-file=$@ $<
 
 ## Public targets
 
@@ -70,9 +70,9 @@ init: $(VENV_PYTHON)
 
 .PHONY: install
 install: $(REQUIREMENTS)
-	@echo $(CS)Installing $(PKG_NAME)$(CE)
+	@echo $(CS)Installing $(PKG_NAME) and all its dependencies$(CE)
 	$(VENV_BIN)/pip-sync $(REQUIREMENTS)
-	$(VENV_PIP) install --upgrade --editable .[develop]
+	$(VENV_PIP) install --upgrade --editable .
 	@echo
 
 .PHONY: uninstall
@@ -89,6 +89,7 @@ uninstall:
 .PHONY: clean
 clean:
 	@echo $(CS)Remove build and tests artefacts and directories$(CE)
+	$(call rm-venv-link)
 	find ./ -name '__pycache__' -delete -o -name '*.pyc' -delete
 	$(RM) -r ./build ./dist ./*.egg-info
 	$(RM) -r ./.cache ./.pytest_cache
@@ -108,7 +109,7 @@ maintainer-clean: clean
 lint: $(VENV_PYTHON)
 	@echo $(CS)Running linters$(CE)
 	-$(VENV_BIN)/flake8 $(FLAKE8_FLAGS) ./
-	$(VENV_BIN)/pylint ./$(PKG_NAME)
+	$(VENV_BIN)/pylint $(PYLINT_FLAGS) ./$(PKG_NAME)
 	@echo
 
 .PHONY: test
@@ -119,7 +120,7 @@ test: $(VENV_PYTHON)
 	@echo
 
 .PHONY: ccov
-ccov:
+ccov: $(VENV_PYTHON)
 	@echo $(CS)Combine coverage reports$(CE)
 	$(VENV_BIN)/coverage combine
 	$(VENV_BIN)/coverage report
@@ -134,7 +135,7 @@ manifest:
 	@echo
 
 .PHONY: docs
-docs:
+docs: $(VENV_PYTHON)
 	@echo $(CS)Build package documentation$(CE)
 	$(VENV_BIN)/sphinx-build -n -T -W -b html -d ./doctrees docs docs/_build/html
 	$(VENV_BIN)/sphinx-build -n -T -W -b doctest -d ./doctrees docs docs/_build/html
@@ -242,6 +243,7 @@ help:
 	@echo
 	@echo '  FLAKE8_FLAGS: $(FLAKE8_FLAGS)'
 	@echo '  PYTEST_FLAGS: $(PYTEST_FLAGS)'
+	@echo '  PYLINT_FLAGS: $(PYLINT_FLAGS)'
 	@echo
 	@echo 'Environment variables:'
 	@echo

@@ -33,13 +33,14 @@ COV          =
 REQUIREMENTS = requirements/requirements-dev.txt
 
 PYTEST_FLAGS ?= --color=yes -v
+PYLINT_FLAGS ?=
 FLAKE8_FLAGS ?= --show-source --statistics
 
 VENV_ROOT = .venv
 
 # PYTHON will used to create venv
 ifeq ($(OS),Windows_NT)
-	PYTHON  ?= python
+	PYTHON  ?= python.exe
 	VENV_BIN = $(VENV_ROOT)/Scripts
 else
 	PYTHON  ?= python3
@@ -58,7 +59,7 @@ else
 ifneq ($(OS),Windows_NT)
 HAVE_PYTHON := $(shell sh -c "command -v $(PYTHON)")
 ifndef HAVE_PYTHON
-$(error "Python is not available please install Python")
+$(error "Python is not available. Please install Python.")
 endif
 endif
 endif
