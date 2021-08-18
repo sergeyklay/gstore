@@ -113,7 +113,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_SERVICE_NAME: github
-          COVERALLS_PARALLEL: true
         run: |
           python -m pip --use-feature=in-tree-build install coveralls
           coveralls
