@@ -38,7 +38,7 @@ def load_long_description():
     """Load long description from file README.rst."""
     def changes():
         changelog = path.join(PKG_DIR, 'CHANGELOG.rst')
-        pat = r"(\d+.\d+.\d+ \(.*?\)\r?\n.*?)\r?\n\r?\n\r?\n----\r?\n\r?\n\r?\n"  # noqa
+        pat = r"(\d+.\d+.\d+ \(.*?\)\r?\n.*?)\r?\n\r?\n\r?\n----\r?\n\r?\n\r?\n"  # noqa: E501
         result = re.search(pat, read_file(changelog), re.S)
 
         return result.group(1) if result else ''
@@ -61,7 +61,7 @@ def load_long_description():
             '===================\n',
             changes(),
             '',
-            f"`Full changelog <{find_meta('url')}/en/latest/changelog.html>`_.",  # noqa
+            f"`Full changelog <{find_meta('url')}/en/latest/changelog.html>`_.",  # noqa: E501
             '',
             read_file(path.join(PKG_DIR, 'SECURITY.rst')),
             '',
@@ -112,6 +112,7 @@ def get_version_string():
     return version_string
 
 
+# What does this project relate to.
 KEYWORDS = [
     'git',
     'github',
@@ -161,7 +162,7 @@ DEPENDENCY_LINKS = []
 # List additional groups of dependencies here (e.g. testing dependencies).
 # You can install these using the following syntax, for example:
 #
-#    $ pip install -e .[develop,testing]
+#    $ pip install -e .[testing,docs,develop]
 #
 EXTRAS_REQUIRE = {
     # Dependencies that are required to run tests
@@ -175,7 +176,7 @@ EXTRAS_REQUIRE = {
         'check-manifest>=0.45',  # Check MANIFEST.in
     ],
     'docs': [
-        'furo>=2020.12.30b24,==2020.12.*',  # Sphinx documentation theme
+        'furo>=2021.8.17b43,==2021.8.*',  # Sphinx documentation theme
         'sphinx>=3.5.0',  # Python documentation generator
     ],
 }
