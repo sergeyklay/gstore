@@ -74,7 +74,7 @@ class Client:
                 'Missing parameter: GitHub Token is required')
 
         api_url = f'https://{api_host}'
-        self.logger.debug(f'Setting API URL to {api_url}')
+        self.logger.debug('Setting API URL to %s', api_url)
 
         self.github = Github(
             login_or_token=token,

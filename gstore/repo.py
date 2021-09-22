@@ -37,9 +37,7 @@ class _Context:
 
 
 # pylint: disable=invalid-name
-_ctx = _Context(
-    logger=logging.getLogger(f'{__name__}'),
-)
+_ctx = _Context(logger=logging.getLogger(__name__))
 
 
 def clone(repo: Repository, target: str):
@@ -47,8 +45,7 @@ def clone(repo: Repository, target: str):
     _ctx.logger.info(
         'Clone repository to %s/%s',
         repo.org.login,
-        repo.name
-    )
+        repo.name)
 
     if os.path.exists(target):
         os.removedirs(target)
@@ -61,40 +58,37 @@ def clone(repo: Repository, target: str):
             target,
         )
     except git.GitCommandError as exception:
-        _ctx.logger.error(f'Failed to clone {repo.org.login}/{repo.name}')
+        _ctx.logger.error('Failed to clone %s/%s', repo.org.login, repo.name)
         for msg in parse_git_errors(exception):
             _ctx.logger.error(msg)
 
 
 def fetch(repo: Repository, target: str):
     """Sync a repository in the target directory."""
-    _ctx.logger.info(f'Update {repo.org.login}/{repo.name} repository')
+    _ctx.logger.info('Update %s/%s repository', repo.org.login, repo.name)
     local_repo = git.Repo(target)
 
     if not local_repo.heads:
         _ctx.logger.info(
             'There are no remote branches for %s/%s, skip updating',
             repo.org.login,
-            repo.name
-        )
+            repo.name)
         return
 
     try:
         _ctx.logger.debug(
             'Download objects and refs from %s/%s repository',
             repo.org.login,
-            repo.name
-        )
+            repo.name)
         local_repo.git.fetch(['--prune', '--quiet'])
 
         _ctx.logger.debug(
             'Fetch from and integrate with %s/%s repository',
             repo.org.login,
-            repo.name
-        )
+            repo.name)
         local_repo.git.pull(['--all', '--quiet'])
     except git.GitCommandError as exception:
-        _ctx.logger.error(f'Failed to update {repo.org.login}/{repo.name}')
+        _ctx.logger.error('Failed to update %s/%s', repo.org.login, repo.name)
         for msg in parse_git_errors(exception):
             _ctx.logger.error(msg)
 
@@ -113,24 +107,21 @@ def _do_sync(repos_list):
                 _ctx.logger.error(
                     'Unable to sync %s. The path %s is a regular file',
                     repo.name,
-                    repo_path,
-                )
+                    repo_path)
                 continue
 
             if not os.access(repo_path, os.W_OK | os.X_OK):
                 _ctx.logger.error(
                     'Unable to sync %s. The path %s is not writeable',
                     repo.name,
-                    repo_path,
-                )
+                    repo_path)
                 continue
 
             # We're going to run a Git command, but weren't inside a
             # local Git repository.
             if not os.path.exists(git_path):
-                _ctx.logger.debug(
-                    f'Remove wrong formed local repo from {repo_path}'
-                )
+                _ctx.logger.debug('Remove wrong formed local repo from %s',
+                                  repo_path)
                 shutil.rmtree(repo_path, ignore_errors=True)
 
         if os.path.exists(git_path):
@@ -168,13 +159,13 @@ def sync(org: Organization, repos: list, base_path: str, **kwargs):
     :keyword bool quiet: Disable info logging
     :keyword int jobs: the number of worker processes to use
     """
-    _ctx.logger.info(f'Sync repos for {org.login}')
+    _ctx.logger.info('Sync repos for %s', org.login)
 
     org_path = os.path.join(base_path, org.login)
 
     # Just in case create directories recursively
     if not os.path.exists(org_path):
-        _ctx.logger.debug(f'Creating directory {org_path}')
+        _ctx.logger.debug('Creating directory %s', org_path)
         os.makedirs(org_path)
 
     jobs = kwargs.get('jobs')
@@ -186,7 +177,7 @@ def sync(org: Organization, repos: list, base_path: str, **kwargs):
         for i in range(0, len(lst), n):
             yield lst[i:i + n]
 
-    _ctx.logger.info(f'Processes to be spawned: {jobs}')
+    _ctx.logger.info('Processes to be spawned: %s', jobs)
     with multiprocessing.Pool(processes=jobs, initializer=_init_process,
                               initargs=(kwargs.get('verbose', False),
                                         kwargs.get('quiet', False),
