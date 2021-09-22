@@ -30,7 +30,7 @@ else
 endif
 
 COV          =
-REQUIREMENTS = requirements/requirements-dev.txt
+REQUIREMENTS = requirements/requirements.txt requirements/requirements-dev.txt
 
 PYTEST_FLAGS ?= --color=yes -v
 PYLINT_FLAGS ?=

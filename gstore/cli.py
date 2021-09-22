@@ -38,7 +38,7 @@ def main():
 
     if args:
         setup_logger(verbose=args.verbose, quiet=args.quiet)
-        logger = logging.getLogger(f'{__name__}')
+        logger = logging.getLogger(__name__)
 
         try:
             client = Client(token=args.token, api_host=args.host)
