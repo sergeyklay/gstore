@@ -65,14 +65,14 @@ $(VENV_ROOT):
 .PHONY: init
 init: $(VENV_PYTHON)
 	@echo $(CS)Set up virtualenv$(CE)
-	$(VENV_PIP) install --upgrade pip pip-tools setuptools wheel
+	$(VENV_PIP) install --progress-bar=off --upgrade pip pip-tools setuptools wheel
 	@echo
 
 .PHONY: install
 install: $(REQUIREMENTS)
 	@echo $(CS)Installing $(PKG_NAME) and all its dependencies$(CE)
-	$(VENV_BIN)/pip-sync $(REQUIREMENTS)
-	$(VENV_PIP) install --upgrade --editable .
+	$(VENV_BIN)/pip-sync $^
+	$(VENV_PIP) install --progress-bar=off -e .
 	@echo
 
 .PHONY: uninstall
@@ -100,7 +100,7 @@ clean:
 .PHONY: maintainer-clean
 maintainer-clean: clean
 	@echo $(CS)Performing full clean$(CE)
-	$(RM) -r $(VENV_ROOT)
+	-$(RM) -r $(VENV_ROOT)
 	$(call rm-venv-link)
 	$(RM) requirements/*.txt
 	@echo
@@ -187,7 +187,6 @@ test-wheel: $(VENV_PYTHON) wheel
 	@echo
 	$(VENV_BIN)/$(PKG_NAME) --version
 	@echo
-
 
 .PHONY: publish
 publish: test-all upload
