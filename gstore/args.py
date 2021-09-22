@@ -57,6 +57,7 @@ class LineBreaksFormatter(HelpFormatter):
 
 def get_version_str() -> str:
     """A helper function to format version info."""
+    # pylint: disable=consider-using-f-string
     version = '''
     {prog}s {version}|n
     {copy}.|n
