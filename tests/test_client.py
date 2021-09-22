@@ -34,19 +34,18 @@ def test_empty_token(token):
 
 
 @pytest.mark.parametrize(
-    'provided,expected',
+    'provided,url',
     [
         (None, f'https://{DEFAULT_HOST}'),
         ('', f'https://{DEFAULT_HOST}'),
         ('github.example.com', 'https://github.example.com'),
     ]
 )
-def test_setting_host(provided, expected, monkeypatch):
+def test_setting_host(provided, url):
     """Call Client() with empty api_host will use default host."""
     with mock.patch.object(logging.Logger, 'debug') as mock_logger:
         Client(token='secret', api_host=provided)
-        mock_logger.assert_called_once_with(
-            'Setting API URL to %s', expected)
+        mock_logger.assert_called_once_with(f'Setting API URL to {url}')
 
 
 def test_resolve_orgs_empty_list(client):
