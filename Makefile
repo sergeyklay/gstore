@@ -50,7 +50,7 @@ $(VENV_PYTHON): $(VENV_ROOT)
 
 $(VENV_ROOT):
 	@echo $(CS)Creating a Python environment $(VENV_ROOT)$(CE)
-	$(PYTHON) -m venv --prompt $(PKG_NAME) $(VENV_ROOT)
+	$(VIRTUALENV) --prompt $(PKG_NAME) $(VENV_ROOT)
 	@echo
 	@echo Done.
 	@echo
