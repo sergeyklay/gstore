@@ -54,7 +54,7 @@ for example:
 
 More information about ``pip`` and PyPI can be found here:
 
-* `Install pip <https://pip.pypa.io/en/latest/installing/>`_
+* `Install pip <https://pip.pypa.io/en/latest/installation/>`_
 * `Python Packaging User Guide <https://packaging.python.org/>`_
 
 Alternatively, you can install from the source as follows:
