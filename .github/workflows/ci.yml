@@ -89,6 +89,12 @@ jobs:
       - name: Makefile selftest
         run: make help
 
+      - name: Install virtualenv
+        if: matrix.os == 'windows-latest'
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install virtualenv
+
       - name: Set up virtualenv
         run: make init
 
