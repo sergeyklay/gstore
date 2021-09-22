@@ -73,8 +73,8 @@ class Client:
             raise ValidationError(
                 'Missing parameter: GitHub Token is required')
 
-        api_url = 'https://{}'.format(api_host)
-        self.logger.debug('Setting API URL to %s', api_url)
+        api_url = f'https://{api_host}'
+        self.logger.debug(f'Setting API URL to {api_url}')
 
         self.github = Github(
             login_or_token=token,
