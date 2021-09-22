@@ -19,9 +19,9 @@
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PKG_NAME = gstore
 
-ifneq (,$(findstring xterm,${TERM}))
-	GREEN := $(shell tput -Txterm setaf 2)
-	RESET := $(shell tput -Txterm sgr0)
+ifneq ($(TERM),)
+	GREEN := $(shell tput setaf 2)
+	RESET := $(shell tput sgr0)
 	CS = "${GREEN}~~~ "
 	CE = " ~~~${RESET}"
 else
