@@ -29,9 +29,7 @@ It is a work-in-progress of a future stable release so the experience might be n
 
 .. code-block:: bash
 
-   $ python -m pip install -e git://github.com/sergeyklay/gstore.git#egg=gstore
-   # OR
-   $ python -m pip install --upgrade https://github.com/sergeyklay/gstore.git/archive/master.tar.gz
+   $ python -m pip install -e git+ssh://git@github.com/sergeyklay/gstore.git#egg=gstore
 
 This command will download the latest version of Gstore from the
 `Python Package Index <https://pypi.org/project/gstore/>`_ and install it to your system.
@@ -41,8 +39,7 @@ This command will download the latest version of Gstore from the
    might be not as smooth. If you wish to check older versions or formal, tagged release,
    please switch to the relevant `tag <https://github.com/sergeyklay/gstore/tags>`_.
 
-Verify that now we have the current development version identifier with the ``.dev`` suffix,
-for example:
+Verify that now we have the current development version, for example:
 
 .. code-block:: bash
 
@@ -60,6 +57,7 @@ More information about ``pip`` and PyPI can be found here:
 Alternatively, you can install from the source as follows:
 
 #. Clone `Gstore repository <https://github.com/sergeyklay/gstore>`_
+#. Go to project root
 #. Run ``python -m pip install -r requirements.txt``
 #. Run the ``gstore`` module (directory) as follows:
 
