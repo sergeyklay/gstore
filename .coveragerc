@@ -32,4 +32,4 @@ data_file = coverage.db
 omit =
     tests/*
     .venv/*
-     */__pycache__/*
+    */__pycache__/*
