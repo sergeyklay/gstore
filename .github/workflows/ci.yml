@@ -72,9 +72,8 @@ jobs:
             os: ubuntu-latest
           - python: 'pypy-3.7'
             os: macos-latest
-          # Disabled until https://github.com/pyca/pynacl/issues/672 will be resolved
-          # - python: 'pypy-3.7'
-          #   os: macos-latest
+          - python: 'pypy-3.7'
+            os: windows-latest
 
     steps:
       - name: Checkout code
