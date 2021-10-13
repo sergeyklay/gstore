@@ -67,7 +67,7 @@ Command Line Options
 
   ``[--] target``
     Base target to sync repos (e.g. folder on disk). If not provided
-    environment variable ``GSTORE_DIR`` will be used. If there is not
+    environment variable ``GSTORE_DIR`` will be used. If there is no
     environment variable, then current working directory will be used.
 
 Examples
