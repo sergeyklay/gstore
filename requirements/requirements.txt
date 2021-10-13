@@ -4,11 +4,11 @@
 #
 #    pip-compile --allow-unsafe --output-file=requirements/requirements.txt requirements/requirements.in
 #
-certifi==2021.5.30
+certifi==2021.10.8
     # via requests
-cffi==1.14.6
+cffi==1.15.0
     # via pynacl
-charset-normalizer==2.0.6
+charset-normalizer==2.0.7
     # via requests
 deprecated==1.2.13
     # via pygithub
@@ -16,13 +16,13 @@ gitdb==4.0.7
     # via gitpython
 gitpython==3.1.24
     # via -r requirements/requirements.in
-idna==3.2
+idna==3.3
     # via requests
 pycparser==2.20
     # via cffi
 pygithub==1.55
     # via -r requirements/requirements.in
-pyjwt==2.1.0
+pyjwt==2.2.0
     # via pygithub
 pynacl==1.4.0
     # via pygithub
@@ -34,7 +34,7 @@ smmap==4.0.0
     # via gitdb
 typing-extensions==3.10.0.2
     # via gitpython
-urllib3==1.26.6
+urllib3==1.26.7
     # via requests
 wrapt==1.12.1
     # via deprecated
