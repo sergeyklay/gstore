@@ -79,7 +79,7 @@ def get_target() -> str or None:
     This function may return None if there is no environment
     variable, or it is empty.
 
-    :returns: The GitHub API hostname if any or None
+    :returns: The path to base directory if any or None
     :rtype: str or None
     """
     return os.environ.get('GSTORE_DIR') or None
