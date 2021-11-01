@@ -12,7 +12,7 @@ charset-normalizer==2.0.7
     # via requests
 deprecated==1.2.13
     # via pygithub
-gitdb==4.0.7
+gitdb==4.0.9
     # via gitpython
 gitpython==3.1.24
     # via -r requirements/requirements.in
@@ -22,7 +22,7 @@ pycparser==2.20
     # via cffi
 pygithub==1.55
     # via -r requirements/requirements.in
-pyjwt==2.2.0
+pyjwt==2.3.0
     # via pygithub
 pynacl==1.4.0
     # via pygithub
@@ -30,11 +30,11 @@ requests==2.26.0
     # via pygithub
 six==1.16.0
     # via pynacl
-smmap==4.0.0
+smmap==5.0.0
     # via gitdb
 typing-extensions==3.10.0.2
     # via gitpython
 urllib3==1.26.7
     # via requests
-wrapt==1.12.1
+wrapt==1.13.3
     # via deprecated
