@@ -11,7 +11,7 @@ Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Bumped ``gitpython`` from 3.1.17 to 3.1.24.
-* Bumped ``furo`` from 2020.12 to 2021.10.9.
+* Bumped ``furo`` from 2020.12 to 2021.11.12.1.
 
 
 ----

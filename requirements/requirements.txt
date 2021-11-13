@@ -18,7 +18,7 @@ gitpython==3.1.24
     # via -r requirements/requirements.in
 idna==3.3
     # via requests
-pycparser==2.20
+pycparser==2.21
     # via cffi
 pygithub==1.55
     # via -r requirements/requirements.in
