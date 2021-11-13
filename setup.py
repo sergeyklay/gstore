@@ -167,7 +167,7 @@ DEPENDENCY_LINKS = []
 EXTRAS_REQUIRE = {
     # Dependencies that are required to run tests
     'testing': [
-        'coverage[toml]>=5.4',  # Code coverage measurement for Python
+        'coverage[toml]>=6.0',  # Code coverage measurement for Python
         'pytest>=6.2.4',  # Our tests framework
         'pylint>=2.6.0,!=2.6.1',  # Python code static checker
         'flake8>=3.8.4',  # The modular source code checker
