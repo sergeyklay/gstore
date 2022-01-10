@@ -14,7 +14,7 @@ deprecated==1.2.13
     # via pygithub
 gitdb==4.0.9
     # via gitpython
-gitpython==3.1.24
+gitpython==3.1.26
     # via -r requirements/requirements.in
 idna==3.3
     # via requests
@@ -32,8 +32,6 @@ six==1.16.0
     # via pynacl
 smmap==5.0.0
     # via gitdb
-typing-extensions==4.0.1
-    # via gitpython
 urllib3==1.26.7
     # via requests
 wrapt==1.13.3
