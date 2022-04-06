@@ -24,7 +24,9 @@ check-manifest
 
 # docs
 furo
-sphinx
+# freeze sphinx because flake8 requires importlib-metadata<4.3
+# but sphinx>=4.4.0 requires importlib-metadata>=4.4
+sphinx>=3.5.0,<=4.3.2
 
 # develop
 twine
