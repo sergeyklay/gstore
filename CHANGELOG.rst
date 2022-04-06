@@ -10,8 +10,8 @@ releases, in reverse chronological order.
 Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Bumped ``gitpython`` from 3.1.17 to 3.1.24.
-* Bumped ``furo`` from 2020.12 to 2021.11.12.1.
+* Bumped ``gitpython`` from 3.1.17 to 3.1.27.
+* Bumped ``furo`` from 2020.12 to 2022.3.4.
 
 
 ----
