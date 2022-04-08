@@ -176,7 +176,7 @@ EXTRAS_REQUIRE = {
         'check-manifest>=0.45',  # Check MANIFEST.in
     ],
     'docs': [
-        'furo>=2022.3.4,==2022.3.*',  # Sphinx documentation theme
+        'furo>=2022.4.7,==2022.4.*',  # Sphinx documentation theme
         'sphinx>=3.5.0,<=4.3.2',  # Python documentation generator
     ],
 }
