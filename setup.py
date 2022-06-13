@@ -178,12 +178,12 @@ EXTRAS_REQUIRE = {
     # freeze sphinx because flake8 requires importlib-metadata<4.3
     # for python<3.8 but sphinx>=4.4.0 requires importlib-metadata>=4.4
     'docs:python_version < "3.8"': [
-        'furo>=2022.4.7,==2022.4.*',  # Sphinx documentation theme
         'sphinx>=3.5.0,<=4.3.2',  # Python documentation generator
+        'furo>=2022.6.4.1,==2022.6.*',  # Sphinx documentation theme
     ],
     'docs:python_version >= "3.8"': [
+        'sphinx>=3.5.0',  # Python documentation generator,
         'furo>=2022.6.4.1,==2022.6.*',  # Sphinx documentation theme
-        'sphinx>=3.5.0',  # Python documentation generator
     ],
 }
 
