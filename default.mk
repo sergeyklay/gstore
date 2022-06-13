@@ -1,4 +1,4 @@
-# Copyright (C) 2020, 2021 Serghei Iakovlev <egrep@protonmail.ch>
+# Copyright (C) 2020, 2021, 2022 Serghei Iakovlev <egrep@protonmail.ch>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,7 +36,11 @@ PYTEST_FLAGS ?= --color=yes -v
 PYLINT_FLAGS ?=
 FLAKE8_FLAGS ?= --show-source --statistics
 
-VENV_ROOT = .venv
+ifneq ($(VIRTUAL_ENV),)
+	VENV_ROOT = $(VIRTUAL_ENV)
+else
+	VENV_ROOT = .venv
+endif
 
 # PYTHON will used to create venv
 ifeq ($(OS),Windows_NT)
