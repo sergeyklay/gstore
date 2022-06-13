@@ -10,12 +10,13 @@ releases, in reverse chronological order.
 Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Bumped ``gitpython`` from 3.1.17 to 3.1.27.
-* Bumped ``furo`` from 2020.12 to 2022.6.4.1.
 * Bumped ``beautifulsoup4`` from 4.11.0 to 4.11.1.
 * Bumped ``coverage`` from 6.3.2 to 6.4.1.
+* Bumped ``furo`` from 2020.12 to 2022.6.4.1.
+* Bumped ``gitpython`` from 3.1.17 to 3.1.27.
 * Bumped ``pylint`` from 2.13.5 to 2.14.1.
 * Bumped ``pytest`` from 7.1.1 to 7.1.2.
+* Bumped ``sphinx`` from 4.3.2 to 5.0.1.
 
 
 ----
