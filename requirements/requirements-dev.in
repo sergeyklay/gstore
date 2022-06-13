@@ -23,11 +23,11 @@ flake8-blind-except
 check-manifest
 
 # docs
-furo
 # freeze sphinx because flake8 requires importlib-metadata<4.3
 # for python<3.8 but sphinx>=4.4.0 requires importlib-metadata>=4.4
 sphinx>=3.5.0,<=4.3.2; python_version < '3.8'
 sphinx>=3.5.0; python_version >= '3.8'
+furo
 
 # develop
 twine
