@@ -1,4 +1,4 @@
-# Copyright (C) 2020, 2021 Serghei Iakovlev <egrep@protonmail.ch>
+# Copyright (C) 2020, 2021, 2022 Serghei Iakovlev <egrep@protonmail.ch>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -248,6 +248,7 @@ help:
 	@echo
 	@echo '  PYTHON:       $(PYTHON)'
 	@echo '  WORKON_HOME:  ${WORKON_HOME}'
+	@echo '  VIRTUAL_ENV:  ${VIRTUAL_ENV}'
 	@echo '  SHELL:        $(shell echo $$SHELL)'
 	@echo '  TERM:         $(shell echo $$TERM)'
 	@echo
