@@ -130,8 +130,9 @@ snowballstemmer==2.2.0
     # via sphinx
 soupsieve==2.3.2.post1
     # via beautifulsoup4
-sphinx==5.0.1
+sphinx==5.0.1 ; python_version >= "3.8"
     # via
+    #   -r requirements/requirements-dev.in
     #   furo
     #   sphinx-basic-ng
 sphinx-basic-ng==0.0.1a11
@@ -182,7 +183,7 @@ zipp==3.8.0
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==62.3.4
+setuptools==62.4.0
     # via
     #   astroid
     #   check-manifest

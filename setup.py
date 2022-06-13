@@ -1,4 +1,4 @@
-# Copyright (C) 2020, 2021 Serghei Iakovlev <egrep@protonmail.ch>
+# Copyright (C) 2020, 2021, 2022 Serghei Iakovlev <egrep@protonmail.ch>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -175,8 +175,14 @@ EXTRAS_REQUIRE = {
         'flake8-blind-except>=0.2.0',  # Checks for blind except: statements
         'check-manifest>=0.45',  # Check MANIFEST.in
     ],
-    'docs': [
+    # freeze sphinx because flake8 requires importlib-metadata<4.3
+    # for python<3.8 but sphinx>=4.4.0 requires importlib-metadata>=4.4
+    'docs:python_version < "3.8"': [
         'furo>=2022.4.7,==2022.4.*',  # Sphinx documentation theme
+        'sphinx>=3.5.0,<=4.3.2',  # Python documentation generator
+    ],
+    'docs:python_version >= "3.8"': [
+        'furo>=2022.6.4.1,==2022.6.*',  # Sphinx documentation theme
         'sphinx>=3.5.0',  # Python documentation generator
     ],
 }
@@ -190,7 +196,9 @@ DEVELOP_REQUIRE = [
 ]
 
 EXTRAS_REQUIRE['develop'] = \
-    DEVELOP_REQUIRE + EXTRAS_REQUIRE['testing'] + EXTRAS_REQUIRE['docs']
+    DEVELOP_REQUIRE + EXTRAS_REQUIRE['testing'] + \
+    EXTRAS_REQUIRE['docs:python_version < "3.8"'] + \
+    EXTRAS_REQUIRE['docs:python_version >= "3.8"']
 
 # Project's URLs
 PROJECT_URLS = {
