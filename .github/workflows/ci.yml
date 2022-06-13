@@ -1,4 +1,4 @@
-# Copyright (C) 2020, 2021 Serghei Iakovlev <egrep@protonmail.ch>
+# Copyright (C) 2020, 2021, 2022 Serghei Iakovlev <egrep@protonmail.ch>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -120,7 +120,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_SERVICE_NAME: github
         run: |
-          python -m pip --use-feature=in-tree-build install coveralls
+          python -m pip install coveralls
           coveralls
 
       - name: Success Reporting
