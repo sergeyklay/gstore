@@ -1,4 +1,4 @@
-# Copyright (C) 2020, 2021 Serghei Iakovlev <egrep@protonmail.ch>
+# Copyright (C) 2020, 2021, 2022 Serghei Iakovlev <egrep@protonmail.ch>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -15,10 +15,14 @@
 
 ---
 version: 2
+
+build:
+  os: ubuntu-20.04
+  tools:
+    # Keep version in sync with docs.yml (GitHub Action Workflow).
+    python: '3.9'
+
 python:
-  # Keep version in sync with tox.ini (testenv:docs) and
-  # docs.yml (GitHub Action Workflow).
-  version: 3.8
 
   install:
     - method: pip
