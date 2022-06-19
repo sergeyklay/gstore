@@ -14,9 +14,9 @@ Trivial/Internal Changes
 * Bumped ``coverage`` from 6.3.2 to 6.4.1.
 * Bumped ``furo`` from 2020.12 to 2022.6.4.1.
 * Bumped ``gitpython`` from 3.1.17 to 3.1.27.
-* Bumped ``pylint`` from 2.13.5 to 2.14.1.
+* Bumped ``pylint`` from 2.13.5 to 2.14.3.
 * Bumped ``pytest`` from 7.1.1 to 7.1.2.
-* Bumped ``sphinx`` from 4.3.2 to 5.0.1.
+* Bumped ``sphinx`` from 4.3.2 to 5.0.2.
 
 
 ----
