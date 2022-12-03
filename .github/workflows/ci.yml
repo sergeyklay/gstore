@@ -72,9 +72,8 @@ jobs:
             os: ubuntu-latest
           - python: 'pypy-3.8'
             os: macos-latest
-          # Disabled until https://github.com/pyca/pynacl/pull/675 will be released
-          # - python: 'pypy-3.7'
-          #   os: windows-latest
+          - python: 'pypy-3.8'
+            os: windows-latest
 
     steps:
       - name: Checkout code
