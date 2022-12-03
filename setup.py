@@ -138,10 +138,10 @@ CLASSIFIERS = [
 
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3 :: Only',
 
     'Topic :: System :: Archiving :: Backup',
@@ -170,20 +170,14 @@ EXTRAS_REQUIRE = {
         'coverage[toml]>=6.0',  # Code coverage measurement for Python
         'pytest>=6.2.4',  # Our tests framework
         'pylint>=2.6.0,!=2.6.1',  # Python code static checker
-        'flake8>=3.8.4',  # The modular source code checker
+        'flake8>=6.0.0',  # The modular source code checker
         'flake8-import-order>=0.18.1',  # Checks the ordering of imports
         'flake8-blind-except>=0.2.0',  # Checks for blind except: statements
         'check-manifest>=0.45',  # Check MANIFEST.in
     ],
-    # freeze sphinx because flake8 requires importlib-metadata<4.3
-    # for python<3.8 but sphinx>=4.4.0 requires importlib-metadata>=4.4
-    'docs:python_version < "3.8"': [
-        'sphinx>=3.5.0,<=4.3.2',  # Python documentation generator
-        'furo>=2022.6.4.1,==2022.6.*',  # Sphinx documentation theme
-    ],
-    'docs:python_version >= "3.8"': [
+    'docs': [
         'sphinx>=3.5.0',  # Python documentation generator,
-        'furo>=2022.6.4.1,==2022.6.*',  # Sphinx documentation theme
+        'furo>=2022.9.29,==2022.6.*',  # Sphinx documentation theme
     ],
 }
 
@@ -196,9 +190,9 @@ DEVELOP_REQUIRE = [
 ]
 
 EXTRAS_REQUIRE['develop'] = \
-    DEVELOP_REQUIRE + EXTRAS_REQUIRE['testing'] + \
-    EXTRAS_REQUIRE['docs:python_version < "3.8"'] + \
-    EXTRAS_REQUIRE['docs:python_version >= "3.8"']
+    DEVELOP_REQUIRE + \
+    EXTRAS_REQUIRE['testing'] + \
+    EXTRAS_REQUIRE['docs']
 
 # Project's URLs
 PROJECT_URLS = {
@@ -234,7 +228,7 @@ if __name__ == '__main__':
         platforms='any',
         include_package_data=True,
         zip_safe=False,
-        python_requires='>=3.7, <4',
+        python_requires='>=3.8, <4',
         install_requires=INSTALL_REQUIRES,
         dependency_links=DEPENDENCY_LINKS,
         extras_require=EXTRAS_REQUIRE,
