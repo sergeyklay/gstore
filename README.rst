@@ -31,7 +31,7 @@ Gstore is released under the `GNU General Public Licence version 3 <https://choo
 its documentation lives at `Read the Docs <https://gstore.readthedocs.io/>`_,
 the code on `GitHub <https://github.com/sergeyklay/gstore>`_,
 and the latest release on `PyPI <https://pypi.org/project/gstore/>`_.
-It’s rigorously tested on Python 3.7+.
+It’s rigorously tested on Python 3.8+.
 
 If you'd like to contribute to Gstore you're most welcome!
 

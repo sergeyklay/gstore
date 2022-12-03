@@ -14,21 +14,16 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 # testing
-# flake8>=6.0.0 requires Python 3.8
-flake8>=3.8.4,<6.0.0; python_version < '3.8'
-flake8>=3.8.4; python_version >= '3.8'
 coverage[toml]
 pylint>=2.6.0,!=2.6.1
 pytest
+flake8
 flake8-import-order
 flake8-blind-except
 check-manifest
 
 # docs
-# freeze sphinx because flake8 requires importlib-metadata<4.3
-# for python<3.8 but sphinx>=4.4.0 requires importlib-metadata>=4.4
-sphinx>=3.5.0,<=4.3.2; python_version < '3.8'
-sphinx>=3.5.0; python_version >= '3.8'
+sphinx
 furo
 
 # develop

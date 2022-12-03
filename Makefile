@@ -38,10 +38,8 @@ define rm-venv-link
 	fi
 endef
 
-# '--generate-hashes' is disabled until we support Python 3.7
-# and depend on 'typing_extensions'
 requirements/%.txt: requirements/%.in $(VENV_BIN)
-	$(VENV_BIN)/pip-compile --allow-unsafe --output-file=$@ $<
+	$(VENV_BIN)/pip-compile --allow-unsafe --generate-hashes --output-file=$@ $<
 
 ## Public targets
 
