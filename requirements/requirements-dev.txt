@@ -42,7 +42,7 @@ docutils==0.19
     #   sphinx
 exceptiongroup==1.0.4
     # via pytest
-flake8==6.0.0
+flake8==6.0.0 ; python_version >= "3.8"
     # via -r requirements/requirements-dev.in
 flake8-blind-except==0.2.1
     # via -r requirements/requirements-dev.in
