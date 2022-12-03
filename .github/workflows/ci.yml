@@ -72,8 +72,6 @@ jobs:
             os: ubuntu-latest
           - python: 'pypy-3.8'
             os: macos-latest
-          - python: 'pypy-3.8'
-            os: windows-latest
 
     steps:
       - name: Checkout code
