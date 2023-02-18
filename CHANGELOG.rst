@@ -17,10 +17,10 @@ Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Bumped ``beautifulsoup4`` from 4.11.0 to 4.11.1.
-* Bumped ``coverage`` from 6.3.2 to 7.0.5.
+* Bumped ``coverage`` from 6.3.2 to 7.1.0.
 * Bumped ``furo`` from 2020.12 to 2022.12.7.
-* Bumped ``gitpython`` from 3.1.17 to 3.1.30.
-* Bumped ``pylint`` from 2.13.5 to 2.15.10.
+* Bumped ``gitpython`` from 3.1.17 to 3.1.31.
+* Bumped ``pylint`` from 2.13.5 to 2.16.2.
 * Bumped ``pytest`` from 7.1.1 to 7.2.1.
 * Bumped ``sphinx`` from 4.3.2 to 6.1.3.
 * Bumped ``check-manifest`` from 0.48 to 0.49.
