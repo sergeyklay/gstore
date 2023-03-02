@@ -17,24 +17,16 @@ name: CI
 
 on:
   push:
-    branches:
-      - master
-      - 'feature/**'
-      - 'release/**'
-      - 'fix/**'
+    branches-ignore:
+      # These should always correspond to pull requests, so ignore them for
+      # the push trigger and let them be triggered by the pull_request
+      # trigger, avoiding running the workflow twice.  This is a minor
+      # optimization so there's no need to ensure this is comprehensive.
+      - 'dependabot/**'
 
   pull_request:
     branches:
-      - master
-
-  schedule:
-    - cron: '0 12 * * *'
-      #      | | | | |
-      #      | | | | |____ day of the week (0 - 6 or SUN-SAT)
-      #      | | | |____ month (1 - 12 or JAN-DEC)
-      #      | | |____ day of the month (1 - 31)
-      #      | |____ hour (0 - 23)
-      #      |____ minute (0 - 59)
+      - main
 
 env:
   PYTHONUNBUFFERED: '1'
