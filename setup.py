@@ -177,7 +177,7 @@ EXTRAS_REQUIRE = {
     ],
     'docs': [
         'sphinx>=3.5.0',  # Python documentation generator,
-        'furo>=2022.9.29,==2022.6.*',  # Sphinx documentation theme
+        'furo>=2022.9.29',  # Sphinx documentation theme
     ],
 }
 

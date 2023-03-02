@@ -4,6 +4,18 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
+0.6.1 (2023-03-02)
+------------------
+
+Bug Fixes
+^^^^^^^^^
+
+* Correct ``furo`` version definition in ``setup.py``.
+
+
+----
+
+
 0.6.0 (2023-03-02)
 ------------------
 

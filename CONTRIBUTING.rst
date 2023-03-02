@@ -9,7 +9,7 @@ Bug reports
 -----------
 
 *Before raising an issue, please ensure that you are using the latest version
-of ``gstore``.*
+of gstore.*
 
 Please provide the following information with your issue to enable me to
 respond as quickly as possible.
