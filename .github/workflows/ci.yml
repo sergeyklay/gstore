@@ -51,7 +51,6 @@ jobs:
 
       matrix:
         python:
-          - '3.8'
           - '3.9'
           - '3.10'
           - '3.11'
@@ -60,6 +59,10 @@ jobs:
           - macos-latest
           - windows-latest
         include:
+          - python: '3.8'
+            os: ubuntu-latest
+          - python: '3.8'
+            os: macos-latest
           - python: 'pypy-3.8'
             os: ubuntu-latest
           - python: 'pypy-3.8'
