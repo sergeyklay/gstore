@@ -24,7 +24,7 @@ Unstable version
 ================
 
 The master of all the material is the Git repository at https://github.com/sergeyklay/gstore.
-So, can also install the latest unreleased development version directly from the ``master`` branch on GitHub.
+So, can also install the latest unreleased development version directly from the ``main`` branch on GitHub.
 It is a work-in-progress of a future stable release so the experience might be not as smooth.:
 
 .. code-block:: bash
@@ -35,7 +35,7 @@ This command will download the latest version of Gstore from the
 `Python Package Index <https://pypi.org/project/gstore/>`_ and install it to your system.
 
 .. note::
-   The ``master`` branch will always contain the latest unstable version, so the experience
+   The ``main`` branch will always contain the latest unstable version, so the experience
    might be not as smooth. If you wish to check older versions or formal, tagged release,
    please switch to the relevant `tag <https://github.com/sergeyklay/gstore/tags>`_.
 
