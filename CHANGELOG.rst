@@ -4,7 +4,7 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
-0.6.0 (202X-XX-XX)
+0.6.0 (2023-03-02)
 ------------------
 
 Breaking Changes
