@@ -1,4 +1,4 @@
-# Copyright (C) 2020, 2021 Serghei Iakovlev <egrep@protonmail.ch>
+# Copyright (C) 2020, 2021, 2022, 2023 Serghei Iakovlev <egrep@protonmail.ch>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ details on the use of this package.
 
 """
 
-__copyright__ = 'Copyright (C) 2020, 2021 Serghei Iakovlev'
+__copyright__ = 'Copyright (C) 2020, 2021, 2022, 2023 Serghei Iakovlev'
 __version__ = '0.6.0'
 __license__ = 'GPLv3+'
 __author__ = 'Serghei Iakovlev'

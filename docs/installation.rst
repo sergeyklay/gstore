@@ -45,7 +45,7 @@ Verify that now we have the current development version, for example:
 
    $ gstore --version
    # gstore 0.5.0
-   # Copyright (C) 2020, 2021 Serghei Iakovlev.
+   # Copyright (C) 2020, 2021, 2022, 2023 Serghei Iakovlev.
    # This is free software; see the source for copying conditions. There is NO
    # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -65,6 +65,6 @@ Alternatively, you can install from the source as follows:
 
    $ python -m gstore --version
    # __main__.py 0.5.0
-   # Copyright (C) 2020, 2021 Serghei Iakovlev.
+   # Copyright (C) 2020, 2021, 2022, 2023 Serghei Iakovlev.
    # This is free software; see the source for copying conditions. There is NO
    # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
