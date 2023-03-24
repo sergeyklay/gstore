@@ -4,13 +4,29 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
+0.7.0 (2023-XX-XX)
+------------------
+
+Trivial/Internal Changes
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Bumped ``beautifulsoup4`` from 4.11.1 to 4.12.0.
+* Bumped ``furo`` from 2022.12.7 to 2023.3.23.
+* Bumped ``pygithub`` from 1.58.0 to 1.58.1.
+* Bumped ``pylint`` from 2.16.2 to 2.17.1.
+* Bumped ``pytest`` from 7.2.1 to 7.2.2.
+
+
+----
+
+
 0.6.1 (2023-03-02)
 ------------------
 
 Bug Fixes
 ^^^^^^^^^
 
-* Correct ``furo`` version definition in ``setup.py``.
+* Corrected ``furo`` version definition in ``setup.py``.
 
 
 ----
