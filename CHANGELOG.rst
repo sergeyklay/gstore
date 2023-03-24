@@ -11,6 +11,7 @@ Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Bumped ``beautifulsoup4`` from 4.11.1 to 4.12.0.
+* Bumped ``coverage`` from 7.2.1 to 7.2.2.
 * Bumped ``furo`` from 2022.12.7 to 2023.3.23.
 * Bumped ``pygithub`` from 1.58.0 to 1.58.1.
 * Bumped ``pylint`` from 2.16.2 to 2.17.1.
