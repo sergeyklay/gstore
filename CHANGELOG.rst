@@ -12,7 +12,7 @@ Trivial/Internal Changes
 
 * Bumped ``beautifulsoup4`` from 4.11.1 to 4.12.0.
 * Bumped ``coverage`` from 7.2.1 to 7.2.2.
-* Bumped ``furo`` from 2022.12.7 to 2023.3.23.
+* Bumped ``furo`` from 2022.12.7 to 2023.3.27.
 * Bumped ``pygithub`` from 1.58.0 to 1.58.1.
 * Bumped ``pylint`` from 2.16.2 to 2.17.1.
 * Bumped ``pytest`` from 7.2.1 to 7.2.2.
@@ -39,7 +39,12 @@ Bug Fixes
 Breaking Changes
 ^^^^^^^^^^^^^^^^
 
-* Drop Python 3.7 support.
+* Dropped support for Python 3.7 due to end-of-life status.
+  Python 3.7 reached its end-of-life date in June 2023, which means it will no
+  longer receive bug fixes or security updates from the Python development team.
+  As a result, I have removed support for Python 3.7 in order to ensure the
+  ongoing security and stability of our package. Users who require Python 3.7
+  can continue to use older package versions that support it.
 
 
 Trivial/Internal Changes
