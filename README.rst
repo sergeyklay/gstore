@@ -8,8 +8,8 @@
         <a href="https://github.com/sergeyklay/gstore/actions?workflow=CI">
             <img src="https://github.com/sergeyklay/gstore/workflows/CI/badge.svg?branch=main" alt="CI Status" />
         </a>
-        <a href="https://coveralls.io/github/sergeyklay/gstore">
-            <img src="https://coveralls.io/repos/github/sergeyklay/gstore/badge.svg" alt="Coverage Status" />
+        <a href="https://codecov.io/gh/sergeyklay/gstore" >
+            <img src="https://codecov.io/gh/sergeyklay/gstore/branch/master/graph/badge.svg?token=OhbCTnqEWE" alt="Coverage Status" />
         </a>
     </p>
 
