@@ -33,13 +33,19 @@ PKG_DIR = path.abspath(path.dirname(__file__))
 META_PATH = path.join(PKG_DIR, PKG_NAME, '__init__.py')
 META_CONTENTS = read_file(META_PATH)
 
+# Version regex according to PEP 440
+VERSION_REGEX = (r'([1-9][0-9]*!)?(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*))'
+                 r'*((a|b|rc)(0|[1-9][0-9]*))?(\.post(0|[1-9][0-9]*))'
+                 r'?(\.dev(0|[1-9][0-9]*))?')
+
 
 def load_long_description():
     """Load long description from file README.rst."""
     def changes():
         changelog = path.join(PKG_DIR, 'CHANGELOG.rst')
-        pat = r"(\d+.\d+.\d+ \(.*?\)\r?\n.*?)\r?\n\r?\n\r?\n----\r?\n\r?\n\r?\n"  # noqa: E501
-        result = re.search(pat, read_file(changelog), re.S)
+        pattern = (fr'({VERSION_REGEX} \(.*?\)\r?\n.*?)'
+                   r'\r?\n\r?\n\r?\n----\r?\n\r?\n\r?\n')
+        result = re.search(pattern, read_file(changelog), re.S)
 
         return result.group(1) if result else ''
 
@@ -76,10 +82,7 @@ def load_long_description():
 
 def is_canonical_version(version):
     """Check if a version string is in the canonical format of PEP 440."""
-    pattern = (
-        r'^([1-9][0-9]*!)?(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*))'
-        r'*((a|b|rc)(0|[1-9][0-9]*))?(\.post(0|[1-9][0-9]*))'
-        r'?(\.dev(0|[1-9][0-9]*))?$')
+    pattern = fr'^{VERSION_REGEX}$'
     return re.match(pattern, version) is not None
 
 
