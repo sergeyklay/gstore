@@ -19,22 +19,25 @@
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PKG_NAME = gstore
 
+PYLINT_FLAGS ?=
+FLAKE8_FLAGS ?=
+
 ifneq ($(TERM),)
 	GREEN := $(shell tput setaf 2)
 	RESET := $(shell tput sgr0)
 	CS = "${GREEN}~~~ "
 	CE = " ~~~${RESET}"
+
+	PYTEST_FLAGS ?= --color=yes
 else
 	CS = "~~~ "
 	CE = " ~~~"
+
+	PYTEST_FLAGS ?=
 endif
 
 COV          =
 REQUIREMENTS = requirements/requirements.txt requirements/requirements-dev.txt
-
-PYTEST_FLAGS ?= --color=yes -v
-PYLINT_FLAGS ?=
-FLAKE8_FLAGS ?= --show-source --statistics
 
 ifneq ($(VIRTUAL_ENV),)
 	VENV_ROOT = $(VIRTUAL_ENV)
