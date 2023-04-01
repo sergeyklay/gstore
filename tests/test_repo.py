@@ -13,9 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+from unittest.mock import MagicMock
+
 from git import GitCommandError
 
-from gstore.repo import clone
+from gstore.repo import clone, fetch
 
 
 def test_clone_success(mocker, repository, repo_target, test_context):
@@ -59,4 +61,36 @@ def test_clone_failure(mocker, repository, repo_target, test_context):
         f'git@github.com:{repository.org.login}/{repository.name}.git',
         repo_target,
     )
+    test_context.logger.error.assert_called()
+
+
+def test_fetch_success(mocker, repository, repo_target, test_context):
+    mocker.patch('gstore.repo._ctx', test_context)
+    mock_repo = mocker.patch('git.Repo')
+    mock_local_repo = MagicMock()
+    mock_repo.return_value = mock_local_repo
+    mock_local_repo.heads = ['master']
+
+    fetch(repository, repo_target)
+
+    test_context.logger.info.assert_called_once_with(
+        'Update %s/%s repository',
+        repository.org.login,
+        repository.name
+    )
+    mock_local_repo.git.fetch.assert_called_once_with(['--prune', '--quiet'])
+    mock_local_repo.git.pull.assert_called_once_with(['--all', '--quiet'])
+
+
+def test_fetch_failure(mocker, repository, repo_target, test_context):
+    mocker.patch('gstore.repo._ctx', test_context)
+    mock_repo = mocker.patch('git.Repo')
+    mock_local_repo = MagicMock()
+    mock_repo.return_value = mock_local_repo
+    mock_local_repo.heads = ['master']
+
+    mock_local_repo.git.fetch.side_effect = GitCommandError(
+        ['git', 'fetch'], 1, 'fetch error message')
+    fetch(repository, repo_target)
+
     test_context.logger.error.assert_called()
