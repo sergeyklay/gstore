@@ -9,7 +9,7 @@
             <img src="https://github.com/sergeyklay/gstore/workflows/CI/badge.svg?branch=main" alt="CI Status" />
         </a>
         <a href="https://codecov.io/gh/sergeyklay/gstore" >
-            <img src="https://codecov.io/gh/sergeyklay/gstore/branch/master/graph/badge.svg?token=OhbCTnqEWE" alt="Coverage Status" />
+            <img src="https://codecov.io/gh/sergeyklay/gstore/branch/main/graph/badge.svg?token=OhbCTnqEWE" alt="Coverage Status" />
         </a>
     </p>
 
