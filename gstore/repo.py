@@ -134,7 +134,7 @@ def _init_process(verbose=False, quiet=False, base_path=None):
     """Call when new processes start.
 
     This function is used as a initializer on a per-process basis due
-    to 'spawn' process strategy (at least on Windows and macOs).
+    to 'spawn' process strategy (at least on Windows and macOS).
     """
     assert isinstance(base_path, str) and base_path
 
@@ -149,8 +149,7 @@ def _init_process(verbose=False, quiet=False, base_path=None):
 
 
 def sync(org: Organization, repos: list, base_path: str, **kwargs):
-    """
-    Sync repositories for an organization.
+    """Sync repositories for an organization.
 
     :param Organization org: Organization to sync
     :param list repos: Repository list to sync

@@ -159,7 +159,7 @@ def repository(organization):
 
 @pytest.fixture
 def repo_target(tmpdir):
-    target = tmpdir.join('test_org', 'test_repo')
+    target = tmpdir.join('Acme', 'test_repo')
     return str(target)
 
 
