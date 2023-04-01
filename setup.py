@@ -169,6 +169,7 @@ EXTRAS_REQUIRE = {
     'testing': [
         'coverage[toml]>=6.0',  # Code coverage measurement for Python
         'pytest>=6.2.4',  # Our tests framework
+        'pytest-mock>=3.10.0',  # Thin-wrapper around the mock package
         'pylint>=2.6.0,!=2.6.1',  # Python code static checker
         'flake8>=6.0.0',  # The modular source code checker
         'flake8-import-order>=0.18.1',  # Checks the ordering of imports
