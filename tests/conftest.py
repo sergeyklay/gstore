@@ -13,12 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
+from unittest.mock import MagicMock
+
 import pytest
 from github import Github
 from github.GithubException import UnknownObjectException
 
 from gstore.client import Client
-from gstore.repo import Organization
+from gstore.repo import _Context, Organization, Repository
 
 
 class MicroMock:
@@ -147,3 +149,20 @@ def client():
 def organization():
     """Return an Organization instance."""
     return Organization('Acme')
+
+
+@pytest.fixture
+def repository(organization):
+    repo = Repository(name='test_repo', org=organization)
+    return repo
+
+
+@pytest.fixture
+def repo_target(tmpdir):
+    target = tmpdir.join('test_org', 'test_repo')
+    return str(target)
+
+
+@pytest.fixture
+def test_context(repo_target):
+    return _Context(base_path=repo_target, logger=MagicMock())
