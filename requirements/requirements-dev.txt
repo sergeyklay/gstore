@@ -287,9 +287,9 @@ flake8-import-order==0.18.2 \
     --hash=sha256:82ed59f1083b629b030ee9d3928d9e06b6213eb196fe745b3a7d4af2168130df \
     --hash=sha256:e23941f892da3e0c09d711babbb0c73bc735242e9b216b726616758a920d900e
     # via -r requirements/requirements-dev.in
-furo==2023.7.26 \
-    --hash=sha256:1c7936929ec57c5ddecc7c85f07fa8b2ce536b5c89137764cca508be90e11efd \
-    --hash=sha256:257f63bab97aa85213a1fa24303837a3c3f30be92901ec732fea74290800f59e
+furo==2023.8.19 \
+    --hash=sha256:12f99f87a1873b6746228cfde18f77244e6c1ffb85d7fed95e638aae70d80590 \
+    --hash=sha256:e671ee638ab3f1b472f4033b0167f502ab407830e0db0f843b1c1028119c9cd1
     # via -r requirements/requirements-dev.in
 idna==3.4 \
     --hash=sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4 \
