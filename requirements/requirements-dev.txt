@@ -248,9 +248,7 @@ coverage[toml]==7.4.3 \
     --hash=sha256:f6a09b360d67e589236a44f0c39218a8efba2593b6abdccc300a8862cffc2f94 \
     --hash=sha256:fcc66e222cf4c719fe7722a403888b1f5e1682d1679bd780e2b26c18bb648cdc \
     --hash=sha256:fd6545d97c98a192c5ac995d21c894b581f1fd14cf389be90724d21808b657e2
-    # via
-    #   -r requirements/requirements-dev.in
-    #   coverage
+    # via -r requirements/requirements-dev.in
 cryptography==40.0.1 \
     --hash=sha256:0a4e3406cfed6b1f6d6e87ed243363652b2586b2d917b0609ca4f97072994405 \
     --hash=sha256:1e0af458515d5e4028aad75f3bb3fe7a31e46ad920648cd59b64d3da842e4356 \
@@ -297,9 +295,9 @@ flake8-import-order==0.18.2 \
     --hash=sha256:82ed59f1083b629b030ee9d3928d9e06b6213eb196fe745b3a7d4af2168130df \
     --hash=sha256:e23941f892da3e0c09d711babbb0c73bc735242e9b216b726616758a920d900e
     # via -r requirements/requirements-dev.in
-furo==2023.9.10 \
-    --hash=sha256:513092538537dc5c596691da06e3c370714ec99bc438680edc1debffb73e5bfc \
-    --hash=sha256:5707530a476d2a63b8cad83b4f961f3739a69f4b058bcf38a03a39fa537195b2
+furo==2024.1.29 \
+    --hash=sha256:3548be2cef45a32f8cdc0272d415fcb3e5fa6a0eb4ddfe21df3ecf1fe45a13cf \
+    --hash=sha256:4d6b2fe3f10a6e36eb9cc24c1e7beb38d7a23fc7b3c382867503b7fcac8a1e02
     # via -r requirements/requirements-dev.in
 idna==3.4 \
     --hash=sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4 \
