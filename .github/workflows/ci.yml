@@ -106,7 +106,7 @@ jobs:
       - name: Combine coverage reports
         run: make ccov
 
-      - uses: codecov/codecov-action@v4.3.0
+      - uses: codecov/codecov-action@v4.3.1
         if: success()
         with:
           fail_ci_if_error: false
