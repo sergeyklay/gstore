@@ -20,9 +20,9 @@ attrs==22.2.0 \
     --hash=sha256:29e95c7f6778868dbd49170f98f8818f78f3dc5e0e37c0b1f474e3561b240836 \
     --hash=sha256:c9227bfc2f01993c03f68db37d1d15c9690188323c067c641f1a35ca58185f99
     # via check-wheel-contents
-babel==2.12.1 \
-    --hash=sha256:b4246fb7677d3b98f501a39d43396d3cafdc8eadb045f4a31be01863f655c610 \
-    --hash=sha256:cc2d99999cd01d44420ae725a21c9e3711b3aadc7976d6147f622d8581963455
+babel==2.15.0 \
+    --hash=sha256:08706bdad8d0a3413266ab61bd6c34d0c28d6e1e7badf40a2cebe67644e2e1fb \
+    --hash=sha256:8daf0e265d05768bc6c7a314cf1321e9a123afc328cc635c18622a2f30a04413
     # via sphinx
 beautifulsoup4==4.12.0 \
     --hash=sha256:2130a5ad7f513200fae61a17abb5e338ca980fa28c439c0571014bc0217e9591 \
@@ -274,9 +274,9 @@ dill==0.3.6 \
     --hash=sha256:a07ffd2351b8c678dfc4a856a3005f8067aea51d6ba6c700796a4d9e280f39f0 \
     --hash=sha256:e5db55f3687856d8fbdab002ed78544e1c4559a130302693d839dfe8f93f2373
     # via pylint
-docutils==0.19 \
-    --hash=sha256:33995a6753c30b7f577febfc2c50411fec6aac7f7ffeb7c4cfe5991072dcf9e6 \
-    --hash=sha256:5e1de4d849fee02c63b040a4a3fd567f4ab104defd8a5511fbbc24a8a017efbc
+docutils==0.21.2 \
+    --hash=sha256:3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f \
+    --hash=sha256:dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2
     # via
     #   readme-renderer
     #   sphinx
@@ -556,9 +556,9 @@ pyflakes==3.2.0 \
     --hash=sha256:1c61603ff154621fb2a9172037d84dca3500def8c8b630657d1701f026f8af3f \
     --hash=sha256:84b5be138a2dfbb40689ca07e2152deb896a65c3a3e24c251c5c62489568074a
     # via flake8
-pygments==2.14.0 \
-    --hash=sha256:b3ed06a9e8ac9a9aae5a6f5dbe78a8a58655d17b43b93c078f094ddc476ae297 \
-    --hash=sha256:fa7bd7bd2771287c0de303af8bfdfc731f51bd2c6a47ab69d117138893b82717
+pygments==2.18.0 \
+    --hash=sha256:786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199 \
+    --hash=sha256:b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a
     # via
     #   furo
     #   readme-renderer
@@ -586,9 +586,9 @@ readme-renderer==37.3 \
     --hash=sha256:cd653186dfc73055656f090f227f5cb22a046d7f71a841dfa305f55c9a513273 \
     --hash=sha256:f67a16caedfa71eef48a31b39708637a6f4664c4394801a7b0d6432d13907343
     # via twine
-requests==2.28.2 \
-    --hash=sha256:64299f4909223da747622c030b781c0d7811e359c37124b4bd368fb8c6518baa \
-    --hash=sha256:98b1b2782e3c6c4904938b84c0eb932721069dfdb9134313beff7c83c2df24bf
+requests==2.32.3 \
+    --hash=sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760 \
+    --hash=sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6
     # via
     #   requests-toolbelt
     #   sphinx
@@ -621,9 +621,9 @@ soupsieve==2.4 \
     --hash=sha256:49e5368c2cda80ee7e84da9dbe3e110b70a4575f196efb74e51b94549d921955 \
     --hash=sha256:e28dba9ca6c7c00173e34e4ba57448f0688bb681b7c5e8bf4971daafc093d69a
     # via beautifulsoup4
-sphinx==7.3.7 \
-    --hash=sha256:413f75440be4cacf328f580b4274ada4565fb2187d696a84970c23f77b64d8c3 \
-    --hash=sha256:a4a7db75ed37531c05002d56ed6948d4c42f473a36f46e1382b0bd76ca9627bc
+sphinx==7.4.4 \
+    --hash=sha256:0b800d06701329cba601a40ab8c3d5afd8f7e3518f688dda61fd670effc327d2 \
+    --hash=sha256:43c911f997a4530b6cffd4ff8d5516591f6c60d178591f4406f0dd02282e3f64
     # via
     #   -r requirements/requirements-dev.in
     #   furo
