@@ -572,9 +572,9 @@ pyproject-hooks==1.0.0 \
     --hash=sha256:283c11acd6b928d2f6a7c73fa0d01cb2bdc5f07c57a2eeb6e83d5e56b97976f8 \
     --hash=sha256:f271b298b97f5955d53fb12b72c1fb1948c22c1a6b70b315c54cedaca0264ef5
     # via build
-pytest==8.2.2 \
-    --hash=sha256:c434598117762e2bd304e526244f67bf66bbd7b5d6cf22138be51ff661980343 \
-    --hash=sha256:de4bb8104e201939ccdc688b27a89a7be2079b22e2bd2b07f806b6ba71117977
+pytest==8.3.2 \
+    --hash=sha256:4ba08f9ae7dcf84ded419494d229b48d0903ea6407b030eaec46df5e6a73bba5 \
+    --hash=sha256:c132345d12ce551242c87269de812483f5bcc87cdbb4722e48487ba194f9fdce
     # via
     #   -r requirements/requirements-dev.in
     #   pytest-mock
