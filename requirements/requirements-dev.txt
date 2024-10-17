@@ -183,9 +183,9 @@ charset-normalizer==3.1.0 \
     --hash=sha256:f8303414c7b03f794347ad062c0516cee0e15f7a612abd0ce1e25caf6ceb47df \
     --hash=sha256:fca62a8301b605b954ad2e9c3666f9d97f63872aa4efcae5492baca2056b74ab
     # via requests
-check-manifest==0.49 \
-    --hash=sha256:058cd30057714c39b96ce4d83f254fc770e3145c7b1932b5940b4e3efb5521ef \
-    --hash=sha256:64a640445542cf226919657c7b78d02d9c1ca5b1c25d7e66e0e1ff325060f416
+check-manifest==0.50 \
+    --hash=sha256:6ab3e3aa72a008da3314b432f4c768c9647b4d6d8032f9e1a4672a572118e48c \
+    --hash=sha256:d300f9f292986aa1a30424af44eb45c5644e0a810e392e62d553b24bb3393494
     # via -r requirements/requirements-dev.in
 check-wheel-contents==0.6.0 \
     --hash=sha256:64419c4e150e1de6f2d0bce7d4c7668eebfac127f0274014dd1a56ba07525364 \
