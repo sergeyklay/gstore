@@ -115,7 +115,7 @@ Features
 ^^^^^^^^
 
 * The ``gstore.env`` module was introduced to provide a convenient way to work
-  with environment variables used by various functions within Gstore.
+  with environment variables used by various functions within ``gstore``.
 * Added the following functions within ``gstore.env``:
 
   * ``lookup_token()`` - lookup a personal access token in environment variables,
@@ -135,7 +135,7 @@ Improvements
 
 * Improved ``git.GitCommandError`` message formatting for more accurate logging.
 * The program now correctly handle Control-C keyboard event and gracefully terminates.
-* Gstore will exit with a status of one when its is called without any argument
+* ``gstore`` will exit with a status of one when its is called without any argument
   and there are not enough environment variables for normal operation.
 * Calling program with an invalid token and without ``--org`` option no longer leads
   to abnormal program termination.
@@ -159,9 +159,9 @@ Trivial/Internal Changes
 Improvements
 ^^^^^^^^^^^^
 
-* Gstore will exit with a status of one if there are critical errors during
+* ``gstore`` will exit with a status of one if there are critical errors during
   synchronization.
-* Gstore will handle situations with invalid API token or organization name.
+* ``gstore`` will handle situations with invalid API token or organization name.
 
 
 Improved Documentation
@@ -239,7 +239,7 @@ Features
 Improvements
 ^^^^^^^^^^^^
 
-* Show help message and exit when Gstore is called without any argument and
+* Show help message and exit when ``gstore`` is called without any argument and
   there are not enough environment variables for normal operation.
 
 

@@ -47,7 +47,7 @@ Command Line Options
     (format *org:repo*). Option is additive, and can be used multiple times.
 
   ``-v``, ``--verbose``
-    Enable verbose mode. Causes Gstore to print debugging messages about its
+    Enable verbose mode. Causes ``gstore`` to print debugging messages about its
     progress in some cases.
 
   ``-j [JOBS]``, ``--jobs [JOBS]``
@@ -78,14 +78,14 @@ Sync all repos from all organizations
 
 The example below will perform HTTP requests to GitHub API. In general, we'll
 need to obtain GitHub username, and to get a list of user's organizations.
-At the end Gstore will sync repositories of organizations via Git.
+At the end ``gstore`` will sync repositories of organizations via Git.
 
 .. code-block:: bash
 
    $ gstore --token "$TOKEN" ~/backup
 
 Unless you set the ``GSTORE_DIR`` environment variable and don't provide
-target directory, Gstore will sync all the repositories to current working
+target directory, ``gstore`` will sync all the repositories to current working
 directory.:
 
 .. code-block:: bash
@@ -103,7 +103,7 @@ directory.:
 
 .. note::
 
-   Gstore will show help message and exit when it is called without any
+   ``gstore`` will show help message and exit when it is called without any
    argument and there are not enough environment variables for normal
    operation.
 
@@ -147,10 +147,10 @@ the host and possible environment variables.:
 
 .. code-block:: bash
 
-   # Using command line options to configure Gstore
+   # Using command line options to configure gstore
    $ gstore --token "secret" --host "github.example.com" ~/backup
 
-   # Using environment variables to configure Gstore
+   # Using environment variables to configure gstore
    $ export GH_ENTERPRISE_TOKEN="secret"
    $ export GH_HOST="github.example.com"
    $ gstore ~/backup

@@ -1,4 +1,4 @@
-# Copyright (C) 2020, 2021, 2022, 2023 Serghei Iakovlev <egrep@protonmail.ch>
+# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,9 +23,7 @@
 # Directories to ignore (do not add trailing '/'s, they skip symlinks).
 /.pytest_cache
 /.venv
-/build
 /dist
-/*.egg-info
 /htmlcov
 /docs/_build
 

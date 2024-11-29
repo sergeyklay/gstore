@@ -1,0 +1,50 @@
+# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
+#
+# This file is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 3
+# of the License, or (at your option) any later version.
+#
+# This file is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this file.  If not, see <https://www.gnu.org/licenses/>.
+
+[flake8]
+# Set the maximum allowed length for a line of code
+max-line-length = 79
+
+# Set the maximum allowed cyclomatic complexity for a function or method
+max-complexity = 10
+
+# When set to True, this option instructs Flake8 to display a summary of
+# warnings and errors grouped by type at the end of its output.
+statistics = True
+
+# When set to True, this option causes Flake8 to display the offending line
+# of code for each warning or error, providing better context for understanding
+# and fixing the issues.
+show-source = True
+
+# List of files and directories to exclude from linting
+exclude =
+    .git,
+    .pytest_cache,
+    .venv,
+    __pycache__,
+    dist
+
+# List of modules to be considered as local
+application-import-names =
+    gstore,
+    tests
+
+# Set the import order style to follow Smarkets' style
+import-order-style = smarkets
+
+# Local Variables:
+# mode: conf-toml
+# End:
