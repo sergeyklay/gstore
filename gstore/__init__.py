@@ -1,4 +1,4 @@
-# Copyright (C) 2020, 2021, 2022, 2023 Serghei Iakovlev <egrep@protonmail.ch>
+# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -13,10 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-"""The top-level module for Gstore.
+"""The top-level module for gstore.
 
 This module tracks the version of the package as well as the base
-package info used by various functions within Gstore.
+package info used by various functions within gstore.
 
 Modules:
 
@@ -45,10 +45,10 @@ details on the use of this package.
 
 """
 
-__copyright__ = 'Copyright (C) 2020, 2021, 2022, 2023 Serghei Iakovlev'
+__copyright__ = 'Copyright (C) 2020-2024 Serghei Iakovlev'
 __version__ = '0.7.0'
 __license__ = 'GPLv3+'
 __author__ = 'Serghei Iakovlev'
-__author_email__ = 'egrep@protonmail.ch'
+__author_email__ = 'gnu@serghei.pl'
 __url__ = 'https://gstore.readthedocs.io'
 __description__ = 'Synchronize GitHub repositories made easy.'

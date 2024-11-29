@@ -1,4 +1,4 @@
-# Copyright (C) 2020, 2021, 2022, 2023 Serghei Iakovlev <egrep@protonmail.ch>
+# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -51,7 +51,7 @@ def find_version(meta_file):
 
 # General information about the project.
 project = u"gstore"
-copyright = u"2020, 2021 Serghei Iakovlev"
+copyright = u"2020-2024 Serghei Iakovlev"
 author = u"Serghei Iakovlev"
 
 #
@@ -119,7 +119,7 @@ todo_include_todos = True
 # html_favicon = None
 
 html_theme = "furo"
-html_title = "Gstore"
+html_title = "gstore"
 
 html_theme_options = {}
 
@@ -161,7 +161,7 @@ htmlhelp_basename = "gstoredoc"
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ("index", project, u"Gstore Documentation", [author], 1)
+    ("index", project, u"gstore documentation", [author], 1)
 ]
 
 #
@@ -175,7 +175,7 @@ texinfo_documents = [
     (
         "index",
         project,
-        u"Gstore Documentation",
+        u"gstore documentation",
         author,
         project,
         "Synchronize GitHub repositories made easy.",

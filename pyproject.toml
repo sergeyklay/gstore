@@ -1,0 +1,130 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "gstore"
+version = "0.7.0"
+description = "Synchronize GitHub repositories made easy."
+authors = ["Serghei Iakovlev <gnu@serghei.pl>"]
+maintainers = ["Serghei Iakovlev <gnu@serghei.pl>"]
+license = "GPL-3.0-or-later"
+readme = "README.rst"
+keywords = ["git", "github", "backup", "repo", "sync", "cli"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Information Technology",
+    "Natural Language :: English",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: System :: Archiving :: Backup",
+    "Topic :: System :: Software Distribution",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Version Control",
+    "Topic :: Software Development :: Version Control :: Git",
+]
+repository = "https://github.com/sergeyklay/gstore"
+homepage = "https://gstore.readthedocs.io"
+documentation = "https://gstore.readthedocs.io"
+packages = [
+    { include = "gstore" }
+]
+include = [
+    { path = "tests", format = "sdist" },
+    "AUTHORS.rst",
+    "CHANGELOG.rst",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "README.rst",
+    "SECURITY.rst"
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/python-poetry/poetry/issues"
+Changelog = "https://gstore.readthedocs.io/en/latest/changelog.html"
+
+[tool.poetry.dependencies]
+python = ">=3.9, <4"
+pygithub = "^2.5.0"
+gitpython = "^3.1.31"
+
+[tool.poetry.scripts]
+gstore = "gstore.cli:main"
+
+[tool.poetry.group.testing.dependencies]
+coverage = {version = "^7.2.2", extras = ["toml"]}
+pytest = "^8.3.3"
+pytest-mock = "^3.10.0"
+pylint = "^3.3.1"
+flake8 = "^7.1.1"
+flake8-import-order = "^0.18.2"
+flake8-blind-except = "^0.2.1"
+
+
+[tool.poetry.group.docs.dependencies]
+sphinx = ">=6.1.3"
+furo = ">=2023.3.27"
+
+
+[tool.poetry.group.build.dependencies]
+twine = "^5.1.1"
+
+[tool.pytest.ini_options]
+addopts = "--verbose --doctest-modules --durations=25"
+
+[tool.pylint.MAIN]
+# Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
+# number of processors available to use.
+jobs = 0
+
+[tool.pylint.LOGGING]
+# The type of string formatting that logging methods do.
+# 'old' means using % formatting, 'new' is for '{}' formatting.
+logging-format-style = "old"
+
+[tool.pylint."MESSAGES CONTROL"]
+# Disable the message, report, category or checker with the given id(s).
+disable = ["too-few-public-methods"]
+
+[tool.coverage.report]
+# Set the number of decimal places in coverage percentage
+precision = 2
+
+# Show lines that were not executed
+show_missing = true
+
+[tool.coverage.html]
+# Directory for the HTML format report
+directory = "htmlcov"
+
+[tool.coverage.xml]
+# Filename for the XML format report
+output = "coverage.xml"
+
+[tool.coverage.run]
+# Enable branch coverage (default: False)
+branch = true
+
+# Run tests in parallel (useful when using CI/CD)
+parallel = true
+
+# Filename for storing coverage data
+data_file = ".coverage"
+
+# Omit specified files or directories from the report
+omit = [
+    "*/.venv/*",
+    "*/__pycache__/*",
+    "*/site-packages/*",
+    "*/tests/*"
+]

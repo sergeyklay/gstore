@@ -20,7 +20,7 @@ sync repositories from the GitHub.
 
 import logging
 
-from github import Github
+from github import Auth, Github
 from github.GithubException import BadCredentialsException
 from github.GithubException import UnknownObjectException
 
@@ -28,7 +28,7 @@ from gstore import __version__
 from .exceptions import Error
 from .models import Organization, Repository
 
-USER_AGENT = f'Gstore/{__version__}'
+USER_AGENT = f'gstore/{__version__}'
 
 DEFAULT_HOST = 'api.github.com'
 DEFAULT_TIMEOUT = 15
@@ -77,7 +77,7 @@ class Client:
         self.logger.debug('Setting API URL to %s', api_url)
 
         self.github = Github(
-            login_or_token=token,
+            auth=Auth.Token(token),
             base_url=api_url,
             timeout=timeout,
             user_agent=USER_AGENT

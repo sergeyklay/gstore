@@ -1,4 +1,4 @@
-# Copyright (C) 2020, 2021, 2022, 2023 Serghei Iakovlev <egrep@protonmail.ch>
+# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,26 +33,67 @@ on:
 
 jobs:
   build:
-    name: Build and test package distribution
-    runs-on: ubuntu-20.04
+    name: Build using Python ${{ matrix.python }}
+    runs-on: ubuntu-latest
+
+    # The maximum number of minutes to let a workflow run
+    # before GitHub automatically cancels it. Default: 360
+    timeout-minutes: 30
+
+    strategy:
+      # When set to true, GitHub cancels
+      # all in-progress jobs if any matrix job fails.
+      fail-fast: false
+
+      matrix:
+        python:
+          - '3.9'
+          - '3.10'
+          - '3.11'
+          - '3.12'
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v5.3.0
+        uses: actions/checkout@v3
         with:
-          python-version: '3.9'
+          fetch-depth: 5
 
-      - name: Set up virtualenv
-        run: make init
+      - name: Set up Python ${{ matrix.python }}
+        id: setup-python
+        uses: actions/setup-python@v4.5.0
+        with:
+          python-version: ${{ matrix.python }}
 
-      - name: Install dependencies
-        run: make install
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.8.4
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
 
       - name: Build gstore distribution (sdist and wheel)
-        run: make build
+        run: poetry build
 
-      - name: Testing package distribution and installation
-        run: make test-dist
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: build-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            build-${{ steps.setup-python.outputs.python-version }}-
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --only=build --no-root
+
+      - name: Test package distribution
+        run: |
+          source $VENV
+          twine check dist/*
+
+      - name: Test package installation
+        run: |
+          pip install dist/*.whl
+          gstore --version

@@ -16,7 +16,7 @@
 """Helper routines to work with environment variables.
 
 Provides a convenient way to work with environment variables
-used by various functions within Gstore.
+used by various functions within gstore.
 
 Functions:
 

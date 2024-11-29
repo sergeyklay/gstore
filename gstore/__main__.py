@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-"""The main entry point for Gstore.
+"""The main entry point for gstore.
 
 Invoke as ``gstore`` or ``python -m gstore``.
 
