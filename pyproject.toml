@@ -45,6 +45,7 @@ include = [
     "CHANGELOG.rst",
     "CONTRIBUTING.rst",
     "LICENSE",
+    "MAINTAINERS.rst",
     "README.rst",
     "SECURITY.rst"
 ]

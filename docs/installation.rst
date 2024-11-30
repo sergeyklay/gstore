@@ -44,8 +44,8 @@ Verify that now we have the current development version, for example:
 .. code-block:: bash
 
    $ gstore --version
-   # gstore 0.5.0
-   # Copyright (C) 2020, 2021, 2022, 2023 Serghei Iakovlev.
+   # gstore 0.7.0
+   # Copyright (C) 2020-2024 Serghei Iakovlev.
    # This is free software; see the source for copying conditions. There is NO
    # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
