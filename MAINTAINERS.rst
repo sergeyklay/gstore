@@ -15,6 +15,7 @@ Key configurations:
 - **Build Tool:** ``poetry``
 - **Primary Dependencies:** ``pygithub``, ``gitpython``
 - **Documentation Tool:** ``sphinx``
+- **Testing Tools:** ``pytest``, ``coverage``
 - **Linting Tools:** ``flake8``, ``pylint``
 
 Testing the Project
@@ -64,6 +65,7 @@ Build the package:
 .. code-block:: bash
 
    $ poetry build
+   $ twine check dist/*
 
 CI Workflow
 -----------
