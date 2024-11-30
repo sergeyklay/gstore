@@ -11,7 +11,7 @@ The ``gstore`` project is a CLI tool for synchronizing GitHub repositories. It i
 
 Key configurations:
 
-- **Python Versions Supported:* 3.9, 3.10, 3.11, 3.12
+- **Python Versions Supported:** 3.9, 3.10, 3.11, 3.12
 - **Build Tool:** ``poetry``
 - **Primary Dependencies:** ``pygithub``, ``gitpython``
 - **Documentation Tool:** ``sphinx``
