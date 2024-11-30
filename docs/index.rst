@@ -97,6 +97,7 @@ If you'd like to contribute to ``gstore`` you're most welcome!
 .. toctree::
    :maxdepth: 1
 
+   maintainers
    license
    changelog
 
