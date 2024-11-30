@@ -21,9 +21,9 @@ Breaking Changes
 Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Migrate project infrastructure to poetry
+* Migrate project infrastructure to poetry.
 * Bumped ``furo`` from 2022.12.7 to 2024.8.6.
-* Bumped ``pygithub`` from 1.58.0 to 2.5.0
+* Bumped ``pygithub`` from 1.58.0 to 2.5.0.
 * Bumped ``gitpython`` from 3.1.17 to 3.1.43.
 
 
