@@ -13,7 +13,7 @@ Breaking Changes
 * Dropped support for Python 3.8 due to end-of-life status.
   Python 3.8 reached its end-of-life date in October 2024, which means it will no
   longer receive bug fixes or security updates from the Python development team.
-  As a result, the support for Python 3.7 was removed in order to ensure the
+  As a result, the support for Python 3.8 was removed in order to ensure the
   ongoing security and stability of our package. Users who require Python 3.8
   can continue to use older package versions that support it.
 
