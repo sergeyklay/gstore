@@ -1,6 +1,6 @@
-=========================================
-Maintainers' Guide for the gstore Project
-=========================================
+==================
+Maintainers' Guide
+==================
 
 This document outlines essential guidelines for maintaining the ``gstore`` project. It provides instructions for testing, building, and deploying the package, as well as managing CI workflows.
 
@@ -11,11 +11,11 @@ The ``gstore`` project is a CLI tool for synchronizing GitHub repositories. It i
 
 Key configurations:
 
-- ***Python Versions Supported:*** 3.9, 3.10, 3.11, 3.12
+- **Python Versions Supported:* 3.9, 3.10, 3.11, 3.12
 - **Build Tool:** ``poetry``
 - **Primary Dependencies:** ``pygithub``, ``gitpython``
 - **Documentation Tool:** ``sphinx``
-- **Linting Tools:** flake8, pylint
+- **Linting Tools:** ``flake8``, ``pylint``
 
 Testing the Project
 ===================
