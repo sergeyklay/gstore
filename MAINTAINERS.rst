@@ -18,7 +18,7 @@ Key configurations:
 - **Linting Tools:** flake8, pylint
 
 Testing the Project
-==================
+===================
 
 Unit tests and coverage reporting are managed using ``pytest`` and ``coverage``.
 
