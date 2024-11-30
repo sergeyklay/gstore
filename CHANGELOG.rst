@@ -22,11 +22,9 @@ Trivial/Internal Changes
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Migrate project infrastructure to poetry
-* Bumped ``coverage`` from 7.2.1 to 7.2.2.
-* Bumped ``furo`` from 2022.12.7 to 2023.3.27.
-* Bumped ``pygithub`` from 1.58.0 to 1.58.1.
-* Bumped ``pylint`` from 2.16.2 to 2.17.1.
-* Bumped ``pytest`` from 7.2.1 to 7.2.2.
+* Bumped ``furo`` from 2022.12.7 to 2024.8.6.
+* Bumped ``pygithub`` from 1.58.0 to 2.5.0
+* Bumped ``gitpython`` from 3.1.17 to 3.1.43.
 
 
 ----
