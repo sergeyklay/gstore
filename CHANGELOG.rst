@@ -4,6 +4,12 @@ Changelog
 This file contains a brief summary of new features and dependency changes or
 releases, in reverse chronological order.
 
+0.8.0 (2024-XX-XX)
+------------------
+
+* Work In Progress
+
+
 0.7.0 (2024-11-30)
 ------------------
 

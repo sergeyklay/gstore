@@ -19,7 +19,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "gstore"
-version = "0.7.0"
+version = "0.8.0"
 description = "Synchronize GitHub repositories made easy."
 authors = ["Serghei Iakovlev <gnu@serghei.pl>"]
 maintainers = ["Serghei Iakovlev <gnu@serghei.pl>"]
