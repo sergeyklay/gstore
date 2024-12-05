@@ -18,16 +18,6 @@
 Provides a convenient way to work with environment variables
 used by various functions within gstore.
 
-Functions:
-
-    lookup_token() -> str or None
-    get_host() -> str or None
-    get_target() -> str or None
-
-Data:
-
-    TOKEN_NAMES
-
 """
 
 import os
