@@ -18,28 +18,6 @@
 This module tracks the version of the package as well as the base
 package info used by various functions within gstore.
 
-Modules:
-
-    __main__
-    args
-    cli
-    client
-    env
-    exceptions
-    logger
-    models
-    repo
-
-Misc variables:
-
-    __copyright__
-    __version__
-    __license__
-    __author__
-    __author_email__
-    __url__
-    __description__
-
 Refer to the `documentation <https://gstore.readthedocs.io/>`_ for
 details on the use of this package.
 
