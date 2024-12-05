@@ -95,6 +95,10 @@ furo = ">=2023.3.27"
 [tool.poetry.group.build.dependencies]
 twine = "^5.1.1"
 
+
+[tool.poetry.group.dev.dependencies]
+debugpy = "^1.8.9"
+
 [tool.pytest.ini_options]
 addopts = "--verbose --doctest-modules --durations=25"
 
