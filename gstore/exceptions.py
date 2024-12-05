@@ -13,17 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
-"""Helper routines and classes to work exceptions.
-
-Classes:
-
-    Error
-
-Functions:
-
-    parse_git_errors() -> list
-
-"""
+"""Helper routines and classes to work exceptions."""
 
 import re
 
