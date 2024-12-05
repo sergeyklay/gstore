@@ -15,10 +15,11 @@
 
 """Command line argument parsing methods for gstore."""
 
+from argparse import ArgumentParser, HelpFormatter, Namespace, SUPPRESS
 import os
 import sys
 import textwrap as _textwrap
-from argparse import ArgumentParser, HelpFormatter, Namespace, SUPPRESS
+from typing import Optional
 
 from gstore import __copyright__, __version__
 from gstore import env
@@ -129,7 +130,7 @@ def parser_add_options(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def argparse() -> Namespace or None:
+def argparse() -> Optional[Namespace]:
     """
     The function initializes command line arguments parser.
 
