@@ -15,10 +15,10 @@
 
 """Command line argument parsing methods for gstore."""
 
-from argparse import ArgumentParser, HelpFormatter, Namespace, SUPPRESS
 import os
 import sys
 import textwrap as _textwrap
+from argparse import ArgumentParser, HelpFormatter, Namespace, SUPPRESS
 from typing import Optional
 
 from gstore import __copyright__, __version__

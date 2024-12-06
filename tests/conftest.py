@@ -15,9 +15,9 @@
 
 from unittest.mock import MagicMock
 
+import pytest
 from github import Github
 from github.GithubException import UnknownObjectException
-import pytest
 
 from gstore.client import Client
 from gstore.repo import Context, Organization, Repository
