@@ -15,7 +15,7 @@
 
 import logging
 import os
-from unittest.mock import MagicMock, call
+from unittest.mock import MagicMock
 
 from git import GitCommandError
 
