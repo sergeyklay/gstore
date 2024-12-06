@@ -15,11 +15,11 @@
 
 """Repository classes used to wrap git classes for gstore."""
 
-from dataclasses import dataclass
 import logging
 import multiprocessing
 import os
 import shutil
+from dataclasses import dataclass
 from typing import Optional
 
 import git
@@ -123,7 +123,7 @@ def _do_sync(repos_list):
             # local Git repository.
             if not os.path.exists(git_path):
                 ctx.logger.debug('Remove wrong formed local repo from %s',
-                                  repo_path)
+                                 repo_path)
                 shutil.rmtree(repo_path, ignore_errors=True)
 
         if os.path.exists(git_path):
@@ -145,6 +145,7 @@ def _init_process(verbose=False, quiet=False, base_path=None):
     logger = logging.getLogger(__name__)
     logger.info('Initializing process')
 
+    # pylint: disable=global-statement
     global _proc_ctx
     _proc_ctx = Context(base_path=base_path, logger=logger)
 
