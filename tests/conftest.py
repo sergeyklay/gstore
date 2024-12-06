@@ -15,12 +15,12 @@
 
 from unittest.mock import MagicMock
 
-import pytest
 from github import Github
 from github.GithubException import UnknownObjectException
+import pytest
 
 from gstore.client import Client
-from gstore.repo import _Context, Organization, Repository
+from gstore.repo import Context, Organization, Repository
 
 
 class MicroMock:
@@ -158,11 +158,6 @@ def repository(organization):
 
 
 @pytest.fixture
-def repo_target(tmpdir):
-    target = tmpdir.join('Acme', 'test_repo')
-    return str(target)
-
-
-@pytest.fixture
-def test_context(repo_target):
-    return _Context(base_path=repo_target, logger=MagicMock())
+def test_context(tmpdir):
+    context = Context(base_path=tmpdir, logger=MagicMock())
+    return context
