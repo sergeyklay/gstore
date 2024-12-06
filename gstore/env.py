@@ -18,19 +18,11 @@
 Provides a convenient way to work with environment variables
 used by various functions within gstore.
 
-Functions:
-
-    lookup_token() -> str or None
-    get_host() -> str or None
-    get_target() -> str or None
-
-Data:
-
-    TOKEN_NAMES
-
 """
 
 import os
+from typing import Optional
+
 
 TOKEN_NAMES = (
     'GH_TOKEN',
@@ -40,7 +32,7 @@ TOKEN_NAMES = (
 )
 
 
-def lookup_token() -> str or None:
+def lookup_token() -> Optional[str]:
     """Lookup a personal access token from environment variables.
 
     This function looks for token variable in the following order:
@@ -61,7 +53,7 @@ def lookup_token() -> str or None:
     return None
 
 
-def get_host() -> str or None:
+def get_host() -> Optional[str]:
     """Get GitHub API hostname from GH_HOST environment variable.
 
     This function may return None if there is no environment
@@ -73,7 +65,7 @@ def get_host() -> str or None:
     return os.environ.get('GH_HOST') or None
 
 
-def get_target() -> str or None:
+def get_target() -> Optional[str]:
     """Get base target to sync repos.
 
     This function may return None if there is no environment

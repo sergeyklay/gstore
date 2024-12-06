@@ -17,10 +17,6 @@
 
 Invoke as ``gstore`` or ``python -m gstore``.
 
-Functions:
-
-    init() -> None
-
 """
 
 import sys
