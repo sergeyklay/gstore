@@ -170,7 +170,7 @@ def sync(org: Organization, repos: List[Repository], base_path: str, **kwargs):
     # Calculate the number of processes to use
     jobs = min(len(repos), requested_jobs)
     if jobs == 0:
-        logger.warning("No repositories to sync.")
+        logger.warning("No repositories to sync")
         return
 
     org_path = os.path.join(base_path, org.login)

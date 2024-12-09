@@ -113,7 +113,8 @@ jobs:
           name: codecov-umbrella
           flags: unittests
           env_vars: OS,PYTHON
-          file: ./coverage.xml
+          files: ./coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Success Reporting
         if: success()
