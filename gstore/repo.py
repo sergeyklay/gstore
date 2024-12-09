@@ -160,9 +160,9 @@ def sync(org: Organization, repos: list, base_path: str, **kwargs):
     :keyword bool quiet: Disable info logging
     :keyword int jobs: the number of worker processes to use
     """
-    verbose = kwargs.get('verbose', False)
-    quiet = kwargs.get('quiet', False)
-    jobs = kwargs.get('jobs', multiprocessing.cpu_count())
+    verbose = kwargs.get('verbose') or False
+    quiet = kwargs.get('quiet') or False
+    jobs = kwargs.get('jobs') or multiprocessing.cpu_count()
 
     setup_logger(verbose, quiet)
     main_logger = logging.getLogger(__name__)
