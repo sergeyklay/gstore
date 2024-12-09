@@ -20,7 +20,7 @@ import multiprocessing
 import os
 import shutil
 from dataclasses import dataclass
-from typing import Optional
+from typing import List, Optional
 
 import git
 
@@ -93,13 +93,13 @@ def fetch(repo: Repository, ctx: Context):
             ctx.logger.error(msg)
 
 
-def _do_sync(repos_list):
+def _do_sync(repos: List[Repository]):
     """Perform repos synchronisation. Intended for internal usage."""
     assert _proc_ctx is not None, "Context not initialized in this process"
 
     ctx = _proc_ctx
 
-    for repo in repos_list:
+    for repo in repos:
         org_path = os.path.join(ctx.base_path, repo.org.login)
         repo_path = os.path.join(org_path, repo.name)
         git_path = os.path.join(repo_path, '.git')
@@ -150,35 +150,40 @@ def _init_process(verbose=False, quiet=False, base_path=None):
     _proc_ctx = Context(base_path=base_path, logger=logger)
 
 
-def sync(org: Organization, repos: list, base_path: str, **kwargs):
+def sync(org: Organization, repos: List[Repository], base_path: str, **kwargs):
     """Sync repositories for an organization.
 
     :param Organization org: Organization to sync
     :param list repos: Repository list to sync
-    :param string base_path: Base target to sync repos
+    :param string base_path: Base target to sync repositories
     :keyword bool verbose: Enable debug logging
     :keyword bool quiet: Disable info logging
-    :keyword int jobs: the number of worker processes to use
+    :keyword int jobs: The number of worker processes to use
     """
     verbose = kwargs.get('verbose') or False
     quiet = kwargs.get('quiet') or False
-    jobs = kwargs.get('jobs') or multiprocessing.cpu_count()
+    requested_jobs = kwargs.get('jobs') or multiprocessing.cpu_count()
 
-    setup_logger(verbose, quiet)
-    main_logger = logging.getLogger(__name__)
-    main_logger.info('Sync repos for %s', org.login)
+    logger = logging.getLogger(__name__)
+    logger.info('Sync repos for %s', org.login)
+
+    # Calculate the number of processes to use
+    jobs = min(len(repos), requested_jobs)
+    if jobs == 0:
+        logger.warning("No repositories to sync.")
+        return
 
     org_path = os.path.join(base_path, org.login)
     if not os.path.exists(org_path):
-        main_logger.debug('Creating directory %s', org_path)
+        logger.debug('Creating directory %s', org_path)
         os.makedirs(org_path)
 
-    def chunks(lst, n):
-        """Yield successive n-sized chunks from lst."""
-        for i in range(0, len(lst), n):
-            yield lst[i:i + n]
+    def chunks(tasks: list, n: int):
+        """Yield successive n-sized chunks from tasks list."""
+        for i in range(0, len(tasks), n):
+            yield tasks[i:i + n]
 
-    main_logger.info('Processes to be spawned: %s', jobs)
+    logger.info('Processes to be spawned: %s', jobs)
     with multiprocessing.Pool(
             processes=jobs,
             initializer=_init_process,

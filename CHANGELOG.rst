@@ -7,6 +7,15 @@ releases, in reverse chronological order.
 0.8.0 (2024-XX-XX)
 ------------------
 
+Improvements
+^^^^^^^^^^^^
+
+* ReformatOptimized the ``gstore.repo.sync`` function to dynamically
+  adjust the number of worker processes based on the number of
+  repositories, ensuring no unnecessary processes are created when
+  tasks are fewer than available CPUs.
+
+
 Bug Fixes
 ^^^^^^^^^
 

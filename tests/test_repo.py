@@ -138,7 +138,7 @@ def test_sync(mocker, caplog, organization, repository, test_context):
         ("gstore.repo", logging.INFO, "Sync repos for " + organization.login),
         ("gstore.repo", logging.DEBUG,
          "Creating directory " + os.path.join(base_path, organization.login)),
-        ("gstore.repo", logging.INFO, "Processes to be spawned: 4"),
+        ("gstore.repo", logging.INFO, "Processes to be spawned: 1"),
     ]
 
     mock_pool.map.assert_called_once()
