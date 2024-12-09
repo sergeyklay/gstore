@@ -19,6 +19,7 @@ import os
 import sys
 import textwrap as _textwrap
 from argparse import ArgumentParser, HelpFormatter, Namespace, SUPPRESS
+from typing import Optional
 
 from gstore import __copyright__, __version__
 from gstore import env
@@ -94,7 +95,7 @@ def parser_add_options(parser: ArgumentParser) -> ArgumentParser:
     ogroup.add_argument('--token', dest='token', default=token, type=str,
                         help='An authentication token for GitHub API requests')
 
-    ogroup.add_argument('--host', dest='host', default=env.lookup_token(),
+    ogroup.add_argument('--host', dest='host', default=env.get_host(),
                         type=str, help='The GitHub API hostname')
 
     ogroup.add_argument('-o', '--org', dest='org', action='append', type=str,
@@ -129,7 +130,7 @@ def parser_add_options(parser: ArgumentParser) -> ArgumentParser:
     return parser
 
 
-def argparse() -> Namespace or None:
+def argparse() -> Optional[Namespace]:
     """
     The function initializes command line arguments parser.
 

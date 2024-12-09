@@ -7,7 +7,23 @@ releases, in reverse chronological order.
 0.8.0 (2024-XX-XX)
 ------------------
 
-* Work In Progress
+Improvements
+^^^^^^^^^^^^
+
+* ReformatOptimized the ``gstore.repo.sync`` function to dynamically
+  adjust the number of worker processes based on the number of
+  repositories, ensuring no unnecessary processes are created when
+  tasks are fewer than available CPUs.
+
+
+Bug Fixes
+^^^^^^^^^
+
+* Fixed handling of host assignment when a token is provided but no
+  host is explicitly specified. Previously, the token was incorrectly
+  used as both the token and the host in such cases.
+
+----
 
 
 0.7.0 (2024-11-30)

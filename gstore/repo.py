@@ -20,6 +20,7 @@ import multiprocessing
 import os
 import shutil
 from dataclasses import dataclass
+from typing import List, Optional
 
 import git
 
@@ -29,89 +30,90 @@ from .models import Organization, Repository
 
 
 @dataclass
-class _Context:
+class Context:
     """Class for passing a context to parallel processes."""
 
-    base_path: str = ''
-    logger: logging.Logger = None
+    base_path: str
+    logger: logging.Logger
 
 
 # pylint: disable=invalid-name
-_ctx = _Context(logger=logging.getLogger(__name__))
+_proc_ctx: Optional[Context] = None
 
 
-def clone(repo: Repository, target: str):
+def clone(repo: Repository, ctx: Context):
     """Clone a repository to the target directory."""
-    _ctx.logger.info(
+    ctx.logger.info(
         'Clone repository to %s/%s',
         repo.org.login,
         repo.name)
+    repo_path = os.path.join(ctx.base_path, repo.org.login, repo.name)
 
-    if os.path.exists(target):
-        os.removedirs(target)
+    if os.path.exists(repo_path):
+        shutil.rmtree(repo_path, ignore_errors=True)
 
     git_url = f'git@github.com:{repo.org.login}/{repo.name}.git'
 
     try:
-        git.Repo.clone_from(
-            git_url,
-            target,
-        )
+        git.Repo.clone_from(git_url, repo_path)
     except git.GitCommandError as exception:
-        _ctx.logger.error('Failed to clone %s/%s', repo.org.login, repo.name)
+        ctx.logger.error('Failed to clone %s/%s', repo.org.login, repo.name)
         for msg in parse_git_errors(exception):
-            _ctx.logger.error(msg)
+            ctx.logger.error(msg)
 
 
-def fetch(repo: Repository, target: str):
+def fetch(repo: Repository, ctx: Context):
     """Sync a repository in the target directory."""
-    _ctx.logger.info('Update %s/%s repository', repo.org.login, repo.name)
-    local_repo = git.Repo(target)
+    ctx.logger.info('Update %s/%s repository', repo.org.login, repo.name)
+    repo_path = os.path.join(ctx.base_path, repo.org.login, repo.name)
+    local_repo = git.Repo(repo_path)
 
     if not local_repo.heads:
-        _ctx.logger.info(
-            'There are no remote branches for %s/%s, skip updating',
+        ctx.logger.info(
+            'No remote branches for %s/%s, skip fetching',
             repo.org.login,
             repo.name)
         return
 
     try:
-        _ctx.logger.debug(
-            'Download objects and refs from %s/%s repository',
+        ctx.logger.debug(
+            'Download objects and refs from %s/%s',
             repo.org.login,
             repo.name)
         local_repo.git.fetch(['--prune', '--quiet'])
 
-        _ctx.logger.debug(
-            'Fetch from and integrate with %s/%s repository',
+        ctx.logger.debug(
+            'Pulling all branches from %s/%s',
             repo.org.login,
             repo.name)
         local_repo.git.pull(['--all', '--quiet'])
     except git.GitCommandError as exception:
-        _ctx.logger.error('Failed to update %s/%s', repo.org.login, repo.name)
+        ctx.logger.error('Failed to update %s/%s', repo.org.login, repo.name)
         for msg in parse_git_errors(exception):
-            _ctx.logger.error(msg)
+            ctx.logger.error(msg)
 
 
-def _do_sync(repos_list):
+def _do_sync(repos: List[Repository]):
     """Perform repos synchronisation. Intended for internal usage."""
-    assert isinstance(_ctx.base_path, str) and _ctx.base_path
+    assert _proc_ctx is not None, "Context not initialized in this process"
 
-    for repo in repos_list:
-        org_path = os.path.join(_ctx.base_path, repo.org.login)
+    ctx = _proc_ctx
+
+    for repo in repos:
+        org_path = os.path.join(ctx.base_path, repo.org.login)
         repo_path = os.path.join(org_path, repo.name)
         git_path = os.path.join(repo_path, '.git')
 
         if os.path.exists(repo_path):
             if os.path.isfile(repo_path):
-                _ctx.logger.error(
+                ctx.logger.error(
                     'Unable to sync %s. The path %s is a regular file',
                     repo.name,
                     repo_path)
                 continue
 
             if not os.access(repo_path, os.W_OK | os.X_OK):
-                _ctx.logger.error(
+                ctx.logger.error(
                     'Unable to sync %s. The path %s is not writeable',
                     repo.name,
                     repo_path)
@@ -120,14 +122,14 @@ def _do_sync(repos_list):
             # We're going to run a Git command, but weren't inside a
             # local Git repository.
             if not os.path.exists(git_path):
-                _ctx.logger.debug('Remove wrong formed local repo from %s',
-                                  repo_path)
+                ctx.logger.debug('Remove wrong formed local repo from %s',
+                                 repo_path)
                 shutil.rmtree(repo_path, ignore_errors=True)
 
         if os.path.exists(git_path):
-            fetch(repo, repo_path)
+            fetch(repo, ctx)
         else:
-            clone(repo, repo_path)
+            clone(repo, ctx)
 
 
 def _init_process(verbose=False, quiet=False, base_path=None):
@@ -140,45 +142,51 @@ def _init_process(verbose=False, quiet=False, base_path=None):
 
     # Setup logger for use within multiprocessing pool
     setup_logger(verbose, quiet)
+    logger = logging.getLogger(__name__)
+    logger.info('Initializing process')
 
-    # Setup git base path for use within multiprocessing pool
-    _ctx.base_path = base_path
-
-    _ctx.logger = logging.getLogger(f'{__name__}')
-    _ctx.logger.info('Initializing process')
+    # pylint: disable=global-statement
+    global _proc_ctx
+    _proc_ctx = Context(base_path=base_path, logger=logger)
 
 
-def sync(org: Organization, repos: list, base_path: str, **kwargs):
+def sync(org: Organization, repos: List[Repository], base_path: str, **kwargs):
     """Sync repositories for an organization.
 
     :param Organization org: Organization to sync
     :param list repos: Repository list to sync
-    :param string base_path: Base target to sync repos
+    :param string base_path: Base target to sync repositories
     :keyword bool verbose: Enable debug logging
     :keyword bool quiet: Disable info logging
-    :keyword int jobs: the number of worker processes to use
+    :keyword int jobs: The number of worker processes to use
     """
-    _ctx.logger.info('Sync repos for %s', org.login)
+    verbose = kwargs.get('verbose') or False
+    quiet = kwargs.get('quiet') or False
+    requested_jobs = kwargs.get('jobs') or multiprocessing.cpu_count()
+
+    logger = logging.getLogger(__name__)
+    logger.info('Sync repos for %s', org.login)
+
+    # Calculate the number of processes to use
+    jobs = min(len(repos), requested_jobs)
+    if jobs == 0:
+        logger.warning("No repositories to sync")
+        return
 
     org_path = os.path.join(base_path, org.login)
-
-    # Just in case create directories recursively
     if not os.path.exists(org_path):
-        _ctx.logger.debug('Creating directory %s', org_path)
+        logger.debug('Creating directory %s', org_path)
         os.makedirs(org_path)
 
-    jobs = kwargs.get('jobs')
-    if not jobs:
-        jobs = multiprocessing.cpu_count()
+    def chunks(tasks: list, n: int):
+        """Yield successive n-sized chunks from tasks list."""
+        for i in range(0, len(tasks), n):
+            yield tasks[i:i + n]
 
-    def chunks(lst, n):
-        """Yield successive n-sized chunks from lst."""
-        for i in range(0, len(lst), n):
-            yield lst[i:i + n]
-
-    _ctx.logger.info('Processes to be spawned: %s', jobs)
-    with multiprocessing.Pool(processes=jobs, initializer=_init_process,
-                              initargs=(kwargs.get('verbose', False),
-                                        kwargs.get('quiet', False),
-                                        base_path)) as pool:
+    logger.info('Processes to be spawned: %s', jobs)
+    with multiprocessing.Pool(
+            processes=jobs,
+            initializer=_init_process,
+            initargs=(verbose, quiet, base_path)
+    ) as pool:
         pool.map(_do_sync, chunks(repos, jobs))
