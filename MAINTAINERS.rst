@@ -7,11 +7,11 @@ This document outlines essential guidelines for maintaining the ``gstore`` proje
 Overview
 ========
 
-The ``gstore`` project is a CLI tool for synchronizing GitHub repositories. It is managed via poetry and adheres to modern Python packaging standards. This guide assumes familiarity with GitHub Actions, ``poetry``, and common Python development workflows.
+This is managed via poetry and adheres to modern Python packaging standards. This guide assumes familiarity with GitHub Actions, ``poetry``, and common Python development workflows.
 
 Key configurations:
 
-- **Python Versions Supported:** 3.9, 3.10, 3.11, 3.12
+- **Python Versions Supported:** >= 3.9
 - **Build Tool:** ``poetry``
 - **Primary Dependencies:** ``pygithub``, ``gitpython``
 - **Documentation Tool:** ``sphinx``
