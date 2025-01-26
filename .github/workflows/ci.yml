@@ -106,7 +106,7 @@ jobs:
           coverage combine
           coverage xml
 
-      - uses: codecov/codecov-action@v5.1.2
+      - uses: codecov/codecov-action@v5.3.1
         if: success()
         with:
           fail_ci_if_error: false
