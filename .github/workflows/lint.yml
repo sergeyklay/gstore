@@ -41,7 +41,7 @@ jobs:
 
       - name: Set up Python 3.12
         id: setup-python
-        uses: actions/setup-python@v5.6.0
+        uses: actions/setup-python@v6.0.0
         with:
           python-version: '3.12'
 
