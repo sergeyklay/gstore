@@ -31,6 +31,8 @@ Install dependencies:
 .. code-block:: bash
 
    $ poetry install --with=testing
+   $ python -m venv .venv
+   $ source .venv/bin/activate
 
 Execute tests:
 
