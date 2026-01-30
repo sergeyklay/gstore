@@ -11,7 +11,7 @@ This is managed via uv and adheres to modern Python packaging standards. This gu
 
 Key configurations:
 
-- **Python Versions Supported:** >= 3.9
+- **Python Versions Supported:** >= 3.10
 - **Build Tool:** ``uv``
 - **Primary Dependencies:** ``pygithub``, ``gitpython``
 - **Documentation Tool:** ``sphinx``

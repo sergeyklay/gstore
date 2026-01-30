@@ -35,6 +35,7 @@ jobs:
   build:
     name: Build using Python ${{ matrix.python }}
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental || false }}
 
     # The maximum number of minutes to let a workflow run
     # before GitHub automatically cancels it. Default: 360
@@ -47,10 +48,14 @@ jobs:
 
       matrix:
         python:
-          - '3.9'
           - '3.10'
           - '3.11'
           - '3.12'
+          - '3.13'
+          - '3.14'
+        include:
+          - python: '3.14'
+            experimental: true
 
     steps:
       - name: Checkout code

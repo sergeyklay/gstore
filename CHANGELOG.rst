@@ -7,6 +7,17 @@ releases, in reverse chronological order.
 0.8.0 (2024-XX-XX)
 ------------------
 
+Breaking Changes
+^^^^^^^^^^^^^^^^
+
+* Dropped support for Python 3.9 due to approaching end-of-life status.
+  Python 3.9 reaches its end-of-life in October 2025. Support was removed
+  to ensure ongoing security and stability. Users requiring Python 3.9
+  can continue to use version 0.7.x.
+
+* Added support for Python 3.13 and Python 3.14.
+
+
 Improvements
 ^^^^^^^^^^^^
 

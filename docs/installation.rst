@@ -5,7 +5,7 @@ Installation
 Requirements
 ============
 
-* `Python <https://www.python.org/>`_ >= 3.8
+* `Python <https://www.python.org/>`_ >= 3.10
 * `Git <https://git-scm.com/>`_ >= 1.7.0
 
 Installing gstore
