@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2024 Serghei Iakovlev <git@serghei.pl>
+# Copyright (C) 2020-2026 Serghei Iakovlev <git@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,16 +23,14 @@ build:
     python: '3.12'
   jobs:
     post_create_environment:
-      # Install poetry
-      # https://python-poetry.org/docs/#installing-manually
-      - pip install poetry
-      - poetry --version
+      # Install uv for dependency export
+      # https://docs.astral.sh/uv/
+      - pip install uv
     post_install:
-      # Install dependencies with 'docs' dependency group
-      # https://python-poetry.org/docs/managing-dependencies/#dependency-groups
-      # VIRTUAL_ENV needs to be set manually for now.
-      # See https://github.com/readthedocs/readthedocs.org/pull/11152/
-      - VIRTUAL_ENV=$READTHEDOCS_VIRTUALENV_PATH poetry install --with docs
+      # Export docs dependencies and install via pip
+      # https://docs.astral.sh/uv/concepts/projects/dependencies/
+      - uv export --only-group docs --no-hashes -o docs-requirements.txt
+      - pip install -r docs-requirements.txt
 
 sphinx:
   configuration: docs/conf.py

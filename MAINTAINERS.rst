@@ -7,12 +7,12 @@ This document outlines essential guidelines for maintaining the ``gstore`` proje
 Overview
 ========
 
-This is managed via poetry and adheres to modern Python packaging standards. This guide assumes familiarity with GitHub Actions, ``poetry``, and common Python development workflows.
+This is managed via uv and adheres to modern Python packaging standards. This guide assumes familiarity with GitHub Actions, ``uv``, and common Python development workflows.
 
 Key configurations:
 
 - **Python Versions Supported:** >= 3.9
-- **Build Tool:** ``poetry``
+- **Build Tool:** ``uv``
 - **Primary Dependencies:** ``pygithub``, ``gitpython``
 - **Documentation Tool:** ``sphinx``
 - **Testing Tools:** ``pytest``, ``coverage``
@@ -30,17 +30,15 @@ Install dependencies:
 
 .. code-block:: bash
 
-   $ poetry install --with=testing
-   $ python -m venv .venv
-   $ source .venv/bin/activate
+   $ uv sync --group dev
 
 Execute tests:
 
 .. code-block:: bash
 
-   $ coverage run -m pytest ./gstore ./tests
-   $ coverage combine
-   $ coverage report
+   $ uv run coverage run -m pytest ./gstore ./tests
+   $ uv run coverage combine
+   $ uv run coverage report
 
 CI Workflow
 -----------
@@ -60,14 +58,14 @@ Install build dependencies:
 
 .. code-block:: bash
 
-   $ poetry install --only=build
+   $ uv sync --group dev
 
 Build the package:
 
 .. code-block:: bash
 
-   $ poetry build
-   $ twine check dist/*
+   $ uv build
+   $ uv run twine check dist/*
 
 CI Workflow
 -----------
@@ -86,20 +84,20 @@ Install documentation dependencies:
 
 .. code-block:: bash
 
-   $ poetry install --only=docs
+   $ uv sync --group dev
 
 Build the documentation:
 
 .. code-block:: bash
 
-   $ sphinx-build --nitpicky --show-traceback --fail-on-warning --builder html docs docs/_build/html
+   $ uv run sphinx-build --nitpicky --show-traceback --fail-on-warning --builder html docs docs/_build/html
 
 Validate doctests:
 
 .. code-block:: bash
 
-   $ sphinx-build --builder doctest docs docs/_build/doctest
-   $ python -m doctest README.rst
+   $ uv run sphinx-build --builder doctest docs docs/_build/doctest
+   $ uv run python -m doctest README.rst
 
 CI Workflow
 -----------
@@ -118,14 +116,14 @@ Install linting dependencies:
 
 .. code-block:: bash
 
-   $ poetry install --with=testing
+   $ uv sync --group dev
 
 Execute linting:
 
 .. code-block:: bash
 
-   $ flake8 ./
-   $ pylint ./gstore
+   $ uv run flake8 ./
+   $ uv run pylint ./gstore
 
 CI Workflow
 -----------
@@ -148,8 +146,8 @@ Steps for Release
 
 .. code-block:: bash
 
-   $ poetry build
-   $ poetry publish
+   $ uv build
+   $ uv publish
 
 CI Workflow
 -----------
@@ -170,11 +168,11 @@ CI/CD is managed via GitHub Actions, with workflows for:
 Useful CI Commands
 ------------------
 
-Validate the ``pyproject.toml`` file:
+Validate the ``uv.lock`` file:
 
 .. code-block:: bash
 
-   $ poetry check
+   $ uv lock --check
 
 Test installation of the built package:
 

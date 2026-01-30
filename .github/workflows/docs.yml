@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
+# Copyright (C) 2020-2026 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -39,38 +39,21 @@ jobs:
         with:
           fetch-depth: 5
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
       - name: Set up Python 3.12
-        id: setup-python
-        uses: actions/setup-python@v6.2.0
-        with:
-          python-version: '3.12'
-
-      - name: Install and configure Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.8.4
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: true
-
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v5
-        with:
-          path: .venv
-          key: docs-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            docs-${{ steps.setup-python.outputs.python-version }}-
+        run: uv python install 3.12
 
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --only=docs --no-root
+        run: uv sync --group dev
 
       - name: Build and test package documentation
         run: |
-          source $VENV
+          uv run sphinx-build --nitpicky --show-traceback --fail-on-warning --builder html docs docs/_build/html
+          uv run sphinx-build --nitpicky --show-traceback --fail-on-warning --builder doctest docs docs/_build/doctest
 
-          sphinx-build --nitpicky --show-traceback --fail-on-warning --builder html docs docs/_build/html
-          sphinx-build --nitpicky --show-traceback --fail-on-warning --builder doctest docs docs/_build/doctest
-
-          python -m doctest README.rst
+          uv run python -m doctest README.rst
