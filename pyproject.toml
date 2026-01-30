@@ -62,7 +62,7 @@ testing = [
     "flake8-blind-except>=0.2.1,<1",
 ]
 docs = ["sphinx>=6.1.3", "furo>=2023.3.27"]
-build = ["twine>=5.1.1,<6"]
+build = ["twine>=6.0.0,<7"]
 dev = ["debugpy>=1.8.9,<2"]
 
 [project.scripts]
@@ -86,7 +86,7 @@ dev = [
     "flake8-blind-except>=0.2.1,<1",
     "sphinx>=6.1.3",
     "furo>=2023.3.27",
-    "twine>=5.1.1,<6",
+    "twine>=6.0.0,<7",
     "debugpy>=1.8.9,<2",
 ]
 
