@@ -20,7 +20,7 @@ import multiprocessing
 import os
 import shutil
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Optional
 
 import git
 
@@ -93,7 +93,7 @@ def fetch(repo: Repository, ctx: Context):
             ctx.logger.error(msg)
 
 
-def _do_sync(repos: List[Repository]):
+def _do_sync(repos: list[Repository]):
     """Perform repos synchronisation. Intended for internal usage."""
     assert _proc_ctx is not None, "Context not initialized in this process"
 
@@ -150,7 +150,7 @@ def _init_process(verbose=False, quiet=False, base_path=None):
     _proc_ctx = Context(base_path=base_path, logger=logger)
 
 
-def sync(org: Organization, repos: List[Repository], base_path: str, **kwargs):
+def sync(org: Organization, repos: list[Repository], base_path: str, **kwargs):
     """Sync repositories for an organization.
 
     :param Organization org: Organization to sync

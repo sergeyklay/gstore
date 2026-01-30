@@ -23,7 +23,6 @@ used by various functions within gstore.
 import os
 from typing import Optional
 
-
 TOKEN_NAMES = (
     'GH_TOKEN',
     'GITHUB_TOKEN',

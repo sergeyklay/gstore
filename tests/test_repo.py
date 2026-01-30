@@ -19,8 +19,7 @@ from unittest.mock import MagicMock
 
 from git import GitCommandError
 
-from gstore.repo import _do_sync
-from gstore.repo import clone, fetch, sync
+from gstore.repo import _do_sync, clone, fetch, sync
 
 
 def test_clone_success(mocker, repository, test_context):

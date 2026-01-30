@@ -18,11 +18,10 @@
 import os
 import sys
 import textwrap as _textwrap
-from argparse import ArgumentParser, HelpFormatter, Namespace, SUPPRESS
+from argparse import SUPPRESS, ArgumentParser, HelpFormatter, Namespace
 from typing import Optional
 
-from gstore import __copyright__, __version__
-from gstore import env
+from gstore import __copyright__, __version__, env
 
 
 class LineBreaksFormatter(HelpFormatter):

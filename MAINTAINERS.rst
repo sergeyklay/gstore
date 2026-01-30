@@ -16,7 +16,7 @@ Key configurations:
 - **Primary Dependencies:** ``pygithub``, ``gitpython``
 - **Documentation Tool:** ``sphinx``
 - **Testing Tools:** ``pytest``, ``coverage``
-- **Linting Tools:** ``flake8``, ``pylint``
+- **Linting Tools:** ``ruff``
 
 Testing the Project
 ===================
@@ -107,7 +107,7 @@ The docs workflow automatically builds and validates documentation on pushes and
 Linting and Code Quality Checks
 ===============================
 
-Code quality is enforced using ``flake8`` and ``pylint``.
+Code quality is enforced using ``ruff``.
 
 Running Locally
 ---------------
@@ -122,8 +122,7 @@ Execute linting:
 
 .. code-block:: bash
 
-   $ uv run flake8 ./
-   $ uv run pylint ./gstore
+   $ uv run ruff check .
 
 CI Workflow
 -----------

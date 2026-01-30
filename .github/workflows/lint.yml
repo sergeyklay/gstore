@@ -52,6 +52,4 @@ jobs:
         run: uv sync --group dev
 
       - name: Code linting
-        run: |
-          uv run flake8 ./
-          uv run pylint ./gstore
+        run: uv run ruff check .
