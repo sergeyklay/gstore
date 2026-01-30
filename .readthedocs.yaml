@@ -29,7 +29,7 @@ build:
     post_install:
       # Export docs dependencies and install via pip
       # https://docs.astral.sh/uv/concepts/projects/dependencies/
-      - uv export --only-group docs --no-hashes -o docs-requirements.txt
+      - uv export --extra docs --no-hashes -o docs-requirements.txt
       - pip install -r docs-requirements.txt
 
 sphinx:
