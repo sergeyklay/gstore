@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
+# Copyright (C) 2020-2026 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,3 +41,7 @@ __pycache__
 /coverage.*
 /.coverage
 /.coverage.*
+
+# Tasks and TODOs
+/.specs
+/.plans

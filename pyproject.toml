@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
+# Copyright (C) 2020-2026 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,17 +14,18 @@
 # along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "gstore"
 version = "0.8.0"
 description = "Synchronize GitHub repositories made easy."
-authors = ["Serghei Iakovlev <gnu@serghei.pl>"]
-maintainers = ["Serghei Iakovlev <gnu@serghei.pl>"]
-license = "GPL-3.0-or-later"
 readme = "README.rst"
+license = "GPL-3.0-or-later"
+requires-python = ">=3.9"
+authors = [{ name = "Serghei Iakovlev", email = "gnu@serghei.pl" }]
+maintainers = [{ name = "Serghei Iakovlev", email = "gnu@serghei.pl" }]
 keywords = ["git", "github", "backup", "repo", "sync", "cli"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -48,56 +49,62 @@ classifiers = [
     "Topic :: Software Development :: Version Control",
     "Topic :: Software Development :: Version Control :: Git",
 ]
-repository = "https://github.com/sergeyklay/gstore"
-homepage = "https://gstore.readthedocs.io"
-documentation = "https://gstore.readthedocs.io"
-packages = [
-    { include = "gstore" }
+dependencies = ["pygithub>=2.5.0,<3", "gitpython>=3.1.31,<4"]
+
+[project.optional-dependencies]
+testing = [
+    "coverage[toml]>=7.2.2,<8",
+    "pytest>=8.3.3,<9",
+    "pytest-mock>=3.10.0,<4",
+    "pylint>=3.3.1,<4",
+    "flake8>=7.1.1,<8",
+    "flake8-import-order>=0.18.2,<1",
+    "flake8-blind-except>=0.2.1,<1",
 ]
+docs = ["sphinx>=6.1.3", "furo>=2023.3.27"]
+build = ["twine>=5.1.1,<6"]
+dev = ["debugpy>=1.8.9,<2"]
+
+[project.scripts]
+gstore = "gstore.cli:main"
+
+[project.urls]
+Homepage = "https://gstore.readthedocs.io"
+Documentation = "https://gstore.readthedocs.io"
+Repository = "https://github.com/sergeyklay/gstore"
+"Bug Tracker" = "https://github.com/sergeyklay/gstore/issues"
+Changelog = "https://gstore.readthedocs.io/en/latest/changelog.html"
+
+[dependency-groups]
+dev = [
+    "coverage[toml]>=7.2.2,<8",
+    "pytest>=8.3.3,<9",
+    "pytest-mock>=3.10.0,<4",
+    "pylint>=3.3.1,<4",
+    "flake8>=7.1.1,<8",
+    "flake8-import-order>=0.18.2,<1",
+    "flake8-blind-except>=0.2.1,<1",
+    "sphinx>=6.1.3",
+    "furo>=2023.3.27",
+    "twine>=5.1.1,<6",
+    "debugpy>=1.8.9,<2",
+]
+
+[tool.hatch.build.targets.sdist]
 include = [
-    { path = "tests", format = "sdist" },
+    "gstore/",
+    "tests/",
     "AUTHORS.rst",
     "CHANGELOG.rst",
     "CONTRIBUTING.rst",
     "LICENSE",
     "MAINTAINERS.rst",
     "README.rst",
-    "SECURITY.rst"
+    "SECURITY.rst",
 ]
 
-[tool.poetry.urls]
-"Bug Tracker" = "https://github.com/sergeyklay/gstore/issues"
-Changelog = "https://gstore.readthedocs.io/en/latest/changelog.html"
-
-[tool.poetry.dependencies]
-python = ">=3.9, <4"
-pygithub = "^2.5.0"
-gitpython = "^3.1.31"
-
-[tool.poetry.scripts]
-gstore = "gstore.cli:main"
-
-[tool.poetry.group.testing.dependencies]
-coverage = {version = "^7.2.2", extras = ["toml"]}
-pytest = "^8.3.3"
-pytest-mock = "^3.10.0"
-pylint = "^3.3.1"
-flake8 = "^7.1.1"
-flake8-import-order = "^0.18.2"
-flake8-blind-except = "^0.2.1"
-
-
-[tool.poetry.group.docs.dependencies]
-sphinx = ">=6.1.3"
-furo = ">=2023.3.27"
-
-
-[tool.poetry.group.build.dependencies]
-twine = "^5.1.1"
-
-
-[tool.poetry.group.dev.dependencies]
-debugpy = "^1.8.9"
+[tool.hatch.build.targets.wheel]
+packages = ["gstore"]
 
 [tool.pytest.ini_options]
 addopts = "--verbose --doctest-modules --durations=25"
@@ -142,9 +149,4 @@ parallel = true
 data_file = ".coverage"
 
 # Omit specified files or directories from the report
-omit = [
-    "*/.venv/*",
-    "*/__pycache__/*",
-    "*/site-packages/*",
-    "*/tests/*"
-]
+omit = ["*/.venv/*", "*/__pycache__/*", "*/site-packages/*", "*/tests/*"]

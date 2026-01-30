@@ -33,7 +33,7 @@ There are some projects similar to ``gstore`` you may be interested in:
 License
 =======
 
-This project is open source software licensed under the `GNU General Public Licence version 3 <https://choosealicense.com/licenses/gpl-3.0/>`_. Copyright © 2020, 2021, 2022, 2023, 2024 Serghei Iakovlev.
+This project is open source software licensed under the `GNU General Public License version 3 <https://choosealicense.com/licenses/gpl-3.0/>`_. Copyright © 2020, 2021, 2022, 2023, 2024, 2025, 2026 Serghei Iakovlev.
 
 
 Note On Copyright Years

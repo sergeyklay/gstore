@@ -87,7 +87,7 @@ Full Table of Contents
 Project Information
 ===================
 
-``gstore`` is released under the `GNU General Public Licence version 3 <https://choosealicense.com/licenses/gpl-3.0/>`_, its documentation lives at `Read the Docs <https://gstore.readthedocs.io/>`_, the code on `GitHub <https://github.com/sergeyklay/gstore>`_, and the latest release on `PyPI <https://pypi.org/project/gstore/>`_. It’s rigorously tested on Python 3.9+.
+``gstore`` is released under the `GNU General Public License version 3 <https://choosealicense.com/licenses/gpl-3.0/>`_, its documentation lives at `Read the Docs <https://gstore.readthedocs.io/>`_, the code on `GitHub <https://github.com/sergeyklay/gstore>`_, and the latest release on `PyPI <https://pypi.org/project/gstore/>`_. It’s rigorously tested on Python 3.9+.
 
 If you'd like to contribute to ``gstore`` you're most welcome!
 

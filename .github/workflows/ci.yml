@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
+# Copyright (C) 2020-2026 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -66,45 +66,26 @@ jobs:
         with:
           fetch-depth: 5
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
       - name: Set up Python ${{ matrix.python }}
-        id: setup-python
-        uses: actions/setup-python@v6.2.0
-        with:
-          python-version: ${{ matrix.python }}
+        run: uv python install ${{ matrix.python }}
 
-      - name: Install and configure Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.8.4
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-          installer-parallel: true
-
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v5
-        with:
-          path: .venv
-          key: testing-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            testing-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-
-
-      - name: Validates the content of the pyproject.toml
-        run: poetry check
+      - name: Validate lockfile
+        run: uv lock --check
 
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --with=testing --without=docs --without=build --no-root
-
-      - name: Install project
-        run: poetry install --no-interaction
+        run: uv sync --group dev
 
       - name: Run unit tests with coverage
         run: |
-          source $VENV
-          coverage run -m pytest ./gstore ./tests
-          coverage combine
-          coverage xml
+          uv run coverage run -m pytest ./gstore ./tests
+          uv run coverage combine
+          uv run coverage xml
 
       - uses: codecov/codecov-action@v5.5.2
         if: success()
