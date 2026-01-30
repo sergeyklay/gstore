@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
+# Copyright (C) 2020-2026 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@ import re
 
 def read_file(filepath):
     """Read content from a UTF-8 encoded text file."""
-    with codecs.open(filepath, 'rb', 'utf-8') as file_handle:
+    with codecs.open(filepath, "rb", "utf-8") as file_handle:
         return file_handle.read()
 
 
@@ -34,15 +34,14 @@ def find_version(meta_file):
     contents = read_file(os.path.join(here, meta_file))
 
     meta_match = re.search(
-        r"^__version__\s+=\s+['\"]([^'\"]*)['\"]",
-        contents,
-        re.M
+        r"^__version__\s+=\s+['\"]([^'\"]*)['\"]", contents, re.M
     )
 
     if meta_match:
         return meta_match.group(1)
     raise RuntimeError(
-        'Unable to find __version__ string in package meta file')
+        "Unable to find __version__ string in package meta file"
+    )
 
 
 #
@@ -50,9 +49,9 @@ def find_version(meta_file):
 #
 
 # General information about the project.
-project = u"gstore"
-copyright = u"2020-2024 Serghei Iakovlev"
-author = u"Serghei Iakovlev"
+project = "gstore"
+copyright = "2020-2026 Serghei Iakovlev"
+author = "Serghei Iakovlev"
 
 #
 # -- General configuration ---------------------------------------------------
@@ -79,8 +78,8 @@ master_doc = "index"
 
 # The version info
 # The short X.Y version.
-release = find_version('../gstore/__init__.py')
-version = release.rsplit(u".", 1)[0]
+release = find_version("../gstore/__init__.py")
+version = release.rsplit(".", 1)[0]
 # The full version, including alpha/beta/rc tags.
 
 # List of patterns, relative to source directory, that match files and
@@ -160,9 +159,7 @@ htmlhelp_basename = "gstoredoc"
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    ("index", project, u"gstore documentation", [author], 1)
-]
+man_pages = [("index", project, "gstore documentation", [author], 1)]
 
 #
 # -- Options for Texinfo output -------------------------------------------
@@ -175,7 +172,7 @@ texinfo_documents = [
     (
         "index",
         project,
-        u"gstore documentation",
+        "gstore documentation",
         author,
         project,
         "Synchronize GitHub repositories made easy.",

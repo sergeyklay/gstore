@@ -19,8 +19,12 @@ from unittest import mock
 import pytest
 from github.GithubException import UnknownObjectException
 
-from gstore.client import Client, InvalidCredentialsError, ValidationError
-from gstore.client import DEFAULT_HOST
+from gstore.client import (
+    DEFAULT_HOST,
+    Client,
+    InvalidCredentialsError,
+    ValidationError,
+)
 from gstore.models import Organization, Repository
 
 

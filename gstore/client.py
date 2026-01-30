@@ -21,10 +21,13 @@ sync repositories from the GitHub.
 import logging
 
 from github import Auth, Github
-from github.GithubException import BadCredentialsException
-from github.GithubException import UnknownObjectException
+from github.GithubException import (
+    BadCredentialsException,
+    UnknownObjectException,
+)
 
 from gstore import __version__
+
 from .exceptions import Error
 from .models import Organization, Repository
 
