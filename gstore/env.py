@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
+# Copyright (C) 2020-2026 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,17 +21,16 @@ used by various functions within gstore.
 """
 
 import os
-from typing import Optional
 
 TOKEN_NAMES = (
-    'GH_TOKEN',
-    'GITHUB_TOKEN',
-    'GH_ENTERPRISE_TOKEN',
-    'GITHUB_ENTERPRISE_TOKEN',
+    "GH_TOKEN",
+    "GITHUB_TOKEN",
+    "GH_ENTERPRISE_TOKEN",
+    "GITHUB_ENTERPRISE_TOKEN",
 )
 
 
-def lookup_token() -> Optional[str]:
+def lookup_token() -> str | None:
     """Lookup a personal access token from environment variables.
 
     This function looks for token variable in the following order:
@@ -52,7 +51,7 @@ def lookup_token() -> Optional[str]:
     return None
 
 
-def get_host() -> Optional[str]:
+def get_host() -> str | None:
     """Get GitHub API hostname from GH_HOST environment variable.
 
     This function may return None if there is no environment
@@ -61,10 +60,10 @@ def get_host() -> Optional[str]:
     :returns: The GitHub API hostname if any or None
     :rtype: str or None
     """
-    return os.environ.get('GH_HOST') or None
+    return os.environ.get("GH_HOST") or None
 
 
-def get_target() -> Optional[str]:
+def get_target() -> str | None:
     """Get base target to sync repos.
 
     This function may return None if there is no environment
@@ -73,4 +72,4 @@ def get_target() -> Optional[str]:
     :returns: The path to base directory if any or None
     :rtype: str or None
     """
-    return os.environ.get('GSTORE_DIR') or None
+    return os.environ.get("GSTORE_DIR") or None

@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
+# Copyright (C) 2020-2026 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@ import multiprocessing
 import os
 import shutil
 from dataclasses import dataclass
-from typing import Optional
 
 import git
 
@@ -38,57 +37,53 @@ class Context:
 
 
 # pylint: disable=invalid-name
-_proc_ctx: Optional[Context] = None
+_proc_ctx: Context | None = None
 
 
 def clone(repo: Repository, ctx: Context):
     """Clone a repository to the target directory."""
-    ctx.logger.info(
-        'Clone repository to %s/%s',
-        repo.org.login,
-        repo.name)
+    ctx.logger.info("Clone repository to %s/%s", repo.org.login, repo.name)
     repo_path = os.path.join(ctx.base_path, repo.org.login, repo.name)
 
     if os.path.exists(repo_path):
         shutil.rmtree(repo_path, ignore_errors=True)
 
-    git_url = f'git@github.com:{repo.org.login}/{repo.name}.git'
+    git_url = f"git@github.com:{repo.org.login}/{repo.name}.git"
 
     try:
         git.Repo.clone_from(git_url, repo_path)
     except git.GitCommandError as exception:
-        ctx.logger.error('Failed to clone %s/%s', repo.org.login, repo.name)
+        ctx.logger.error("Failed to clone %s/%s", repo.org.login, repo.name)
         for msg in parse_git_errors(exception):
             ctx.logger.error(msg)
 
 
 def fetch(repo: Repository, ctx: Context):
     """Sync a repository in the target directory."""
-    ctx.logger.info('Update %s/%s repository', repo.org.login, repo.name)
+    ctx.logger.info("Update %s/%s repository", repo.org.login, repo.name)
     repo_path = os.path.join(ctx.base_path, repo.org.login, repo.name)
     local_repo = git.Repo(repo_path)
 
     if not local_repo.heads:
         ctx.logger.info(
-            'No remote branches for %s/%s, skip fetching',
+            "No remote branches for %s/%s, skip fetching",
             repo.org.login,
-            repo.name)
+            repo.name,
+        )
         return
 
     try:
         ctx.logger.debug(
-            'Download objects and refs from %s/%s',
-            repo.org.login,
-            repo.name)
-        local_repo.git.fetch(['--prune', '--quiet'])
+            "Download objects and refs from %s/%s", repo.org.login, repo.name
+        )
+        local_repo.git.fetch(["--prune", "--quiet"])
 
         ctx.logger.debug(
-            'Pulling all branches from %s/%s',
-            repo.org.login,
-            repo.name)
-        local_repo.git.pull(['--all', '--quiet'])
+            "Pulling all branches from %s/%s", repo.org.login, repo.name
+        )
+        local_repo.git.pull(["--all", "--quiet"])
     except git.GitCommandError as exception:
-        ctx.logger.error('Failed to update %s/%s', repo.org.login, repo.name)
+        ctx.logger.error("Failed to update %s/%s", repo.org.login, repo.name)
         for msg in parse_git_errors(exception):
             ctx.logger.error(msg)
 
@@ -102,28 +97,31 @@ def _do_sync(repos: list[Repository]):
     for repo in repos:
         org_path = os.path.join(ctx.base_path, repo.org.login)
         repo_path = os.path.join(org_path, repo.name)
-        git_path = os.path.join(repo_path, '.git')
+        git_path = os.path.join(repo_path, ".git")
 
         if os.path.exists(repo_path):
             if os.path.isfile(repo_path):
                 ctx.logger.error(
-                    'Unable to sync %s. The path %s is a regular file',
+                    "Unable to sync %s. The path %s is a regular file",
                     repo.name,
-                    repo_path)
+                    repo_path,
+                )
                 continue
 
             if not os.access(repo_path, os.W_OK | os.X_OK):
                 ctx.logger.error(
-                    'Unable to sync %s. The path %s is not writeable',
+                    "Unable to sync %s. The path %s is not writeable",
                     repo.name,
-                    repo_path)
+                    repo_path,
+                )
                 continue
 
             # We're going to run a Git command, but weren't inside a
             # local Git repository.
             if not os.path.exists(git_path):
-                ctx.logger.debug('Remove wrong formed local repo from %s',
-                                 repo_path)
+                ctx.logger.debug(
+                    "Remove wrong formed local repo from %s", repo_path
+                )
                 shutil.rmtree(repo_path, ignore_errors=True)
 
         if os.path.exists(git_path):
@@ -143,7 +141,7 @@ def _init_process(verbose=False, quiet=False, base_path=None):
     # Setup logger for use within multiprocessing pool
     setup_logger(verbose, quiet)
     logger = logging.getLogger(__name__)
-    logger.info('Initializing process')
+    logger.info("Initializing process")
 
     # pylint: disable=global-statement
     global _proc_ctx
@@ -160,12 +158,12 @@ def sync(org: Organization, repos: list[Repository], base_path: str, **kwargs):
     :keyword bool quiet: Disable info logging
     :keyword int jobs: The number of worker processes to use
     """
-    verbose = kwargs.get('verbose') or False
-    quiet = kwargs.get('quiet') or False
-    requested_jobs = kwargs.get('jobs') or multiprocessing.cpu_count()
+    verbose = kwargs.get("verbose") or False
+    quiet = kwargs.get("quiet") or False
+    requested_jobs = kwargs.get("jobs") or multiprocessing.cpu_count()
 
     logger = logging.getLogger(__name__)
-    logger.info('Sync repos for %s', org.login)
+    logger.info("Sync repos for %s", org.login)
 
     # Calculate the number of processes to use
     jobs = min(len(repos), requested_jobs)
@@ -175,18 +173,18 @@ def sync(org: Organization, repos: list[Repository], base_path: str, **kwargs):
 
     org_path = os.path.join(base_path, org.login)
     if not os.path.exists(org_path):
-        logger.debug('Creating directory %s', org_path)
+        logger.debug("Creating directory %s", org_path)
         os.makedirs(org_path)
 
     def chunks(tasks: list, n: int):
         """Yield successive n-sized chunks from tasks list."""
         for i in range(0, len(tasks), n):
-            yield tasks[i:i + n]
+            yield tasks[i : i + n]
 
-    logger.info('Processes to be spawned: %s', jobs)
+    logger.info("Processes to be spawned: %s", jobs)
     with multiprocessing.Pool(
-            processes=jobs,
-            initializer=_init_process,
-            initargs=(verbose, quiet, base_path)
+        processes=jobs,
+        initializer=_init_process,
+        initargs=(verbose, quiet, base_path),
     ) as pool:
         pool.map(_do_sync, chunks(repos, jobs))

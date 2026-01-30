@@ -1,4 +1,4 @@
-# Copyright (C) 2020-2024 Serghei Iakovlev <gnu@serghei.pl>
+# Copyright (C) 2020-2026 Serghei Iakovlev <gnu@serghei.pl>
 #
 # This file is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,7 +19,6 @@ import os
 import sys
 import textwrap as _textwrap
 from argparse import SUPPRESS, ArgumentParser, HelpFormatter, Namespace
-from typing import Optional
 
 from gstore import __copyright__, __version__, env
 
@@ -36,19 +35,23 @@ class LineBreaksFormatter(HelpFormatter):
 
     This help formatter allows for you to optional enable/toggle raw text on
     individual menu items by prefixing the help string with 'n|'."""
-    def _fill_text(self, text, width, indent) -> str:
-        text = self._whitespace_matcher.sub(' ', text).strip()
-        paragraphs = text.split('|n ')
 
-        multiline_text = ''
+    def _fill_text(self, text, width, indent) -> str:
+        text = self._whitespace_matcher.sub(" ", text).strip()
+        paragraphs = text.split("|n ")
+
+        multiline_text = ""
 
         for paragraph in paragraphs:
-            formatted_paragraph = _textwrap.fill(
-                paragraph,
-                width,
-                initial_indent=indent,
-                subsequent_indent=indent
-            ) + '\n'
+            formatted_paragraph = (
+                _textwrap.fill(
+                    paragraph,
+                    width,
+                    initial_indent=indent,
+                    subsequent_indent=indent,
+                )
+                + "\n"
+            )
 
             multiline_text = multiline_text + formatted_paragraph
 
@@ -58,13 +61,13 @@ class LineBreaksFormatter(HelpFormatter):
 def get_version_str() -> str:
     """A helper function to format version info."""
     # pylint: disable=consider-using-f-string
-    version = '''
+    version = """
     {prog}s {version}|n
     {copy}.|n
     This is free software; see the source for copying conditions.  There is NO|n
     warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-    '''.format(  # noqa E501
-        prog='%(prog)',
+    """.format(  # noqa E501
+        prog="%(prog)",
         version=__version__,
         copy=__copyright__,
     )
@@ -73,11 +76,15 @@ def get_version_str() -> str:
 
 def parser_add_positionals(parser: ArgumentParser) -> ArgumentParser:
     """Add positional parameters group to a parser."""
-    pgroup = parser.add_argument_group('Positional parameters')
+    pgroup = parser.add_argument_group("Positional parameters")
 
-    pgroup.add_argument('target', nargs='?', type=str,
-                        default=env.get_target() or os.getcwd(),
-                        help='Base target to sync repos (e.g. folder on disk)')
+    pgroup.add_argument(
+        "target",
+        nargs="?",
+        type=str,
+        default=env.get_target() or os.getcwd(),
+        help="Base target to sync repos (e.g. folder on disk)",
+    )
 
     return parser
 
@@ -86,50 +93,99 @@ def parser_add_options(parser: ArgumentParser) -> ArgumentParser:
     """Add options group to a parser."""
     token = env.lookup_token()
 
-    ogroup = parser.add_argument_group('Options')
+    ogroup = parser.add_argument_group("Options")
 
-    ogroup.add_argument('-h', '--help', action='help', default=SUPPRESS,
-                        help='Print this help message and quit')
+    ogroup.add_argument(
+        "-h",
+        "--help",
+        action="help",
+        default=SUPPRESS,
+        help="Print this help message and quit",
+    )
 
-    ogroup.add_argument('--token', dest='token', default=token, type=str,
-                        help='An authentication token for GitHub API requests')
+    ogroup.add_argument(
+        "--token",
+        dest="token",
+        default=token,
+        type=str,
+        help="An authentication token for GitHub API requests",
+    )
 
-    ogroup.add_argument('--host', dest='host', default=env.get_host(),
-                        type=str, help='The GitHub API hostname')
+    ogroup.add_argument(
+        "--host",
+        dest="host",
+        default=env.get_host(),
+        type=str,
+        help="The GitHub API hostname",
+    )
 
-    ogroup.add_argument('-o', '--org', dest='org', action='append', type=str,
-                        help='Organization to sync (all if not provided)')
+    ogroup.add_argument(
+        "-o",
+        "--org",
+        dest="org",
+        action="append",
+        type=str,
+        help="Organization to sync (all if not provided)",
+    )
 
-    repo_help = ('Limit sync to the specified repository, ' +
-                 'otherwise sync all repositories (format "org:repo")')
-    ogroup.add_argument('-r', '--repo', dest='repo', action='append',
-                        type=str, help=repo_help)
+    repo_help = (
+        "Limit sync to the specified repository, "
+        + 'otherwise sync all repositories (format "org:repo")'
+    )
+    ogroup.add_argument(
+        "-r", "--repo", dest="repo", action="append", type=str, help=repo_help
+    )
 
-    ogroup.add_argument('-v', '--verbose', dest='verbose', action='store_true',
-                        help='Increase output verbosity')
+    ogroup.add_argument(
+        "-v",
+        "--verbose",
+        dest="verbose",
+        action="store_true",
+        help="Increase output verbosity",
+    )
 
-    jobs_help = ('specifies the number of jobs (sync processes) ' +
-                 'to run simultaneously')
-    ogroup.add_argument('-j', '--jobs', dest='jobs', default=None, type=int,
-                        action='store', nargs='?', help=jobs_help)
+    jobs_help = (
+        "specifies the number of jobs (sync processes) "
+        + "to run simultaneously"
+    )
+    ogroup.add_argument(
+        "-j",
+        "--jobs",
+        dest="jobs",
+        default=None,
+        type=int,
+        action="store",
+        nargs="?",
+        help=jobs_help,
+    )
 
-    quiet_help = 'Silence any informational messages, but not error ones'
-    ogroup.add_argument('-q', '--quiet', dest='quiet', action='store_true',
-                        help=quiet_help)
+    quiet_help = "Silence any informational messages, but not error ones"
+    ogroup.add_argument(
+        "-q", "--quiet", dest="quiet", action="store_true", help=quiet_help
+    )
 
-    ogroup.add_argument('-V', '--version', action='version',
-                        help="Print program's version information and quit",
-                        version=get_version_str())
+    ogroup.add_argument(
+        "-V",
+        "--version",
+        action="version",
+        help="Print program's version information and quit",
+        version=get_version_str(),
+    )
 
-    dumpversion_help = ("Print the version of the program and don't " +
-                        'do anything else')
-    ogroup.add_argument('-dumpversion', action='version',
-                        help=dumpversion_help, version=__version__)
+    dumpversion_help = (
+        "Print the version of the program and don't " + "do anything else"
+    )
+    ogroup.add_argument(
+        "-dumpversion",
+        action="version",
+        help=dumpversion_help,
+        version=__version__,
+    )
 
     return parser
 
 
-def argparse() -> Optional[Namespace]:
+def argparse() -> Namespace | None:
     """
     The function initializes command line arguments parser.
 
@@ -141,8 +197,8 @@ def argparse() -> Optional[Namespace]:
     :rtype: :class:`argparse.Namespace` or None
     """
     parser = ArgumentParser(
-        description='Synchronize GitHub repositories of your organizations.',
-        usage='%(prog)s [options] [[--] target]',
+        description="Synchronize GitHub repositories of your organizations.",
+        usage="%(prog)s [options] [[--] target]",
         formatter_class=LineBreaksFormatter,
         add_help=False,
     )

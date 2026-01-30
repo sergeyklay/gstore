@@ -23,7 +23,7 @@ version = "0.8.0"
 description = "Synchronize GitHub repositories made easy."
 readme = "README.rst"
 license = "GPL-3.0-or-later"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [{ name = "Serghei Iakovlev", email = "gnu@serghei.pl" }]
 maintainers = [{ name = "Serghei Iakovlev", email = "gnu@serghei.pl" }]
 keywords = ["git", "github", "backup", "repo", "sync", "cli"]
@@ -38,10 +38,11 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: 3 :: Only",
     "Topic :: System :: Archiving :: Backup",
     "Topic :: System :: Software Distribution",
@@ -104,7 +105,7 @@ packages = ["gstore"]
 addopts = "--verbose --doctest-modules --durations=25"
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py310"
 line-length = 79
 extend-exclude = [".venv", "__pycache__", "dist"]
 
