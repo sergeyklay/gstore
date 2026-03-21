@@ -92,7 +92,7 @@ jobs:
           uv run coverage combine
           uv run coverage xml
 
-      - uses: codecov/codecov-action@v5.5.2
+      - uses: codecov/codecov-action@v5.5.3
         if: success()
         with:
           fail_ci_if_error: false
